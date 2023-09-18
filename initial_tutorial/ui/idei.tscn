@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ck82si8mc1kd2"]
 
-[ext_resource type="Texture2D" uid="uid://b4xpxdjmkjihl" path="res://assets/idei-circular.svg" id="1_un1hi"]
 [ext_resource type="Script" path="res://ui/idei.gd" id="1_wheon"]
+[ext_resource type="Texture2D" uid="uid://bjrfwcw54mgvy" path="res://ui/Idei-circular.png" id="2_stxjv"]
 
 [node name="idei" type="Control"]
 layout_mode = 3
@@ -23,5 +23,5 @@ grow_vertical = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CenterContainer"]
 position = Vector2(590, 334)
-scale = Vector2(2, 2)
-texture = ExtResource("1_un1hi")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_stxjv")
