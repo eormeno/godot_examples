@@ -13,7 +13,11 @@ config_version=5
 config/name="initial_tutorial"
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.1", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://assets/icon.svg"
+
+[filesystem]
+
+import/blender/enabled=false
 
 [rendering]
 

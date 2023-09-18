@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bnruq84moo76o"]
 
-[ext_resource type="Texture2D" uid="uid://5ap0lnfoa2mk" path="res://icon.svg" id="1_cy53t"]
+[ext_resource type="Texture2D" uid="uid://5ap0lnfoa2mk" path="res://assets/icon.svg" id="1_cy53t"]
 [ext_resource type="Script" path="res://godot_sprite.gd" id="2_c8uao"]
 
 [node name="Player" type="Sprite2D"]
