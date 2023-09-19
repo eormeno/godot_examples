@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5uwvqu1cqaon"]
+
+[ext_resource type="Script" path="res://ui/movert.gd" id="1_cpxjg"]
+
+[node name="movert" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cpxjg")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(0.470588, 0.639216, 0.215686, 1)
+text = "Proyecto Mover-T 2"
+horizontal_alignment = 1
+vertical_alignment = 1
