@@ -1,4 +1,4 @@
-class_name GameUIManager extends Node
+extends VideoStreamPlayer
 
 const STATES_FILE_PATH = "res://states.json"
 var is_changing_state : bool
@@ -17,6 +17,7 @@ func _process(_delta):
 	if current_state_name == previous_state_name:
 		return
 	print (current_state_name)
+	
 	previous_state_name = current_state_name
 	run_state(current_state_name)
 
@@ -57,3 +58,6 @@ func load_states():
 	var file = FileAccess.open(STATES_FILE_PATH, FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
 	return data
+
+func _on_finished():
+	play()
