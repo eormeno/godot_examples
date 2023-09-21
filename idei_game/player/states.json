@@ -1,0 +1,7 @@
+{
+	"start" : "waiting",
+	"waiting":			{ "start" : "waiting"		},
+	"looking_left":		{ "start" : "look_left"		},
+	"looking_right":	{ "start" : "look_right"	},
+	"walking":			{ "start" : "walk"			}
+}
