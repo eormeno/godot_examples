@@ -1,9 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bnruq84moo76o"]
+[gd_scene format=3 uid="uid://bnruq84moo76o"]
 
-[ext_resource type="Texture2D" uid="uid://5ap0lnfoa2mk" path="res://assets/icon.svg" id="1_cy53t"]
-[ext_resource type="Script" path="res://godot_sprite.gd" id="2_c8uao"]
-
-[node name="Player" type="Sprite2D"]
-position = Vector2(570, 163)
-texture = ExtResource("1_cy53t")
-script = ExtResource("2_c8uao")
+[node name="Player" type="Area2D"]
+metadata/_edit_group_ = true

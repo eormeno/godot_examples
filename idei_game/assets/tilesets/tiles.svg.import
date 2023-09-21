@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dg1nyvbv2lp1x"
-path="res://.godot/imported/tinee sprite sheet.png-f537c755bffe1ed3c3a1053318c8e73e.ctex"
+uid="uid://bkr1co2bkiljd"
+path="res://.godot/imported/tiles.svg-894459176ddd51ef3fb2bc9663ef0864.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tinee sprite sheet.png"
-dest_files=["res://.godot/imported/tinee sprite sheet.png-f537c755bffe1ed3c3a1053318c8e73e.ctex"]
+source_file="res://assets/tilesets/tiles.svg"
+dest_files=["res://.godot/imported/tiles.svg-894459176ddd51ef3fb2bc9663ef0864.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

@@ -1,0 +1,10 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://cwvffqlamhw6m"]
+
+[ext_resource type="Texture2D" uid="uid://plvbxn6v3srl" path="res://assets/tilesets/blocks_rock.png" id="1_qoms7"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kpnja"]
+texture = ExtResource("1_qoms7")
+texture_region_size = Vector2i(18, 18)
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_kpnja")
