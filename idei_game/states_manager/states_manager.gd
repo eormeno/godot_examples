@@ -1,18 +1,16 @@
 class_name StateManager extends Node
 
-var current : Node
-var states : Dictionary
+var managed_scene : Node
+var fem_dict : Dictionary
 
 var is_changing_state : bool
-var current_state_name : String
-var current_state : Dictionary
+var running_states_names : Array[String] = []
 
-func _init(scene : Node, states_file_name : String = "states"):
-	current = scene
-	states = load_states(states_file_name)
-	current_state_name = states['start']
-	current_state = states[current_state_name]
-	current.add_child(self)
+func _init(scene : Node, fem_file_name : String = "initial.fem"):
+	managed_scene = scene
+	fem_dict = load_states(fem_file_name)
+	running_states_names.append_array(fem_dict._init_.exits)
+	managed_scene.add_child(self)
 
 func load_states(states_file_name : String):
 	var scene_path = get_scene_path()
@@ -30,13 +28,13 @@ func load_states(states_file_name : String):
 	
 func reset_states_values(states_dict : Dictionary):
 	for key in states_dict.keys():
-		if key == "start":
+		if key == "_init_":
 			continue
 		states_dict[key]['running_method'] = null
 		states_dict[key]['started'] = false
 
 func get_scene_path():
-	var root_scene = current.get_tree().get_current_scene()
+	var root_scene = managed_scene.get_tree().get_current_scene()
 	if not root_scene:
 		printerr("No root scene.")
 		return null
@@ -47,65 +45,69 @@ func get_scene_path():
 	return root_scene_file_path.get_base_dir()
 	
 func _process(delta):
-	if not current:	return
-	if is_changing_state: return
-	
 	run_current_state(delta)
 	
-func state_exit(label_name : String):
-	var exit_state_name = current_state.get(label_name)
-	if not exit_state_name:
-		return
-	if current_state_name == exit_state_name:
-		return
-	current_state.running_method = null
-	current_state.started = false
-	run_state_end_callback()
-	current_state_name = exit_state_name
-	current_state = states[exit_state_name]
+func state_exit(other_state : String):
+	var states_names_to_remove = []
+	var states_names_to_add = []
+	for state_name in running_states_names:
+		var current_state = fem_dict[state_name]
+		var current_state_exits = current_state.exits
+		if not current_state_exits.has(state_name):
+			continue
+		if state_name == other_state:
+			continue
+		current_state.running_method = null
+		current_state.started = false
+		run_state_end_callback(state_name)
+		states_names_to_remove.append(state_name)
+		states_names_to_add.append(other_state)
+	for to_remove in states_names_to_remove:
+		running_states_names.erase(to_remove)
+	for to_add in states_names_to_add:
+		running_states_names.append(to_add)
 	pass
 
 func run_current_state(delta):
-	var running_method = current_state.get("running_method")
-	
-	if running_method:
-		current.call(running_method, delta)
-		return
-		
-	is_changing_state = true
-	run_state_start_callback()
-	run_state_callback(delta)
-	is_changing_state = false
+	for state_name in running_states_names:
+		var current_state = fem_dict[state_name]
+		var running_method = current_state.get("running_method")
+		if running_method:
+			managed_scene.call(running_method, delta)
+			continue
+		run_state_start_callback(state_name)
+		run_state_callback(state_name, delta)
 
-func run_state_start_callback():
+func run_state_start_callback(state_name : String):
+	var current_state = fem_dict[state_name]
 	if current_state.started:
 		return
-	var callback_method_name_suffix = current_state.get("start")
-	if not callback_method_name_suffix:
+	var starting_callback_name = 'start_' + state_name
+	if not managed_scene.has_method(starting_callback_name):
 		return
-	var starting_callback_name = 'start_' + callback_method_name_suffix
-	if not current.has_method(starting_callback_name):
-		return
-	current.call(starting_callback_name)
+	managed_scene.call(starting_callback_name)
 	current_state.started = true
 	print('started ', starting_callback_name)
 
-func run_state_callback(delta):
-	var callback_method_name_suffix = current_state.get("start")
-	if not callback_method_name_suffix:
+func run_state_callback(state_name : String, delta):
+	var current_state = fem_dict[state_name]
+	var state_callback_name = "do_" + state_name
+	if not managed_scene.has_method(state_callback_name):
 		return
-	if not current.has_method(callback_method_name_suffix):
-		return
-	print('calling ', callback_method_name_suffix)
-	current.call(callback_method_name_suffix, delta)
-	current_state['running_method'] = callback_method_name_suffix
+	print('calling ', state_callback_name)
+	managed_scene.call(state_callback_name, delta)
+	current_state.running_method = state_callback_name
 
-func run_state_end_callback():
-	var callback_method_name_suffix = current_state.get("start")
-	if not callback_method_name_suffix:
+func run_state_end_callback(state_name : String):
+	var end_callback_name = 'end_' + state_name
+	if not managed_scene.has_method(end_callback_name):
 		return
-	var end_callback_name = 'end_' + callback_method_name_suffix
-	if not current.has_method(end_callback_name):
-		return
-	current.call(end_callback_name)
+	managed_scene.call(end_callback_name)
 	print('called ', end_callback_name)
+	
+func current_states_str(arr: Array = running_states_names, sep : String = ","):
+	var ret = ""
+	for element in arr:
+		ret += element + sep
+	ret = ret.erase(ret.length() - sep.length(), sep.length())
+	return ret

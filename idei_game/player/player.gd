@@ -54,7 +54,10 @@ func check_input():
 		states_manager.state_exit("move_left")
 		return
 	states_manager.state_exit("stop")
-
+	
+func _process(_delta):
+	$Label.text = states_manager.current_states_str()
+	
 func _processa(delta):
 	var velocity = Vector2.ZERO
 	if Input.is_action_pressed("ui_right"):

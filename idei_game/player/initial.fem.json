@@ -1,0 +1,36 @@
+{
+	"_init_": {
+		"exits": [
+			"waiting",
+			"looking_right"
+		]
+	},
+	"waiting": {
+		"exits": [
+			"walking"
+		]
+	},
+	"walking": {
+		"exits": [
+			"self",
+			"running",
+			"waiting"
+		]
+	},
+	"running": {
+		"exits": [
+			"self",
+			"walking"
+		]
+	},
+	"looking_right": {
+		"exits": [
+			"looking_left"
+		]
+	},
+	"looking_left": {
+		"exits": [
+			"looking_right"
+		]
+	}
+}
