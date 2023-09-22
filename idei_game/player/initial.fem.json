@@ -7,20 +7,13 @@
 	},
 	"waiting": {
 		"exits": [
-			"walking"
+			"walking",
+			"jumping"
 		]
 	},
 	"walking": {
 		"exits": [
-			"self",
-			"running",
 			"waiting"
-		]
-	},
-	"running": {
-		"exits": [
-			"self",
-			"walking"
 		]
 	},
 	"looking_right": {
@@ -31,6 +24,22 @@
 	"looking_left": {
 		"exits": [
 			"looking_right"
+		]
+	},
+	"jumping": {
+		"exits": [
+			"falling"
+		]
+	},
+	"falling": {
+		"exits": [
+			"falled"
+		]
+	},
+	"falled": {
+		"exits": [
+			"waiting",
+			"jumping"
 		]
 	}
 }

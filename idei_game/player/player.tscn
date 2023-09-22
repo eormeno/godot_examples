@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bnruq84moo76o"]
+[gd_scene load_steps=5 format=3 uid="uid://bnruq84moo76o"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_bhfsl"]
 [ext_resource type="SpriteFrames" uid="uid://bnfr70it3ohis" path="res://player/sprite_frames.tres" id="1_rtxip"]
+[ext_resource type="Script" path="res://player/InputProcesser.gd" id="2_weeam"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_umsbr"]
 radius = 21.0
@@ -10,6 +11,9 @@ height = 66.0
 [node name="Player" type="Area2D"]
 script = ExtResource("1_bhfsl")
 metadata/_edit_group_ = true
+
+[node name="InputProcesser" type="Node" parent="."]
+script = ExtResource("2_weeam")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1

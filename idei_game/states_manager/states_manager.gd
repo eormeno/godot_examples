@@ -45,30 +45,32 @@ func get_scene_path():
 	return root_scene_file_path.get_base_dir()
 	
 func _process(delta):
-	run_current_state(delta)
+	run_current_states(delta)
 	
-func state_exit(other_state : String):
+func change_to_states(other_states : Array[String]):
 	var states_names_to_remove = []
 	var states_names_to_add = []
-	for state_name in running_states_names:
-		var current_state = fem_dict[state_name]
-		var current_state_exits = current_state.exits
-		if not current_state_exits.has(state_name):
-			continue
-		if state_name == other_state:
-			continue
-		current_state.running_method = null
-		current_state.started = false
-		run_state_end_callback(state_name)
-		states_names_to_remove.append(state_name)
-		states_names_to_add.append(other_state)
+	for other_state in other_states:
+		for state_name in running_states_names:
+			var current_state = fem_dict[state_name]
+			var current_state_exits = current_state.exits
+			if not current_state_exits.has(other_state):
+				continue
+			if state_name == other_state:
+				continue
+			current_state.running_method = null
+			current_state.started = false
+			run_state_end_callback(state_name)
+			states_names_to_remove.append(state_name)
+			states_names_to_add.append(other_state)
 	for to_remove in states_names_to_remove:
 		running_states_names.erase(to_remove)
 	for to_add in states_names_to_add:
 		running_states_names.append(to_add)
+	running_states_names_string = ""
 	pass
 
-func run_current_state(delta):
+func run_current_states(delta):
 	for state_name in running_states_names:
 		var current_state = fem_dict[state_name]
 		var running_method = current_state.get("running_method")
@@ -104,10 +106,14 @@ func run_state_end_callback(state_name : String):
 		return
 	managed_scene.call(end_callback_name)
 	print('called ', end_callback_name)
-	
-func current_states_str(arr: Array = running_states_names, sep : String = ","):
+
+var running_states_names_string = ""
+func current_states_str(arr: Array = running_states_names, sep : String = "\n"):
+	if running_states_names_string.length() > 0:
+		return running_states_names_string
 	var ret = ""
 	for element in arr:
 		ret += element + sep
 	ret = ret.erase(ret.length() - sep.length(), sep.length())
+	running_states_names_string = ret
 	return ret

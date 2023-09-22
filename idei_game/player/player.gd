@@ -7,26 +7,75 @@ var states_manager : StateManager
 var velocity : Vector2 = Vector2.ZERO
 
 func _ready():
+	$InputProcesser.connect("movement", movement_signal_received)
 	states_manager = StateManager.new(self)
 	screen_size = get_viewport_rect().size
-	
+	position = screen_size / 2
+
+func movement_signal_received(movement):
+	if movement == InputProcesser.Move.RIGHT:
+		states_manager.change_to_states([ "looking_right", "walking" ])
+	if movement == InputProcesser.Move.LEFT:
+		states_manager.change_to_states([ "looking_left", "walking" ])
+	if movement == InputProcesser.Move.NONE:
+		states_manager.change_to_states([ "waiting" ])
+	if movement == InputProcesser.Move.JUMP:
+		states_manager.change_to_states([ "jumping" ])
+	pass
+
 func start_waiting():
 	$AnimatedSprite2D.animation = "idle"
 	$AnimatedSprite2D.play()
 	
-func waiting(_delta):
+func do_waiting(_delta):
 	velocity = Vector2.ZERO
-	check_input()
 
 func start_looking_right():
 	$AnimatedSprite2D.flip_h = false
+	
+func start_walking():
+	speed = 200
 	$AnimatedSprite2D.animation = "run"
 	$AnimatedSprite2D.play()
+	
+func do_walking(delta):
+	velocity = Vector2.ZERO
+	var dir : int = -1 if $AnimatedSprite2D.flip_h else 1
+	velocity.x += dir
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * speed
+	position += velocity * delta
+	position = position.clamp(Vector2.ZERO, screen_size)
+
+var jumping_height = 0
+
+func start_jumping():
+	$AnimatedSprite2D.animation = "jump"
+	$AnimatedSprite2D.play()
+	jumping_height = position.y
+
+func do_jumping(delta):
+	velocity = Vector2.ZERO
+	velocity.y -= 1
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * 500
+	position += velocity * delta
+	if abs(jumping_height - position.y) > 100:
+		states_manager.change_to_states([ "falling" ])
+		
+func do_falling(delta):
+	velocity = Vector2.ZERO
+	velocity.y += 1
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * 500
+	position += velocity * delta
+	if abs(jumping_height - position.y) < 10:
+		position.y = jumping_height
+		states_manager.change_to_states([ "falled" ])
 	
 func looking_right(delta):
 	velocity = Vector2.ZERO
 	velocity.x += 1
-	check_input()
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 	position += velocity * delta
@@ -34,32 +83,20 @@ func looking_right(delta):
 	
 func start_looking_left():
 	$AnimatedSprite2D.flip_h = true
-	$AnimatedSprite2D.animation = "run"
-	$AnimatedSprite2D.play()
 
 func looking_left(delta):
 	velocity = Vector2.ZERO
 	velocity.x += -1
-	check_input()
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
-
-func check_input():
-	if Input.is_action_pressed("ui_right"):
-		states_manager.state_exit("move_right")
-		return
-	if Input.is_action_pressed("ui_left"):
-		states_manager.state_exit("move_left")
-		return
-	states_manager.state_exit("stop")
 	
 func _process(_delta):
 	$Label.text = states_manager.current_states_str()
 	
 func _processa(delta):
-	var velocity = Vector2.ZERO
+	velocity = Vector2.ZERO
 	if Input.is_action_pressed("ui_right"):
 		velocity.x += 1
 	if Input.is_action_pressed("ui_left"):
