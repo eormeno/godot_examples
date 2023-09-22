@@ -1,7 +1,7 @@
 {
 	"start" : "waiting",
-	"waiting":			{ "start" : "waiting"		},
-	"looking_left":		{ "start" : "look_left"		},
-	"looking_right":	{ "start" : "look_right"	},
-	"walking":			{ "start" : "walk"			}
+	"waiting":			{ "start" : "waiting",			"move_left" : "looking_left", "move_right" : "looking_right" },
+	"looking_left":		{ "start" : "looking_left",		"move_left" : "looking_left", "move_right" : "looking_right", "stop": "waiting"  },
+	"looking_right":	{ "start" : "looking_right",	"move_left" : "looking_left", "move_right" : "looking_right", "stop": "waiting" },
+	"running":			{ "exits" : ["walk"] }
 }
