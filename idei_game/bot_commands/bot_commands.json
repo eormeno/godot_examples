@@ -1,0 +1,102 @@
+{
+	"commands": {
+		"wait": {
+			"name": "wait",
+			"description": "It makes the bot to wait some time",
+			"cost": 1
+		},
+		"look_right": {
+			"name": "look_right",
+			"description": "It makes the bot to look right",
+			"cost": 1
+		},
+		"look_left": {
+			"name": "look_left",
+			"description": "It makes the bot to look left",
+			"cost": 1
+		},
+		"walk": {
+			"name": "walk",
+			"description": "It makes the bot to walk in the direction it is looking at",
+			"cost": 1
+		},
+		"jump_up": {
+			"name": "jump_up",
+			"description": "It makes the bot to jump up",
+			"cost": 1
+		},
+		"jump_up_diag": {
+			"name": "jump_up_diag",
+			"description": "It makes the bot to jump diagonally according its looking direction",
+			"cost": 2
+		},
+		"ladder_up": {
+			"name": "ladder_up",
+			"description": "It makes the bot to climb a ladder",
+			"cost": 1
+		},
+		"ladder_down": {
+			"name": "ladder_down",
+			"description": "It makes the bot to climb down a ladder",
+			"cost": 1
+		},
+		"do_action": {
+			"name": "do_action",
+			"description": "It makes the bot to execute the action in front of it",
+			"cost": 1
+		},
+		"repeat": {
+			"name": "repeat",
+			"description": "It makes the bot to repeat the actions inside the repeat block",
+			"cost": 1
+		},
+		"if": {
+			"name": "if",
+			"description": "Allows the bot to check if the cell in front of it fulfills the condition. If it does, it will execute the actions inside the if block. If it doesn't, it will execute the actions inside the else block",
+			"cost": 1
+		},
+		"repeat_until": {
+			"name": "repeat_until",
+			"description": "It makes the bot to repeat the actions inside the repeat block until the cell in front of it fulfills the condition",
+			"cost": 1
+		}
+	},
+	"conditions": {
+		"is_wall": {
+			"name": "is_wall",
+			"description": "Checks if the cell in front of the bot is a wall"
+		},
+		"is_ladder": {
+			"name": "is_ladder",
+			"description": "Checks if the cell in front of the bot is a ladder"
+		},
+		"is_empty": {
+			"name": "is_empty",
+			"description": "Checks if the cell in front of the bot is empty"
+		},
+		"is_enemy": {
+			"name": "is_enemy",
+			"description": "Checks if the cell in front of the bot is an enemy"
+		},
+		"is_energy": {
+			"name": "is_energy",
+			"description": "Checks if the cell in front of the bot is an energy"
+		},
+		"is_key": {
+			"name": "is_key",
+			"description": "Checks if the cell in front of the bot is a key"
+		},
+		"is_door": {
+			"name": "is_door",
+			"description": "Checks if the cell in front of the bot is a door"
+		},
+		"is_closed_door": {
+			"name": "is_closed_door",
+			"description": "Checks if the cell in front of the bot is a closed door"
+		},
+		"is_open_door": {
+			"name": "is_open_door",
+			"description": "Checks if the cell in front of the bot is an open door"
+		}
+	}
+}
