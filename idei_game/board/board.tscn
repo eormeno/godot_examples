@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dge8aab87e2al"]
+
+[ext_resource type="Script" path="res://board/Grid.gd" id="1_3b08b"]
+[ext_resource type="PackedScene" uid="uid://bnruq84moo76o" path="res://player/player.tscn" id="2_d0l7y"]
+
+[node name="Board" type="Node2D"]
+script = ExtResource("1_3b08b")
+grid_size = 64
+
+[node name="Player" parent="." instance=ExtResource("2_d0l7y")]
+scale = Vector2(2, 2)

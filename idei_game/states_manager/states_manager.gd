@@ -6,18 +6,14 @@ var fem_dict : Dictionary
 var is_changing_state : bool
 var running_states_names : Array[String] = []
 
-func _init(scene : Node, fem_file_name : String = "initial.fem"):
+func _init(scene : Node):
 	managed_scene = scene
-	fem_dict = load_states(fem_file_name)
+	fem_dict = load_states()
 	running_states_names.append_array(fem_dict._init_.exits)
 	managed_scene.add_child(self)
 
-func load_states(states_file_name : String):
-	var scene_path = get_scene_path()
-	if not scene_path:
-		printerr("Scene path could not be read")
-		return null
-	var states_full_path = scene_path + '/' + states_file_name + ".json"
+func load_states():
+	var states_full_path = managed_scene.resource.resource_path
 	if not FileAccess.file_exists(states_full_path):
 		printerr("State file: ", states_full_path, " does not exists.")
 		return
@@ -32,17 +28,6 @@ func reset_states_values(states_dict : Dictionary):
 			continue
 		states_dict[key]['running_method'] = null
 		states_dict[key]['started'] = false
-
-func get_scene_path():
-	var root_scene = managed_scene.get_tree().get_current_scene()
-	if not root_scene:
-		printerr("No root scene.")
-		return null
-	var root_scene_file_path = root_scene.scene_file_path
-	if not root_scene_file_path:
-		printerr("Scene does not have an associated file.")
-		return null
-	return root_scene_file_path.get_base_dir()
 	
 func _process(delta):
 	run_current_states(delta)

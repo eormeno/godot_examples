@@ -1,15 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnruq84moo76o"]
+[gd_scene load_steps=6 format=3 uid="uid://bnruq84moo76o"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_bhfsl"]
 [ext_resource type="SpriteFrames" uid="uid://bnfr70it3ohis" path="res://player/sprite_frames.tres" id="1_rtxip"]
+[ext_resource type="JSON" path="res://player/initial.fem.json" id="2_hpnak"]
 [ext_resource type="Script" path="res://player/InputProcesser.gd" id="2_weeam"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_umsbr"]
-radius = 21.0
-height = 66.0
+radius = 11.0
+height = 36.0
 
 [node name="Player" type="Area2D"]
 script = ExtResource("1_bhfsl")
+resource = ExtResource("2_hpnak")
 metadata/_edit_group_ = true
 
 [node name="InputProcesser" type="Node" parent="."]
@@ -17,15 +19,21 @@ script = ExtResource("2_weeam")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(2, 2)
+position = Vector2(0, -16)
 sprite_frames = ExtResource("1_rtxip")
 animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_umsbr")
 
 [node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = -30.0
+offset_top = -55.0
+offset_right = 31.0
+offset_bottom = -35.0
 theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 10
 text = "Player"
+horizontal_alignment = 1
+vertical_alignment = 1

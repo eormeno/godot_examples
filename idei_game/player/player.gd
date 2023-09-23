@@ -5,12 +5,13 @@ var screen_size
 var states : Dictionary
 var states_manager : StateManager
 var velocity : Vector2 = Vector2.ZERO
+@export var resource: Resource
+
 
 func _ready():
 	$InputProcesser.connect("movement", movement_signal_received)
 	states_manager = StateManager.new(self)
 	screen_size = get_viewport_rect().size
-	position = screen_size / 2
 
 func movement_signal_received(movement):
 	if movement == InputProcesser.Move.RIGHT:
