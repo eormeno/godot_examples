@@ -1,11 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://dge8aab87e2al"]
+[gd_scene load_steps=4 format=3 uid="uid://dge8aab87e2al"]
 
 [ext_resource type="Script" path="res://board/Grid.gd" id="1_3b08b"]
 [ext_resource type="PackedScene" uid="uid://bnruq84moo76o" path="res://player/player.tscn" id="2_d0l7y"]
+[ext_resource type="TileSet" uid="uid://cxuwmn5kffa51" path="res://assets/tilesets/tiles.tres" id="3_eu00e"]
 
 [node name="Board" type="Node2D"]
-script = ExtResource("1_3b08b")
-grid_size = 64
 
 [node name="Player" parent="." instance=ExtResource("2_d0l7y")]
+position = Vector2(225, 896)
 scale = Vector2(2, 2)
+
+[node name="TileMap" type="TileMap" parent="."]
+texture_filter = 1
+tile_set = ExtResource("3_eu00e")
+cell_quadrant_size = 64
+format = 2
+layer_0/tile_data = PackedInt32Array(917504, 65536, 4, 851968, 65536, 4, 786432, 65536, 4, 720896, 65536, 4, 655360, 65536, 4, 589824, 65536, 4, 524288, 65536, 4, 458752, 65536, 4, 393216, 65536, 4, 327680, 65536, 4, 262144, 65536, 4, 196608, 65536, 4, 131072, 65536, 4, 65536, 65536, 4, 0, 65536, 4, 917505, 65536, 4, 917506, 65536, 4, 917507, 65536, 4, 917508, 65536, 4, 917509, 65536, 4, 917510, 65536, 4, 917511, 65536, 4, 917512, 65536, 4, 917513, 65536, 4, 917514, 65536, 4, 917515, 65536, 4, 917517, 65536, 4, 917516, 65536, 4, 917518, 65536, 4, 851982, 65536, 4, 786446, 65536, 4, 720910, 65536, 4, 655374, 65536, 4, 589838, 65536, 4, 14, 65536, 4, 65550, 65536, 4, 131086, 65536, 4, 196622, 65536, 4, 262158, 65536, 4, 327694, 65536, 4, 393230, 65536, 4, 458766, 65536, 4, 524302, 65536, 4, 1, 65536, 4, 2, 65536, 4, 3, 65536, 4, 4, 65536, 4, 5, 65536, 4, 6, 65536, 4, 7, 65536, 4, 8, 65536, 4, 9, 65536, 4, 10, 65536, 4, 11, 65536, 4, 12, 65536, 4, 13, 65536, 4)
+script = ExtResource("1_3b08b")

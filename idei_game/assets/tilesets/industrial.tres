@@ -1,11 +1,3 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://c8gu41ierxcxy"]
-
-[ext_resource type="Texture2D" uid="uid://d4bg7fmi54yea" path="res://assets/tilesets/industrial.png" id="1_xxw5q"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dngmt"]
-texture = ExtResource("1_xxw5q")
-separation = Vector2i(1, 1)
-texture_region_size = Vector2i(18, 18)
+[gd_resource type="TileSet" format=3 uid="uid://c8gu41ierxcxy"]
 
 [resource]
-sources/2 = SubResource("TileSetAtlasSource_dngmt")
