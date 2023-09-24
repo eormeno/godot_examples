@@ -1,4 +1,4 @@
-class_name BotCommand extends Control
+class_name BotCommand extends Node2D
 
 signal pressed()
 

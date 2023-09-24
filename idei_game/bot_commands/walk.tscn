@@ -1,12 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://btbw2wkx0xgdn"]
+[gd_scene load_steps=3 format=3 uid="uid://btbw2wkx0xgdn"]
 
 [ext_resource type="Script" path="res://bot_commands/command.gd" id="1_ubt2h"]
+[ext_resource type="Texture2D" uid="uid://jb6m6qrsjrlj" path="res://bot_commands/commands.png" id="2_mb75y"]
 
-[node name="command" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="command" type="Node2D"]
 script = ExtResource("1_ubt2h")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_mb75y")
+region_enabled = true
+region_rect = Rect2(0, 0, 128, 32)

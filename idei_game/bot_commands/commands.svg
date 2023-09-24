@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="793.70081"
+   height="1122.5197"
+   viewBox="0 0 210 296.99999"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="commands.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#999999"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="false"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="true"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="false"
+     shape-rendering="crispEdges"
+     inkscape:zoom="2.587745"
+     inkscape:cx="267.80073"
+     inkscape:cy="52.748629"
+     inkscape:window-width="2560"
+     inkscape:window-height="1361"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <rect
+       x="14.482362"
+       y="17.761387"
+       width="5.0551641"
+       height="35.522775"
+       id="rect1181" />
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g5590"
+       inkscape:export-filename="commands.png"
+       inkscape:export-xdpi="95.502602"
+       inkscape:export-ydpi="95.502602">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect234"
+         width="33.866665"
+         height="8.4666662"
+         x="0"
+         y="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="12.305195"
+         y="5.6751041"
+         id="text398"><tspan
+           sodipodi:role="line"
+           id="tspan396"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="12.305195"
+           y="5.6751041">Walk</tspan></text>
+    </g>
+    <g
+       id="g1130">
+      <text
+         xml:space="preserve"
+         transform="scale(0.26458333)"
+         id="text1179"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Consolas;-inkscape-font-specification:Consolas;white-space:pre;shape-inside:url(#rect1181);display:inline;fill:#b2b2b2;fill-opacity:1;stroke-linecap:round;stroke-opacity:0.5" />
+    </g>
+    <g
+       id="g5598"
+       transform="translate(0,8.4666662)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect5592"
+         width="33.866665"
+         height="8.4666662"
+         x="0"
+         y="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="5.2172608"
+         y="5.2720284"
+         id="text5596"><tspan
+           sodipodi:role="line"
+           id="tspan5594"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="5.2172608"
+           y="5.2720284">Look right</tspan></text>
+    </g>
+    <g
+       id="g5724"
+       transform="translate(0,16.933332)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect5718"
+         width="33.866665"
+         height="8.4666662"
+         x="0"
+         y="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="6.3810134"
+         y="5.6999097"
+         id="text5722"><tspan
+           sodipodi:role="line"
+           id="tspan5720"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="6.3810134"
+           y="5.6999097">Look left</tspan></text>
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect5782"
+         width="33.866665"
+         height="8.4666662"
+         x="33.866665"
+         y="2.1618654e-08" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="40.222874"
+         y="5.2720284"
+         id="text5786"><tspan
+           sodipodi:role="line"
+           id="tspan5784"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="40.222874"
+           y="5.2720284">Jump diag</tspan></text>
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect8013"
+         width="33.866665"
+         height="8.4666662"
+         x="1.6398926e-07"
+         y="25.399998" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="14.505576"
+         y="31.106108"
+         id="text8017"><tspan
+           sodipodi:role="line"
+           id="tspan8015"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="14.505576"
+           y="31.106108">If</tspan></text>
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect8019"
+         width="33.866665"
+         height="8.4666662"
+         x="33.866665"
+         y="25.399998" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="36.813267"
+         y="30.682362"
+         id="text8023"><tspan
+           sodipodi:role="line"
+           id="tspan8021"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="36.813267"
+           y="30.682362">Repeat until</tspan></text>
+    </g>
+    <g
+       id="g5772"
+       transform="translate(33.866665)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect5766"
+         width="33.866665"
+         height="8.4666662"
+         x="0"
+         y="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="12.394078"
+         y="5.6751041"
+         id="text5770"><tspan
+           sodipodi:role="line"
+           id="tspan5768"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="12.394078"
+           y="5.6751041">Wait</tspan></text>
+    </g>
+    <g
+       id="g5780"
+       transform="translate(33.866665,8.4666662)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect5774"
+         width="33.866665"
+         height="8.4666662"
+         x="0"
+         y="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="8.7105856"
+         y="5.1604075"
+         id="text5778"><tspan
+           sodipodi:role="line"
+           id="tspan5776"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="8.7105856"
+           y="5.1604075">Jump up</tspan></text>
+    </g>
+    <g
+       id="g8003"
+       transform="translate(0,25.399998)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect7997"
+         width="33.866665"
+         height="8.4666662"
+         x="0"
+         y="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="6.3303704"
+         y="5.2699614"
+         id="text8001"><tspan
+           sodipodi:role="line"
+           id="tspan7999"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="6.3303704"
+           y="5.2699614">Ladder up</tspan></text>
+    </g>
+    <g
+       id="g8011"
+       transform="translate(0,33.866664)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect8005"
+         width="33.866665"
+         height="8.4666662"
+         x="0"
+         y="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="6.5112381"
+         y="5.6875067"
+         id="text8009"><tspan
+           sodipodi:role="line"
+           id="tspan8007"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="6.5112381"
+           y="5.6875067">Do action</tspan></text>
+    </g>
+    <g
+       id="g8031"
+       transform="translate(33.866665,25.399998)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect8025"
+         width="33.866665"
+         height="8.4666662"
+         x="0"
+         y="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="4.0555754"
+         y="5.6751041"
+         id="text8029"><tspan
+           sodipodi:role="line"
+           id="tspan8027"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="4.0555754"
+           y="5.6751041">Ladder down</tspan></text>
+    </g>
+    <g
+       id="g8039"
+       transform="translate(33.866665,33.866664)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect8033"
+         width="33.866665"
+         height="8.4666662"
+         x="0"
+         y="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;font-family:Webdings;-inkscape-font-specification:Webdings;fill:#fefefe;fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-opacity:0.5"
+         x="9.9373827"
+         y="5.1790109"
+         id="text8037"><tspan
+           sodipodi:role="line"
+           id="tspan8035"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#fefefe;fill-opacity:1;stroke-width:0.264583"
+           x="9.9373827"
+           y="5.1790109">Repeat</tspan></text>
+    </g>
+  </g>
+</svg>
