@@ -3,61 +3,73 @@
 		"wait": {
 			"name": "wait",
 			"description": "It makes the bot to wait some time",
+			"sprite_region": [128, 0, 128, 32],
 			"cost": 1
 		},
 		"look_right": {
 			"name": "look_right",
 			"description": "It makes the bot to look right",
+			"sprite_region": [0, 32, 128, 32],
 			"cost": 1
 		},
 		"look_left": {
 			"name": "look_left",
 			"description": "It makes the bot to look left",
+			"sprite_region": [0, 64, 128, 32],
 			"cost": 1
 		},
 		"walk": {
 			"name": "walk",
 			"description": "It makes the bot to walk in the direction it is looking at",
+			"sprite_region": [0, 0, 128, 32],
 			"cost": 1
 		},
 		"jump_up": {
 			"name": "jump_up",
 			"description": "It makes the bot to jump up",
+			"sprite_region": [128, 32, 128, 32],
 			"cost": 1
 		},
 		"jump_up_diag": {
 			"name": "jump_up_diag",
 			"description": "It makes the bot to jump diagonally according its looking direction",
+			"sprite_region": [128, 64, 128, 32],
 			"cost": 2
 		},
 		"ladder_up": {
 			"name": "ladder_up",
 			"description": "It makes the bot to climb a ladder",
+			"sprite_region": [0, 96, 128, 32],
 			"cost": 1
 		},
 		"ladder_down": {
 			"name": "ladder_down",
 			"description": "It makes the bot to climb down a ladder",
+			"sprite_region": [128, 96, 128, 32],
 			"cost": 1
 		},
 		"do_action": {
 			"name": "do_action",
 			"description": "It makes the bot to execute the action in front of it",
+			"sprite_region": [0, 128, 128, 32],
 			"cost": 1
 		},
 		"repeat": {
 			"name": "repeat",
 			"description": "It makes the bot to repeat the actions inside the repeat block",
+			"sprite_region": [128, 128, 128, 32],
 			"cost": 1
 		},
 		"if": {
 			"name": "if",
 			"description": "Allows the bot to check if the cell in front of it fulfills the condition. If it does, it will execute the actions inside the if block. If it doesn't, it will execute the actions inside the else block",
+			"sprite_region": [0, 160, 128, 32],
 			"cost": 1
 		},
 		"repeat_until": {
 			"name": "repeat_until",
 			"description": "It makes the bot to repeat the actions inside the repeat block until the cell in front of it fulfills the condition",
+			"sprite_region": [128, 160, 128, 32],
 			"cost": 1
 		}
 	},

@@ -1,15 +1,20 @@
-extends Control
+extends CanvasModulate
 
 func _ready():
-	var new_cmds : Array[Node] = BotCommandFactory.instance().create_available()
+	var new_cmds : Array[Node2D] = BotCommandFactory.instance().create_available()
+	var sep : int = 4
+	var hor : int = sep
+	var ver : int = sep
+	var cols: int = 3
+	var col : int = 0
 	for cmd in new_cmds:
-		$MarginContainer/Panel/VBoxContainer/Commands.add_child(cmd)
-		$MarginContainer/Panel/VBoxContainer/Commands.add_spacer(false)
-		cmd.connect("pressed", on_pressed)
-	#BotCommandFactory.instance().list()
-
-func on_pressed(command : String):
-	$MarginContainer/Panel/VBoxContainer/VBoxContainer/Program.add_item(command)
-	
-func _process(_delta):
-	pass
+		cmd.position.x = hor
+		cmd.position.y = ver
+		add_child(cmd)
+		col += 1
+		if col == cols:
+			col = 0
+			hor = sep
+			ver += 32 + sep
+		else:
+			hor += 128 + sep

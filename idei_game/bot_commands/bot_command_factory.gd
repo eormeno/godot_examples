@@ -20,7 +20,7 @@ func create(command_name:String):
 	if not commands_config_dict.commands.has(command_name):
 		printerr("Undefined command " + command_name + ".")
 		return null
-	var command_scene = get_command_scene(command_name)
+	var command_scene = get_command_scene("command")
 	if not command_scene:
 		printerr("Command scene of " + command_name + " not found.")
 		return
@@ -29,7 +29,7 @@ func create(command_name:String):
 	return new_cmd
 
 func create_available():
-	var ret : Array[Node] = []
+	var ret : Array[Node2D] = []
 	for command_name in commands_config_dict.commands.keys():
 		var inst = create(command_name)
 		if not inst:

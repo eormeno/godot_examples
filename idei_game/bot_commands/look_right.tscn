@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqq8ga8y0xgah"]
-
-[ext_resource type="Script" path="res://bot_commands/command.gd" id="1_l3qp2"]
-
-[node name="command" type="Node2D"]
-script = ExtResource("1_l3qp2")

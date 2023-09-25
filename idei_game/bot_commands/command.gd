@@ -1,22 +1,16 @@
 class_name BotCommand extends Node2D
 
-signal pressed()
-
 var command_config : Dictionary
-var label : Label
-var button : Button
+var sprite : Sprite2D
 
-func _init():
-	label = Label.new()
-	button = Button.new()
-	add_child(button)
+func _ready():
+	sprite = $sprite
 
 func set_info(config : Dictionary):
+	sprite = $sprite
 	command_config = config
-	label.text = command_config.name
-	button.text = command_config.name
-	button.tooltip_text = command_config.description
-	button.connect("button_down", button_pressed)
+	var sprite_region = command_config.sprite_region
+	sprite.region_rect = get_sprite_region(sprite_region)
 
-func button_pressed():
-	emit_signal("pressed", command_config.name)
+func get_sprite_region(region : Array):
+	return Rect2(region[0], region[1], region[2], region[3])
