@@ -3,6 +3,8 @@ extends Node2D
 @export var separation : int = 4
 @export var columns : int = 3
 
+signal selected(command_name : String)
+
 func _ready():
 	var new_cmds : Array[Node2D] = BotCommandFactory.instance().create_available()
 	var hor : int = separation
@@ -21,5 +23,5 @@ func _ready():
 		else:
 			hor += 128 + separation
 
-func command_button_clicked(command_info : Dictionary):
-	print(command_info)
+func command_button_clicked(command_name : String):
+	emit_signal("selected", command_name)

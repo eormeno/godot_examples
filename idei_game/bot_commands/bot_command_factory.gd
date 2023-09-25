@@ -16,7 +16,7 @@ func list():
 	for command_name in commands_config_dict.commands.keys():
 		print(command_name)
 
-func create(command_name:String):
+func create(command_name:String, instantiable : bool = true):
 	if not commands_config_dict.commands.has(command_name):
 		printerr("Undefined command " + command_name + ".")
 		return null
@@ -25,6 +25,7 @@ func create(command_name:String):
 		printerr("Command scene of " + command_name + " not found.")
 		return
 	var new_cmd = command_scene.instantiate()
+	new_cmd.on_click_instantiate = instantiable
 	new_cmd.set_info(commands_config_dict.commands[command_name])
 	return new_cmd
 
