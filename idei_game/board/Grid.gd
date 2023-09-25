@@ -8,7 +8,7 @@ func _ready():
 	draw_bounds = calculate_bounds(self)
 	draw_center = draw_bounds.get_center()
 
-func _draw():
+func _Sdraw():
 #	draw_line(Vector2(draw_center.x, 0), Vector2(draw_center.x, draw_bounds.size.x), Color.CORAL, 0.5, true)
 #	draw_line(Vector2(0, draw_center.y), Vector2(draw_bounds.size.y, draw_center.y), Color.CORAL, 0.5, true)
 	for x in range(0, draw_bounds.size.x, grid_size):

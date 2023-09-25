@@ -2,6 +2,7 @@ class_name BotCommand extends Node2D
 
 var command_config : Dictionary
 var sprite : Sprite2D
+signal left_mouse_button_clicked(config)
 
 func _ready():
 	sprite = $sprite

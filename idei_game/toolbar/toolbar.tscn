@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpdgdgnwbs4o0"]
+
+[ext_resource type="Script" path="res://toolbar/toolbar.gd" id="1_7ym2w"]
+
+[node name="Toolbar" type="Node2D"]
+script = ExtResource("1_7ym2w")
+separation = 0
+columns = 4
