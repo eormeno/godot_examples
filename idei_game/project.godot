@@ -17,6 +17,10 @@ boot_splash/bg_color=Color(0.0980392, 0.0980392, 0.0980392, 1)
 boot_splash/show_image=false
 config/icon="res://assets/icon.svg"
 
+[autoload]
+
+global_signals="*res://globals/Signals.tscn"
+
 [display]
 
 window/size/viewport_width=1680

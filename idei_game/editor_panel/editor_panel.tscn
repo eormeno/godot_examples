@@ -22,7 +22,6 @@ offset_left = 23.0
 offset_top = 155.0
 offset_right = 610.0
 offset_bottom = 901.0
-max_columns = 2
 
 [node name="Button" type="Button" parent="."]
 offset_left = 254.0
