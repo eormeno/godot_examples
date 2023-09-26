@@ -15,5 +15,5 @@ layer_0/tile_data = PackedInt32Array(917504, 65536, 4, 851968, 65536, 4, 786432,
 script = ExtResource("1_3b08b")
 
 [node name="Player" parent="TileMap" instance=ExtResource("2_d0l7y")]
-position = Vector2(225, 896)
-scale = Vector2(2, 2)
+position = Vector2(225, 831)
+lock_rotation = true

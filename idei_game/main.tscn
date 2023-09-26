@@ -6,7 +6,6 @@
 [node name="Main" type="Node2D"]
 
 [node name="Board" parent="." instance=ExtResource("1_8tk6w")]
-position = Vector2(20, 20)
 
 [node name="editor_panel" parent="." instance=ExtResource("2_xx8dj")]
-position = Vector2(1000, 20)
+position = Vector2(960, 0)
