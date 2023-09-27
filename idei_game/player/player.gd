@@ -8,10 +8,10 @@ extends RigidBody2D
 var states : Dictionary
 var states_manager : StateManager
 var velocity : Vector2 = Vector2.ZERO
-var jumping_height = 0
 var starting_point = 0
 var tilemap : TileMap
 var snap : bool = false
+var jump : bool = false
 var grid_size = 64
 
 func _ready():
@@ -20,18 +20,22 @@ func _ready():
 	tilemap = get_parent()
 
 func command_received(command: Signals.Move):
+	var changed
 	if command == Signals.Move.WALK:
-		states_manager.change_to_states([ "walking" ])
+		changed = states_manager.change_to_states([ "walking" ])
 	if command == Signals.Move.LOOK_LEFT:
-		states_manager.change_to_states([ "looking_left" ])
+		changed = states_manager.change_to_states([ "looking_left" ])
 	if command == Signals.Move.LOOK_RIGHT:
-		states_manager.change_to_states([ "looking_right" ])
+		changed = states_manager.change_to_states([ "looking_right" ])
 	if command == Signals.Move.JUMP_UP:
-		states_manager.change_to_states([ "jumping" ])
+		changed = states_manager.change_to_states([ "jumping" ])
 	if command == Signals.Move.NO_MOVE:
-		states_manager.change_to_states([ "waiting" ])
+		changed = states_manager.change_to_states([ "waiting" ])
 	if command == Signals.Move.WAIT:
-		states_manager.change_to_states([ "waiting" ])
+		changed = states_manager.change_to_states([ "waiting" ])
+		
+	if not changed:
+		global_signals.notify_command_executed(command, Signals.Result.FAILED)
 
 func start_waiting():
 	$AnimatedSprite2D.animation = "idle"
@@ -59,10 +63,13 @@ func do_walking(delta):
 		velocity = velocity.normalized() * speed
 	var collision = move_and_collide(velocity * delta)
 	if collision:
+		print("colisiona")
+		global_signals.notify_command_executed(Signals.Move.WALK, Signals.Result.FAILED)
 		states_manager.change_to_states([ "waiting" ])
 	
 	if abs(position.x - starting_point) > grid_size:
 		snap = true
+		global_signals.notify_command_executed(Signals.Move.WALK, Signals.Result.SUCCESSFULLY)
 		states_manager.change_to_states([ "waiting" ])
 
 func _integrate_forces(state):
@@ -74,12 +81,14 @@ func _integrate_forces(state):
 		state.linear_velocity = Vector2.ZERO
 		state.transform = Transform2D(0, pos)
 		snap = false
+	if jump:
+		apply_central_impulse(Vector2(0, -500))
+		jump = false
 
 func start_jumping():
 	$AnimatedSprite2D.animation = "jump"
 	$AnimatedSprite2D.play()
-	jumping_height = position.y
-	apply_central_impulse(Vector2(0, -500))
+	jump = true
 
 func do_jumping(_delta):
 	if linear_velocity.y > 0:
@@ -90,7 +99,8 @@ func do_falling(_delta):
 		snap = true
 		states_manager.change_to_states([ "falled" ])
 
-func do_falled(_delta):
+func start_falled():
+	snap = true
 	global_signals.notify_command_executed(Signals.Move.JUMP_UP)
 	states_manager.change_to_states([ "waiting" ])
 

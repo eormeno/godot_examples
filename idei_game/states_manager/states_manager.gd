@@ -53,7 +53,7 @@ func change_to_states(other_states : Array[String]):
 	for to_add in states_names_to_add:
 		running_states_names.append(to_add)
 	running_states_names_string = ""
-	pass
+	return states_names_to_remove.size() > 0 or states_names_to_add.size() > 0
 
 func run_current_states(delta):
 	for state_name in running_states_names:

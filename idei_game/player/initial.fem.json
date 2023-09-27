@@ -23,7 +23,8 @@
 	},
 	"looking_left": {
 		"exits": [
-			"looking_right"
+			"looking_right",
+			"looking_left"
 		]
 	},
 	"jumping": {
@@ -39,7 +40,8 @@
 	"falled": {
 		"exits": [
 			"waiting",
-			"jumping"
+			"jumping",
+			"walking"
 		]
 	}
 }

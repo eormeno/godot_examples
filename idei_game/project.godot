@@ -20,12 +20,12 @@ config/icon="res://assets/icon.svg"
 [autoload]
 
 global_signals="*res://globals/Signals.tscn"
-debug_input="*res://globals/InputProcesser.gd"
+persist_user_data="*res://globals/UserData.tscn"
 
 [display]
 
-window/size/viewport_width=1680
-window/size/viewport_height=1000
+window/size/viewport_width=1600
+window/size/viewport_height=960
 
 [filesystem]
 
