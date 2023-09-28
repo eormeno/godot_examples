@@ -6,7 +6,7 @@ var fem_dict : Dictionary
 
 var is_changing_state : bool
 var running_states_names : Array[String] = []
-var changing_states_queue : Queue = Queue.new()
+var requests_queue : Queue = Queue.new()
 
 func _init(scene : Node):
 	managed_scene = scene
@@ -22,10 +22,12 @@ func request_received(request : Dictionary):
 	var error_callback : Callable = Callable(request.error)
 	var success_callback : Callable = Callable(request.success)
 	if not fem_dict["_signals_"].has(request.signal_name):
-		error_callback.call("undefined signal name: " + request.signal_name)
+		if error_callback:
+			error_callback.call("undefined signal name: " + request.signal_name)
 		return
 	var signal_states = fem_dict["_signals_"][request.signal_name]
 	var unfullfilled_conditions = {}
+	request["signal_states"] = signal_states
 	for state_name in signal_states:
 		var state_conditions = fem_dict[state_name]["conditions"]
 		for condition in state_conditions:
@@ -35,9 +37,12 @@ func request_received(request : Dictionary):
 				unfullfilled_conditions[state_name].append(condition)
 	if not unfullfilled_conditions.is_empty():
 		var errors = JSON.stringify(unfullfilled_conditions)
-		error_callback.call("'" + request.signal_name + "' requires conditions: " + errors)
+		if error_callback:
+			error_callback.call("'" + request.signal_name + "' requires conditions: " + errors)
 		return
-	success_callback.call("'" + request.signal_name + "' is ready for run")
+	if success_callback:
+		success_callback.call("'" + request.signal_name + "' is ready for run")
+	enqueue_request(request)
 	pass
 	
 func reset():
@@ -79,35 +84,38 @@ func add_signal(states_dict : Dictionary, state_name : String, signal_name : Str
 func _process(delta):
 	if is_changing_state:
 		return
-	var element = changing_states_queue.finish_queue_front()
-	if element:
-		_change_to_states(element)
+	var next_request = requests_queue.finish_queue_front()
+	if next_request:
+		_change_to_states(next_request)
 	run_current_states(delta)
 
-func change_to_states(other_states : Array[String]):
-	changing_states_queue.add_to_queue(other_states)
+func enqueue_request(request : Dictionary):
+	requests_queue.add_to_queue(request)
 	
-func _change_to_states(other_states : Array[String]):
+func _change_to_states(request : Dictionary):
 	is_changing_state = true
 	var states_names_to_remove = []
 	var states_names_to_add = []
-	for other_state in other_states:
+	for other_state in request["signal_states"]:
 		for state_name in running_states_names:
 			var current_state = fem_dict[state_name]
 			var current_state_exits = current_state.exits
-			if not current_state_exits.has(other_state):
-				continue
 			if state_name == other_state:
 				continue
-			current_state.running_method = null
-			current_state.started = false
-			run_state_end_callback(state_name)
-			states_names_to_remove.append(state_name)
-			states_names_to_add.append(other_state)
+			if current_state_exits.has(other_state):
+				current_state.running_method = null
+				current_state.started = false
+				current_state.request = request
+				run_state_end_callback(state_name)
+				states_names_to_remove.append(state_name)
+			if not states_names_to_add.has(other_state):
+				states_names_to_add.append(other_state)
+			
 	for to_remove in states_names_to_remove:
 		running_states_names.erase(to_remove)
 	for to_add in states_names_to_add:
-		running_states_names.append(to_add)
+		if not running_states_names.has(to_add):
+			running_states_names.append(to_add)
 	running_states_names_string = ""
 	var ret = states_names_to_remove.size() > 0 or states_names_to_add.size() > 0
 	is_changing_state = false
@@ -116,7 +124,7 @@ func _change_to_states(other_states : Array[String]):
 func run_current_states(delta):
 	for state_name in running_states_names:
 		var current_state = fem_dict[state_name]
-		var running_method = current_state.get("running_method")
+		var running_method = current_state.running_method
 		if running_method:
 			managed_scene.call(running_method, delta)
 			continue

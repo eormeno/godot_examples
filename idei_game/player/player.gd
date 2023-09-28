@@ -13,29 +13,12 @@ var tilemap : TileMap
 var snap : bool = false
 var jump : bool = false
 var grid_size = 64
+var floor_raycast : RayCast2D
 
 func _ready():
-
+	floor_raycast = $RayCast2D
 	states_manager = StateManager.new(self)
 	tilemap = get_parent()
-
-func command_received(command: Signals.Move):
-	var changed
-	if command == Signals.Move.WALK:
-		changed = states_manager.change_to_states([ "walking" ])
-	if command == Signals.Move.LOOK_LEFT:
-		changed = states_manager.change_to_states([ "looking_left" ])
-	if command == Signals.Move.LOOK_RIGHT:
-		changed = states_manager.change_to_states([ "looking_right" ])
-	if command == Signals.Move.JUMP_UP:
-		changed = states_manager.change_to_states([ "jumping" ])
-	if command == Signals.Move.NO_MOVE:
-		changed = states_manager.change_to_states([ "waiting" ])
-	if command == Signals.Move.WAIT:
-		changed = states_manager.change_to_states([ "waiting" ])
-		
-	if not changed:
-		global_signals.notify_command_executed(command, Signals.Result.FAILED)
 
 func start_waiting():
 	$AnimatedSprite2D.animation = "idle"
@@ -47,7 +30,9 @@ func do_waiting(_delta):
 
 func start_looking_right():
 	$AnimatedSprite2D.flip_h = false
-	global_signals.notify_command_executed(Signals.Move.LOOK_RIGHT)
+	
+func start_looking_left():
+	$AnimatedSprite2D.flip_h = true
 
 func start_walking():
 	speed = 200
@@ -90,30 +75,32 @@ func start_jumping():
 func _physics_process(_delta):
 	if jump:
 		jump = false
-		apply_central_impulse(Vector2(0, -500))	
+		apply_central_impulse(Vector2(0, -500))
+
+	if linear_velocity.y > 0:
+		if not floor_raycast.is_colliding():
+			global_signals.send_untracked_request("falling")
+	
+	if linear_velocity.y < 0:
+		global_signals.send_untracked_request("jumping")
+		
+	if abs(linear_velocity.y) < 0.01:
+		if floor_raycast.is_colliding():
+			global_signals.send_untracked_request("on_floor")
 
 func do_jumping(_delta):
 	if linear_velocity.y > 0:
 		states_manager.change_to_states([ "falling" ])
+		
+func start_falling():
+	$AnimatedSprite2D.animation = "jump"
+	$AnimatedSprite2D.play()
 
-func do_falling(_delta):
-	if linear_velocity.y == 0:
-		snap = true
-		states_manager.change_to_states([ "falled" ])
-
-func start_falled():
+func start_on_floor():
 	snap = true
-	global_signals.notify_command_executed(Signals.Move.JUMP_UP)
-	states_manager.change_to_states([ "waiting" ])
-
-func start_looking_left():
-	$AnimatedSprite2D.flip_h = true
-	global_signals.notify_command_executed(Signals.Move.LOOK_LEFT)
+	global_signals.send_untracked_request("wait")
 
 func _process(_delta):
 	var strret : String = ""
-	var x_coord = int(position.x / 64)
-	var y_coord = int(position.y / 64)
-	strret += str(x_coord) + ", " + str(y_coord) + "\n"
 	strret += states_manager.current_states_str()
 	$Label.text = strret

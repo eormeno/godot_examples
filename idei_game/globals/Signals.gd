@@ -14,5 +14,8 @@ func send_request(signal_name : String, success_callback : Callable, error_callb
 	}
 	emit_signal("request", request_data)
 
+func send_untracked_request(signal_name : String):
+	self.send_request(signal_name, Callable(), Callable())
+
 func notify_command_executed(command : Move, result : Result = Result.SUCCESSFULLY):
 	emit_signal("command_executed", command, result)
