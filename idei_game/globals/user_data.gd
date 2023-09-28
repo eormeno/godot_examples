@@ -9,13 +9,14 @@ var unsaved_changes : bool = false
 
 func _ready():
 	user_data_dict = load_user_data()
-	
+
 func set_data(key : String, value : Variant):
 	user_data_dict[key] = value
 	unsaved_changes = true
 	
-func get_data(key : String):
-	return user_data_dict[key]
+func get_data(key : String, default : Variant = {}):
+	if not user_data_dict.has(key):
+		user_data_dict[key] = default
 	
 func _process(delta):
 	autosave_timer += delta
