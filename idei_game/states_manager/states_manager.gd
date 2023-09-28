@@ -5,6 +5,7 @@ var fem_dict : Dictionary
 
 var is_changing_state : bool
 var running_states_names : Array[String] = []
+var changing_states_queue : Queue = Queue.new()
 
 func _init(scene : Node):
 	managed_scene = scene
@@ -30,9 +31,18 @@ func reset_states_values(states_dict : Dictionary):
 		states_dict[key]['started'] = false
 	
 func _process(delta):
+	if is_changing_state:
+		return
+	var element = changing_states_queue.finish_queue_front()
+	if element:
+		_change_to_states(element)
 	run_current_states(delta)
-	
+
 func change_to_states(other_states : Array[String]):
+	changing_states_queue.add_to_queue(other_states)
+	
+func _change_to_states(other_states : Array[String]):
+	is_changing_state = true
 	var states_names_to_remove = []
 	var states_names_to_add = []
 	for other_state in other_states:
@@ -53,7 +63,9 @@ func change_to_states(other_states : Array[String]):
 	for to_add in states_names_to_add:
 		running_states_names.append(to_add)
 	running_states_names_string = ""
-	return states_names_to_remove.size() > 0 or states_names_to_add.size() > 0
+	var ret = states_names_to_remove.size() > 0 or states_names_to_add.size() > 0
+	is_changing_state = false
+	return ret
 
 func run_current_states(delta):
 	for state_name in running_states_names:
