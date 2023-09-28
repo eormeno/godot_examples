@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cervqtw8f6hni"
-path="res://.godot/imported/music-player-right-arrow-svgrepo-com.svg-fddaca82ef782dda2ca3cf3af67a3961.ctex"
+uid="uid://d06uxvt021a8j"
+path="res://.godot/imported/music-player-right-arrow-svgrepo-com.svg-a2c6c1766a826cd973dd1409b944e5f6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/music-player-right-arrow-svgrepo-com.svg"
-dest_files=["res://.godot/imported/music-player-right-arrow-svgrepo-com.svg-fddaca82ef782dda2ca3cf3af67a3961.ctex"]
+source_file="res://assets/editor_controls/music-player-right-arrow-svgrepo-com.svg"
+dest_files=["res://.godot/imported/music-player-right-arrow-svgrepo-com.svg-a2c6c1766a826cd973dd1409b944e5f6.ctex"]
 
 [params]
 

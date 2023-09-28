@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://diivwkgyea53t"
-path="res://.godot/imported/music-player-repeat-svgrepo-com.svg-add28d4c82e529f7333e23d690f6a1e0.ctex"
+path="res://.godot/imported/music-player-repeat-svgrepo-com.svg-89742ed3541cac6c393168f239f76e25.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/music-player-repeat-svgrepo-com.svg"
-dest_files=["res://.godot/imported/music-player-repeat-svgrepo-com.svg-add28d4c82e529f7333e23d690f6a1e0.ctex"]
+source_file="res://assets/editor_controls/music-player-repeat-svgrepo-com.svg"
+dest_files=["res://.godot/imported/music-player-repeat-svgrepo-com.svg-89742ed3541cac6c393168f239f76e25.ctex"]
 
 [params]
 

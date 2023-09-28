@@ -74,21 +74,23 @@ func do_walking(delta):
 
 func _integrate_forces(state):
 	if snap:
+		snap = false
 		@warning_ignore("integer_division")
 		var posx = int(position.x / grid_size) * grid_size + (grid_size / 2)
 		var posy = int(position.y / grid_size) * grid_size
 		var pos = Vector2(posx, posy)
 		state.linear_velocity = Vector2.ZERO
 		state.transform = Transform2D(0, pos)
-		snap = false
-	if jump:
-		apply_central_impulse(Vector2(0, -500))
-		jump = false
 
 func start_jumping():
 	$AnimatedSprite2D.animation = "jump"
 	$AnimatedSprite2D.play()
 	jump = true
+	
+func _physics_process(_delta):
+	if jump:
+		jump = false
+		apply_central_impulse(Vector2(0, -500))	
 
 func do_jumping(_delta):
 	if linear_velocity.y > 0:

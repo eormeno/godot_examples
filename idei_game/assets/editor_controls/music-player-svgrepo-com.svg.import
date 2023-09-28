@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d25e5eil1nd5q"
-path="res://.godot/imported/music-player-pause-button-svgrepo-com.svg-a3cefffc55add94bdbb906c1dea4ba2a.ctex"
+uid="uid://bodlwjpr4t64j"
+path="res://.godot/imported/music-player-svgrepo-com.svg-8ec0b9dea077c66694a54f78a8f1f327.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/music-player-pause-button-svgrepo-com.svg"
-dest_files=["res://.godot/imported/music-player-pause-button-svgrepo-com.svg-a3cefffc55add94bdbb906c1dea4ba2a.ctex"]
+source_file="res://assets/editor_controls/music-player-svgrepo-com.svg"
+dest_files=["res://.godot/imported/music-player-svgrepo-com.svg-8ec0b9dea077c66694a54f78a8f1f327.ctex"]
 
 [params]
 

@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://2mlmcpbjcqrg"]
+[gd_scene load_steps=10 format=3 uid="uid://2mlmcpbjcqrg"]
 
 [ext_resource type="Script" path="res://editor_panel/editor_panel.gd" id="1_4ywm3"]
 [ext_resource type="TileSet" uid="uid://cxuwmn5kffa51" path="res://assets/tilesets/tiles.tres" id="1_qxgpp"]
 [ext_resource type="PackedScene" uid="uid://dpdgdgnwbs4o0" path="res://toolbar/toolbar.tscn" id="2_q5mqc"]
-[ext_resource type="Texture2D" uid="uid://d06uxvt021a8j" path="res://assets/music-player-right-arrow-svgrepo-com.svg" id="4_mb26s"]
-[ext_resource type="Texture2D" uid="uid://d25e5eil1nd5q" path="res://assets/music-player-pause-button-svgrepo-com.svg" id="5_coo7p"]
-[ext_resource type="Texture2D" uid="uid://bodlwjpr4t64j" path="res://assets/music-player-svgrepo-com.svg" id="6_m5tsw"]
-[ext_resource type="Texture2D" uid="uid://diivwkgyea53t" path="res://assets/music-player-repeat-svgrepo-com.svg" id="7_okxgp"]
+[ext_resource type="Texture2D" uid="uid://djsu6wpu26ceh" path="res://assets/editor_controls/play-button.tres" id="5_cl6jg"]
+[ext_resource type="Texture2D" uid="uid://cy4ysxhc1ujjp" path="res://assets/editor_controls/play-button-disabled.tres" id="6_auljl"]
+[ext_resource type="Texture2D" uid="uid://d25e5eil1nd5q" path="res://assets/editor_controls/music-player-pause-button-svgrepo-com.svg" id="6_fu4x6"]
+[ext_resource type="Texture2D" uid="uid://bodlwjpr4t64j" path="res://assets/editor_controls/music-player-svgrepo-com.svg" id="7_i64uc"]
+[ext_resource type="Texture2D" uid="uid://diivwkgyea53t" path="res://assets/editor_controls/music-player-repeat-svgrepo-com.svg" id="8_dbwyv"]
 [ext_resource type="Texture2D" uid="uid://t5nj0baqek0c" path="res://assets/delete-svgrepo-com.svg" id="8_qmsfs"]
 
 [node name="editor_panel" type="Node2D" node_paths=PackedStringArray("items")]
@@ -29,7 +30,7 @@ offset_right = 620.0
 offset_bottom = 901.0
 theme_override_font_sizes/font_size = 24
 
-[node name="Button" type="Button" parent="."]
+[node name="Step" type="Button" parent="."]
 offset_left = 355.0
 offset_top = 909.0
 offset_right = 523.0
@@ -60,33 +61,34 @@ theme_override_constants/separation = 8
 [node name="Play" type="TextureButton" parent="HBoxContainer"]
 custom_minimum_size = Vector2(42, 42)
 layout_mode = 2
-texture_normal = ExtResource("4_mb26s")
+texture_normal = ExtResource("5_cl6jg")
+texture_disabled = ExtResource("6_auljl")
 ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Pause" type="TextureButton" parent="HBoxContainer"]
 custom_minimum_size = Vector2(42, 42)
 layout_mode = 2
-texture_normal = ExtResource("5_coo7p")
+texture_normal = ExtResource("6_fu4x6")
 ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Stop" type="TextureButton" parent="HBoxContainer"]
 custom_minimum_size = Vector2(42, 42)
 layout_mode = 2
-texture_normal = ExtResource("6_m5tsw")
+texture_normal = ExtResource("7_i64uc")
 ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Reset" type="TextureButton" parent="HBoxContainer"]
 custom_minimum_size = Vector2(42, 42)
 layout_mode = 2
-texture_normal = ExtResource("7_okxgp")
+texture_normal = ExtResource("8_dbwyv")
 ignore_texture_size = true
 stretch_mode = 5
 
 [connection signal="selected" from="Toolbar" to="." method="_on_toolbar_selected"]
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Step" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Delete" to="." method="_on_delete_pressed"]
 [connection signal="pressed" from="HBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="HBoxContainer/Pause" to="." method="_on_pause_pressed"]

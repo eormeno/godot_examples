@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://cy4ysxhc1ujjp"]
+
+[ext_resource type="Texture2D" uid="uid://cevjncpyfjmno" path="res://assets/editor_controls/music-player-right-arrow-svgrepo-com.png" id="1_o86cl"]
+
+[resource]
+atlas = ExtResource("1_o86cl")
+region = Rect2(256, 0, 256, 256)
