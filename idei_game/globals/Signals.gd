@@ -1,13 +1,18 @@
 class_name Signals extends Node
 
-signal execute_command(command : Move)
+signal request(request)
 signal command_executed(command : Move, result : Result)
 
 enum Move { NO_MOVE, LOOK_RIGHT, LOOK_LEFT, WALK, WAIT, LADDER_UP, LADDER_DOWN, JUMP_UP }
 enum Result { SUCCESSFULLY, FAILED }
 
-func notify_execute_command(command : Move):
-	emit_signal("execute_command", command)
+func send_request(signal_name : String, success_callback : Callable, error_callback : Callable):
+	var request_data = {
+		signal_name = signal_name,
+		success = success_callback,
+		error = error_callback
+	}
+	emit_signal("request", request_data)
 
 func notify_command_executed(command : Move, result : Result = Result.SUCCESSFULLY):
 	emit_signal("command_executed", command, result)

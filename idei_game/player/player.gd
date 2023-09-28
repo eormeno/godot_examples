@@ -15,7 +15,7 @@ var jump : bool = false
 var grid_size = 64
 
 func _ready():
-	global_signals.connect("execute_command", command_received)
+
 	states_manager = StateManager.new(self)
 	tilemap = get_parent()
 

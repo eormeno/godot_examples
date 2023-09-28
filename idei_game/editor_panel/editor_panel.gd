@@ -42,16 +42,13 @@ func run_line():
 	items.select(execution_line)
 	running_command = true
 	var command : String = items.get_item_text(execution_line)
-	if command == "walk":
-		global_signals.notify_execute_command(Signals.Move.WALK)
-	if command == "wait":
-		global_signals.notify_execute_command(Signals.Move.WAIT)
-	if command == "jump_up":
-		global_signals.notify_execute_command(Signals.Move.JUMP_UP)
-	if command == "look_left":
-		global_signals.notify_execute_command(Signals.Move.LOOK_LEFT)
-	if command == "look_right":
-		global_signals.notify_execute_command(Signals.Move.LOOK_RIGHT)
+	global_signals.send_request(command, _on_success, _on_error)
+	
+func _on_success(response):
+	print(response)
+	
+func _on_error(response):
+	printerr(response)
 
 func _on_command_executed(_command : Signals.Move, _result : Signals.Result):
 	if not running_code and not running_command:

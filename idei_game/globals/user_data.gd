@@ -17,6 +17,7 @@ func set_data(key : String, value : Variant):
 func get_data(key : String, default : Variant = {}):
 	if not user_data_dict.has(key):
 		user_data_dict[key] = default
+	return user_data_dict[key]
 	
 func _process(delta):
 	autosave_timer += delta

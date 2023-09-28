@@ -1,47 +1,44 @@
 {
-	"_init_": {
-		"exits": [
-			"waiting",
-			"looking_right"
-		]
-	},
+	"_init_": { "exits": [ "waiting", "looking_right" ] },
 	"waiting": {
-		"exits": [
-			"walking",
-			"jumping"
-		]
+		"signal" : "wait",
+		"exits": [ "walking", "jumping" ]
 	},
 	"walking": {
-		"exits": [
-			"waiting"
-		]
+		"signal" : "walk",
+		"conditions" : [ "on_floor" ],
+		"exits": [ "waiting" ]
 	},
 	"looking_right": {
-		"exits": [
-			"looking_left"
-		]
+		"signal" : "look_right",
+		"conditions" : [ "on_floor" ],
+		"exits": [ "looking_left" ]
 	},
 	"looking_left": {
-		"exits": [
-			"looking_right",
-			"looking_left"
-		]
+		"signal" : "look_left",
+		"conditions" : [ "on_floor" ],
+		"exits": [ "looking_right" ]
 	},
 	"jumping": {
-		"exits": [
-			"falling"
-		]
+		"signal" : "jump_up",
+		"conditions" : [ "on_floor" ],
+		"exits": [ "falling" ]
 	},
 	"falling": {
-		"exits": [
-			"falled"
-		]
+		"signal" : "falling",
+		"exits": [ "on_floor", "dead" ]
 	},
-	"falled": {
-		"exits": [
-			"waiting",
-			"jumping",
-			"walking"
-		]
-	}
+	"on_floor": {
+		"signal" : "on_floor",
+		"exits": [ "jumping" ]
+	},
+	"reseting": {
+		"signal" : "reset",
+		"exits" : [ "_init_" ]
+	},
+	"paused": {
+		"signal" : "pause",
+		"exits" : [ "continue", "_finish_" ]
+	},
+	"_finish_": { "exits": [] }
 }

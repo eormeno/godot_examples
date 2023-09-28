@@ -1,5 +1,6 @@
 class_name StateManager extends Node
 
+const ignore_keys : Array[String] = [ "_init_", "_finish_", "_signals_" ]
 var managed_scene : Node
 var fem_dict : Dictionary
 
@@ -10,9 +11,41 @@ var changing_states_queue : Queue = Queue.new()
 func _init(scene : Node):
 	managed_scene = scene
 	fem_dict = load_states()
-	running_states_names.append_array(fem_dict._init_.exits)
+	reset()
+#	print(JSON.stringify(fem_dict, "\t"))
 	managed_scene.add_child(self)
-
+	
+func _ready():
+	global_signals.connect("request", request_received)
+	
+func request_received(request : Dictionary):
+	var error_callback : Callable = Callable(request.error)
+	var success_callback : Callable = Callable(request.success)
+	if not fem_dict["_signals_"].has(request.signal_name):
+		error_callback.call("undefined signal name: " + request.signal_name)
+		return
+	var signal_states = fem_dict["_signals_"][request.signal_name]
+	var unfullfilled_conditions = {}
+	for state_name in signal_states:
+		var state_conditions = fem_dict[state_name]["conditions"]
+		for condition in state_conditions:
+			if not running_states_names.has(condition):
+				if not unfullfilled_conditions.has(state_name):
+					unfullfilled_conditions[state_name] = []
+				unfullfilled_conditions[state_name].append(condition)
+	if not unfullfilled_conditions.is_empty():
+		var errors = JSON.stringify(unfullfilled_conditions)
+		error_callback.call("'" + request.signal_name + "' requires conditions: " + errors)
+		return
+	success_callback.call("'" + request.signal_name + "' is ready for run")
+	pass
+	
+func reset():
+	is_changing_state = false
+	running_states_names.clear()
+	reset_states_values(fem_dict)
+	running_states_names.append_array(fem_dict._init_.exits)
+	
 func load_states():
 	var states_full_path = managed_scene.resource.resource_path
 	if not FileAccess.file_exists(states_full_path):
@@ -20,16 +53,29 @@ func load_states():
 		return
 	var file = FileAccess.open(states_full_path, FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
-	reset_states_values(data)
 	return data
 	
 func reset_states_values(states_dict : Dictionary):
-	for key in states_dict.keys():
-		if key == "_init_":
+	states_dict["_signals_"] = {}
+	for state_name in states_dict.keys():
+		if ignore_keys.has(state_name):
 			continue
-		states_dict[key]['running_method'] = null
-		states_dict[key]['started'] = false
-	
+		states_dict[state_name]["name"] = state_name
+		states_dict[state_name]['running_method'] = null
+		states_dict[state_name]['started'] = false
+		if not states_dict[state_name].has("signal"):
+			states_dict[state_name]["signal"] = ""
+		add_signal(states_dict, state_name, states_dict[state_name]["signal"])
+		if not states_dict[state_name].has("conditions"):
+			states_dict[state_name]["conditions"] = []
+
+func add_signal(states_dict : Dictionary, state_name : String, signal_name : String):
+	if not signal_name or signal_name.length() == 0:
+		return
+	if not states_dict["_signals_"].has(signal_name):
+		states_dict["_signals_"][signal_name] = []
+	states_dict["_signals_"][signal_name].append(state_name)
+
 func _process(delta):
 	if is_changing_state:
 		return
