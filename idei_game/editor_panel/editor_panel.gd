@@ -11,7 +11,6 @@ var step_button : Button
 func _ready():
 	play_button = find_child("Play")
 	step_button = find_child("Step")
-	global_signals.connect("command_executed", _on_command_executed)
 	var info = persist_user_data.get_data("editor")
 	for i in info:
 		items.add_item(i)
@@ -45,22 +44,25 @@ func run_line():
 	global_signals.send_request(command, _on_success, _on_error)
 	
 func _on_success(response):
-	print(response)
+	items.set_item_custom_fg_color(execution_line, Color.AQUAMARINE)
+	running_command = false
+	step_button.disabled = false
+	execution_line += 1
 	
 func _on_error(response):
 	printerr(response)
 
-func _on_command_executed(_command : Signals.Move, _result : Signals.Result):
-	if not running_code and not running_command:
-		return
-	if _result == Signals.Result.FAILED:
-		items.set_item_custom_bg_color(execution_line, Color.LIGHT_CORAL)
-		printerr(Signals.Move.keys()[_command])
-	else:
-		items.set_item_custom_fg_color(execution_line, Color.AQUAMARINE)
-	running_command = false
-	step_button.disabled = false
-	execution_line += 1
+#func _on_command_executed(_command : Signals.Move, _result : Signals.Result):
+#	if not running_code and not running_command:
+#		return
+#	if _result == Signals.Result.FAILED:
+#		items.set_item_custom_bg_color(execution_line, Color.LIGHT_CORAL)
+#		printerr(Signals.Move.keys()[_command])
+#	else:
+#		items.set_item_custom_fg_color(execution_line, Color.AQUAMARINE)
+#	running_command = false
+#	step_button.disabled = false
+#	execution_line += 1
 
 func _process(_delta):
 	if not running_code:

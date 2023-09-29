@@ -6,6 +6,7 @@ var fem_dict : Dictionary
 
 var is_changing_state : bool
 var running_states_names : Array[String] = []
+var running_states_names_string = ""
 var requests_queue : Queue = Queue.new()
 
 func _init(scene : Node):
@@ -19,6 +20,8 @@ func _ready():
 	global_signals.connect("request", request_received)
 	
 func request_received(request : Dictionary):
+	if not request.untracked:
+		var i = 1
 	var error_callback : Callable = Callable(request.error)
 	var success_callback : Callable = Callable(request.success)
 	if not fem_dict["_signals_"].has(request.signal_name):
@@ -40,8 +43,6 @@ func request_received(request : Dictionary):
 		if error_callback:
 			error_callback.call("'" + request.signal_name + "' requires conditions: " + errors)
 		return
-	if success_callback:
-		success_callback.call("'" + request.signal_name + "' is ready for run")
 	enqueue_request(request)
 	pass
 	
@@ -66,6 +67,7 @@ func reset_states_values(states_dict : Dictionary):
 		if ignore_keys.has(state_name):
 			continue
 		states_dict[state_name]["name"] = state_name
+		states_dict[state_name]['request'] = null
 		states_dict[state_name]['running_method'] = null
 		states_dict[state_name]['started'] = false
 		if not states_dict[state_name].has("signal"):
@@ -105,8 +107,7 @@ func _change_to_states(request : Dictionary):
 			if current_state_exits.has(other_state):
 				current_state.running_method = null
 				current_state.started = false
-				current_state.request = request
-				run_state_end_callback(state_name)
+				run_state_end_callback(current_state)
 				states_names_to_remove.append(state_name)
 			if not states_names_to_add.has(other_state):
 				states_names_to_add.append(other_state)
@@ -115,6 +116,7 @@ func _change_to_states(request : Dictionary):
 		running_states_names.erase(to_remove)
 	for to_add in states_names_to_add:
 		if not running_states_names.has(to_add):
+			fem_dict[to_add].request = request
 			running_states_names.append(to_add)
 	running_states_names_string = ""
 	var ret = states_names_to_remove.size() > 0 or states_names_to_add.size() > 0
@@ -126,39 +128,36 @@ func run_current_states(delta):
 		var current_state = fem_dict[state_name]
 		var running_method = current_state.running_method
 		if running_method:
-			managed_scene.call(running_method, delta)
+			managed_scene.call(running_method, delta, current_state.request)
 			continue
-		run_state_start_callback(state_name)
-		run_state_callback(state_name, delta)
+		run_state_start_callback(current_state)
+		run_state_callback(current_state, delta)
 
-func run_state_start_callback(state_name : String):
-	var current_state = fem_dict[state_name]
+func run_state_start_callback(current_state):
 	if current_state.started:
 		return
-	var starting_callback_name = 'start_' + state_name
+	var starting_callback_name = 'start_' + current_state.name
 	if not managed_scene.has_method(starting_callback_name):
 		return
-	managed_scene.call(starting_callback_name)
+	managed_scene.call(starting_callback_name, current_state.request)
 	current_state.started = true
 	print('started ', starting_callback_name)
 
-func run_state_callback(state_name : String, delta):
-	var current_state = fem_dict[state_name]
-	var state_callback_name = "do_" + state_name
+func run_state_callback(current_state, delta):
+	var state_callback_name = "do_" + current_state.name
 	if not managed_scene.has_method(state_callback_name):
 		return
 	print('calling ', state_callback_name)
-	managed_scene.call(state_callback_name, delta)
+	managed_scene.call(state_callback_name, delta, current_state.request)
 	current_state.running_method = state_callback_name
 
-func run_state_end_callback(state_name : String):
-	var end_callback_name = 'end_' + state_name
+func run_state_end_callback(current_state : Dictionary):
+	var end_callback_name = 'end_' + current_state.name
 	if not managed_scene.has_method(end_callback_name):
 		return
 	managed_scene.call(end_callback_name)
 	print('called ', end_callback_name)
 
-var running_states_names_string = ""
 func current_states_str(arr: Array = running_states_names, sep : String = "\n"):
 	if running_states_names_string.length() > 0:
 		return running_states_names_string

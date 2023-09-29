@@ -23,7 +23,7 @@
 	"jumping": {
 		"signal" : "jump_up",
 		"conditions" : [ "on_floor" ],
-		"exits": [ "falling" ]
+		"exits": [ "waiting" ]
 	},
 	"falling": {
 		"signal" : "falling",
