@@ -25,7 +25,7 @@ var floor_collision_point : Vector2 = Vector2.ZERO
 func do_on_floor_testing(delta, _request):
 	if floor_raycast.is_colliding():
 		floor_collision_point = floor_raycast.get_collision_point()
-		if abs(floor_collision_point.y - position.y) < 0.01:
+		if floor_collision_point.y - position.y < 5:
 			global_signals.send_untracked_request("on_floor")
 		else:
 			global_signals.send_untracked_request("falling")
@@ -73,11 +73,27 @@ func start_jumping(_request):
 func do_jumping(_delta, _request):
 	pass
 
+var fall_point : Vector2
 func start_falling(_request):
 	$AnimatedSprite2D.animation = "jump"
 	$AnimatedSprite2D.play()
+	falling_time = 0
+	falling_speed = 0
+	fall_point = floor_collision_point
+	
+var falling_speed : float
+var falling_time : float
 	
 func do_falling(delta, _request):
+	if position.y > 960:
+		position.y = fall_point.y - 2
+		falling_time = 0
+		falling_speed = 0
+		return
+	falling_time += delta
+	falling_speed += 9.8 * pow(falling_time, 2)
+	velocity.y = delta * falling_speed
+	position += velocity
 	pass
 
 func start_on_floor(_request):
