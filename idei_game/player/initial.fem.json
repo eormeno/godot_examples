@@ -1,5 +1,7 @@
 {
-	"_init_": { "exits": [ "looking_right" ] },
+	"_init_": { "exits": [ "looking_right", "on_floor_testing" ] },
+	"on_floor_testing": {
+	},
 	"waiting": {
 		"signal" : "wait",
 		"conditions" : [ "on_floor" ],

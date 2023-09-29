@@ -21,9 +21,8 @@ func _ready():
 	
 func request_received(request : Dictionary):
 	if not request.untracked:
-		var i = 1
+		var _i = 1
 	var error_callback : Callable = Callable(request.error)
-	var success_callback : Callable = Callable(request.success)
 	if not fem_dict["_signals_"].has(request.signal_name):
 		if error_callback:
 			error_callback.call("undefined signal name: " + request.signal_name)
@@ -70,6 +69,8 @@ func reset_states_values(states_dict : Dictionary):
 		states_dict[state_name]['request'] = null
 		states_dict[state_name]['running_method'] = null
 		states_dict[state_name]['started'] = false
+		if not states_dict[state_name].has("exits"):
+			states_dict[state_name]["exits"] = []
 		if not states_dict[state_name].has("signal"):
 			states_dict[state_name]["signal"] = ""
 		add_signal(states_dict, state_name, states_dict[state_name]["signal"])
