@@ -1,33 +1,57 @@
-class_name StateManager extends Node
+class_name StateManaged extends Area2D
 
+const grid_size : float = 64.0
 const ignore_keys : Array[String] = [ "_init_", "_finish_", "_signals_" ]
-var managed_scene : Node
 var fem_dict : Dictionary
 
 var is_changing_state : bool
 var running_states_names : Array[String] = []
 var running_states_names_string = ""
 var requests_queue : Queue = Queue.new()
+var _floor_raycast : RayCast2D
+var _debug_label : Label
+var floor_collision_point : Vector2 = Vector2.ZERO
 
-func _init(scene : Node):
-	managed_scene = scene
-	fem_dict = load_states()
+func _config(resource : Resource, raycast : RayCast2D, label : Label = null,):
+	fem_dict = load_states(resource.resource_path)
+	if not fem_dict:
+		printerr("States file property is not configured.")
+		return
+	if not raycast:
+		printerr("Floor raycast property is not configured.")
+		return
+	_floor_raycast = raycast
+	_debug_label = label
+
 	reset()
-#	print(JSON.stringify(fem_dict, "\t"))
-	managed_scene.add_child(self)
-	
-func _ready():
 	global_signals.connect("request", request_received)
 	
+func is_in_state(state_name : String) -> bool:
+	return running_states_names.has(state_name)
+
+func snap(vector : Vector2):
+	vector.x = int(vector.x / grid_size) * grid_size + grid_size / 2
+	vector.y = int(vector.y / grid_size) * grid_size
+	return vector
+
+func _draw():
+	draw_circle(floor_collision_point,2,Color.ROYAL_BLUE)
+
+func do_on_floor_testing(_delta):
+	if _floor_raycast.is_colliding():
+		floor_collision_point = snap(_floor_raycast.get_collision_point())
+		if floor_collision_point.y - position.y < 5:
+			set_state("on_floor")
+		else:
+			set_state("on_air")
+
 func request_received(request : Dictionary):
-	if not request.untracked:
-		var _i = 1
 	var error_callback : Callable = Callable(request.error)
 	if not fem_dict["_signals_"].has(request.signal_name):
 		if error_callback:
 			error_callback.call("undefined signal name: " + request.signal_name)
 		return
-	var signal_states = fem_dict["_signals_"][request.signal_name]
+	var signal_states : Array[String] = fem_dict["_signals_"][request.signal_name]
 	var unfullfilled_conditions = {}
 	request["signal_states"] = signal_states
 	for state_name in signal_states:
@@ -51,8 +75,11 @@ func reset():
 	reset_states_values(fem_dict)
 	running_states_names.append_array(fem_dict._init_.exits)
 	
-func load_states():
-	var states_full_path = managed_scene.resource.resource_path
+func load_states(states_file : String = ""):
+	if not states_file:
+		printerr("States file dont configured in Resource property")
+		return {}
+	var states_full_path = states_file
 	if not FileAccess.file_exists(states_full_path):
 		printerr("State file: ", states_full_path, " does not exists.")
 		return
@@ -81,25 +108,45 @@ func add_signal(states_dict : Dictionary, state_name : String, signal_name : Str
 	if not signal_name or signal_name.length() == 0:
 		return
 	if not states_dict["_signals_"].has(signal_name):
-		states_dict["_signals_"][signal_name] = []
+		var empty_string_array : Array[String] = []
+		states_dict["_signals_"][signal_name] = empty_string_array
 	states_dict["_signals_"][signal_name].append(state_name)
 
 func _process(delta):
-	if is_changing_state:
-		return
+	do_on_floor_testing(delta)
+	do_should_fall_test(delta)
 	var next_request = requests_queue.finish_queue_front()
 	if next_request:
-		_change_to_states(next_request)
+		process_request(next_request)
 	run_current_states(delta)
+
+func do_should_fall_test(_delta):
+	if is_in_state("on_air"):
+		set_state("falling")
+
+func set_state(state: String) -> void:
+	if is_in_state(state):
+		return
+	set_states([state])
+
+func set_states(states : Array[String] = []) -> void:
+	var changes = _change_to_states(states)
+	update_states(changes)
+
+func process_request(request : Dictionary):
+	var changing_states : Dictionary = _change_to_states(request.signal_states)
+	update_states(changing_states, request)
 
 func enqueue_request(request : Dictionary):
 	requests_queue.add_to_queue(request)
-	
-func _change_to_states(request : Dictionary):
+
+func _change_to_states(states : Array[String] = []) -> Dictionary:
 	is_changing_state = true
-	var states_names_to_remove = []
-	var states_names_to_add = []
-	for other_state in request["signal_states"]:
+	var result = {
+		added = [],
+		removed = []
+	}
+	for other_state in states:
 		for state_name in running_states_names:
 			var current_state = fem_dict[state_name]
 			var current_state_exits = current_state.exits
@@ -109,27 +156,27 @@ func _change_to_states(request : Dictionary):
 				current_state.running_method = null
 				current_state.started = false
 				run_state_end_callback(current_state)
-				states_names_to_remove.append(state_name)
-			if not states_names_to_add.has(other_state):
-				states_names_to_add.append(other_state)
-			
-	for to_remove in states_names_to_remove:
+				result.removed.append(state_name)
+			if not result.added.has(other_state):
+				result.added.append(other_state)
+	return result
+	
+func update_states(states_changes : Dictionary, source_request : Dictionary = {}):
+	for to_remove in states_changes.removed:
 		running_states_names.erase(to_remove)
-	for to_add in states_names_to_add:
+	for to_add in states_changes.added:
 		if not running_states_names.has(to_add):
-			fem_dict[to_add].request = request
+			if source_request:
+				fem_dict[to_add].request = source_request
 			running_states_names.append(to_add)
 	running_states_names_string = ""
-	var ret = states_names_to_remove.size() > 0 or states_names_to_add.size() > 0
-	is_changing_state = false
-	return ret
 
 func run_current_states(delta):
 	for state_name in running_states_names:
 		var current_state = fem_dict[state_name]
 		var running_method = current_state.running_method
 		if running_method:
-			managed_scene.call(running_method, delta, current_state.request)
+			call(running_method, delta, current_state.request)
 			continue
 		run_state_start_callback(current_state)
 		run_state_callback(current_state, delta)
@@ -138,25 +185,25 @@ func run_state_start_callback(current_state):
 	if current_state.started:
 		return
 	var starting_callback_name = 'start_' + current_state.name
-	if not managed_scene.has_method(starting_callback_name):
+	if not has_method(starting_callback_name):
 		return
-	managed_scene.call(starting_callback_name, current_state.request)
+	call(starting_callback_name, current_state.request)
 	current_state.started = true
 	print('started ', starting_callback_name)
 
 func run_state_callback(current_state, delta):
 	var state_callback_name = "do_" + current_state.name
-	if not managed_scene.has_method(state_callback_name):
+	if not has_method(state_callback_name):
 		return
 	print('calling ', state_callback_name)
-	managed_scene.call(state_callback_name, delta, current_state.request)
+	call(state_callback_name, delta, current_state.request)
 	current_state.running_method = state_callback_name
 
 func run_state_end_callback(current_state : Dictionary):
 	var end_callback_name = 'end_' + current_state.name
-	if not managed_scene.has_method(end_callback_name):
+	if not has_method(end_callback_name):
 		return
-	managed_scene.call(end_callback_name)
+	call(end_callback_name)
 	print('called ', end_callback_name)
 
 func current_states_str(arr: Array = running_states_names, sep : String = "\n"):

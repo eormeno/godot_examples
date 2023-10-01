@@ -1,7 +1,5 @@
 {
-	"_init_": { "exits": [ "looking_right", "on_floor_testing" ] },
-	"on_floor_testing": {
-	},
+	"_init_": { "exits": [ "looking_right" ] },
 	"waiting": {
 		"signal" : "wait",
 		"conditions" : [ "on_floor" ],
@@ -33,7 +31,11 @@
 	},
 	"on_floor": {
 		"signal" : "on_floor",
-		"exits": [ "jumping", "falling" ]
+		"exits": [ "on_air" ]
+	},
+	"on_air": {
+		"signal" : "on_air",
+		"exits": [ "on_floor" ]
 	},
 	"reseting": {
 		"signal" : "reset",

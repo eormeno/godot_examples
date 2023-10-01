@@ -8,9 +8,11 @@
 radius = 16.0
 height = 60.0
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="Area2D" node_paths=PackedStringArray("debug_label", "floor_raycat")]
 script = ExtResource("1_bhfsl")
-resource = ExtResource("2_hpnak")
+states_file = ExtResource("2_hpnak")
+debug_label = NodePath("Label")
+floor_raycat = NodePath("floor_raycast")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

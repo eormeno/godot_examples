@@ -1,39 +1,24 @@
-extends Area2D
+class_name Player extends StateManaged
+
+const G : float = 980
 
 @export var speed = 200
 @export var jump_speed = 500
 @export var jump_height = 100
-@export var resource: Resource
+@export var states_file : Resource
+@export var debug_label : Label
+@export var floor_raycat : RayCast2D
 
 var states : Dictionary
-var states_manager : StateManager
 var velocity : Vector2 = Vector2.ZERO
 var starting_point = 0
-var tilemap : TileMap
-var snap : bool = false
-var jump : bool = false
-var grid_size = 64
-var floor_raycast : RayCast2D
 
 func _ready():
-	floor_raycast = $floor_raycast
-	states_manager = StateManager.new(self)
-	tilemap = get_parent()
-
-var floor_collision_point : Vector2 = Vector2.ZERO
-
-func do_on_floor_testing(delta, _request):
-	if floor_raycast.is_colliding():
-		floor_collision_point = floor_raycast.get_collision_point()
-		if floor_collision_point.y - position.y < 5:
-			global_signals.send_untracked_request("on_floor")
-		else:
-			global_signals.send_untracked_request("falling")
+	super._config(states_file, floor_raycat, debug_label)
 
 func start_waiting(_request):
 	$AnimatedSprite2D.animation = "idle"
 	$AnimatedSprite2D.play()
-	snap = true
 
 func do_waiting(_delta, _request):
 	velocity = Vector2.ZERO
@@ -57,50 +42,63 @@ func do_walking(_delta, request):
 	var dir : int = -1 if $AnimatedSprite2D.flip_h else 1
 	velocity.x += dir
 	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
+		velocity = velocity.normalized() * _delta * speed
 	
 	position += velocity
 	if abs(position.x - starting_point) > grid_size:
-		snap = true
-		request.success.call("I did it!")
+		position = snap(position)
+		if not request.untracked:
+			request.success.call("I did it!")
 		global_signals.send_untracked_request("wait")
+		
+var jumping_time : float
+var jumping_initial_velocity : float = 20.0
+var initial_height : float
 
 func start_jumping(_request):
 	$AnimatedSprite2D.animation = "jump"
 	$AnimatedSprite2D.play()
-	jump = true
+	jumping_time = 0.0
+	initial_height = position.y
 
 func do_jumping(_delta, _request):
+	jumping_time += _delta
+	var y : float = initial_height - jumping_initial_velocity * jumping_time + 0.5 * G * pow( jumping_time, 2.0 )
+	position.y = y
 	pass
 
-var fall_point : Vector2
+var height : float
+var falling_duration : float
+var falling_time : float
+var initial_y : float
+var dif : float
+
 func start_falling(_request):
 	$AnimatedSprite2D.animation = "jump"
 	$AnimatedSprite2D.play()
+	initial_y = position.y
+	height = (floor_collision_point.y - initial_y)
+	dif = initial_y - height
+	falling_duration = sqrt(2.0 * ((height + dif) / G))
 	falling_time = 0
-	falling_speed = 0
-	fall_point = floor_collision_point
-	
-var falling_speed : float
-var falling_time : float
-	
+
 func do_falling(delta, _request):
-	if position.y > 960:
-		position.y = fall_point.y - 2
-		falling_time = 0
-		falling_speed = 0
-		return
+	if falling_time < falling_duration:
+		var new_y = height + 0.5 * G * pow( falling_time, 2.0 )
+		position.y = new_y
+	else:
+		position = floor_collision_point
+		printerr(falling_time - delta, " ", falling_duration)
+		global_signals.send_untracked_request("on_floor")
+		global_signals.send_untracked_request("wait")
 	falling_time += delta
-	falling_speed += 9.8 * pow(falling_time, 2)
-	velocity.y = delta * falling_speed
-	position += velocity
 	pass
 
 func start_on_floor(_request):
-#	snap = true
 	global_signals.send_untracked_request("wait")
 
-func _process(_delta):
+func _process(delta):
+	super._process(delta)
 	var strret : String = ""
-	strret += states_manager.current_states_str()
+	strret += current_states_str()
 	$Label.text = strret
