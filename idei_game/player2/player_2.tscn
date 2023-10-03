@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dsjc64qqmtsei"]
+
+[ext_resource type="SpriteFrames" uid="uid://cxgrsva5b02f6" path="res://player2/animation.tres" id="1_b4581"]
+[ext_resource type="Script" path="res://player2/player_2.gd" id="1_byp7s"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_34gyf"]
+radius = 22.0
+height = 62.0
+
+[node name="player_2" type="Area2D"]
+script = ExtResource("1_byp7s")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_b4581")
+animation = &"down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -8)
+shape = SubResource("CapsuleShape2D_34gyf")

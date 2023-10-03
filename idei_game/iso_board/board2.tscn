@@ -1,0 +1,160 @@
+[gd_scene load_steps=6 format=3 uid="uid://n23uw77trmcy"]
+
+[ext_resource type="Texture2D" uid="uid://drqcff4yw3wel" path="res://assets/board.jpg" id="1_bvrql"]
+[ext_resource type="PackedScene" uid="uid://dsjc64qqmtsei" path="res://player2/player_2.tscn" id="2_884au"]
+[ext_resource type="Texture2D" uid="uid://jj766ps70am1" path="res://iso_board/board.png" id="3_6ah08"]
+[ext_resource type="Script" path="res://path/PathNode.gd" id="4_r8rts"]
+[ext_resource type="Script" path="res://path/PathTransition.gd" id="5_isq2r"]
+
+[node name="board2" type="Node2D"]
+
+[node name="Board" type="Sprite2D" parent="."]
+position = Vector2(818, 500)
+texture = ExtResource("1_bvrql")
+
+[node name="player_2" parent="." instance=ExtResource("2_884au")]
+
+[node name="Camera2D" type="Camera2D" parent="player_2"]
+zoom = Vector2(2, 2)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_6ah08")
+
+[node name="Position_0" type="Node2D" parent="."]
+position = Vector2(1024, 1081)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_0" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_1")
+
+[node name="Position_1" type="Node2D" parent="."]
+position = Vector2(1024, 876)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_1" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_2")
+
+[node name="Position_2" type="Node2D" parent="."]
+position = Vector2(916, 876)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_2" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_3")
+
+[node name="Position_3" type="Node2D" parent="."]
+position = Vector2(916, 687)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_3" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_4")
+
+[node name="Position_4" type="Node2D" parent="."]
+position = Vector2(761, 687)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_4" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_5")
+
+[node name="Position_5" type="Node2D" parent="."]
+position = Vector2(638, 687)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_5" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_6")
+
+[node name="Position_6" type="Node2D" parent="."]
+position = Vector2(521, 687)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_6" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_7")
+
+[node name="Position_7" type="Node2D" parent="."]
+position = Vector2(521, 745)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_7" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_8")
+
+[node name="Position_8" type="Node2D" parent="."]
+position = Vector2(52, 745)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_8" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_9")
+
+[node name="Position_9" type="Node2D" parent="."]
+position = Vector2(52, 865)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_9" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_10")
+
+[node name="Position_10" type="Node2D" parent="."]
+position = Vector2(264, 865)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_10" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_11")
+
+[node name="Position_11" type="Node2D" parent="."]
+position = Vector2(264, 972)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_11" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_12")
+
+[node name="Position_12" type="Node2D" parent="."]
+position = Vector2(388, 972)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_12" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_13")
+
+[node name="Position_13" type="Node2D" parent="."]
+position = Vector2(388, 1023)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_13" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_14")
+
+[node name="Position_14" type="Node2D" parent="."]
+position = Vector2(616, 1023)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_14" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_15")
+
+[node name="Position_15" type="Node2D" parent="."]
+position = Vector2(616, 971)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_15"]
+script = ExtResource("5_isq2r")
