@@ -11,9 +11,9 @@ func _draw():
 	var destination_pos = destination.position - global_position
 	var from_pos = get_parent().position - global_position
 
-	draw_line(from_pos, destination_pos, Color.CHARTREUSE, 2.0, true)
+	draw_line(from_pos, destination_pos, Color.CHARTREUSE, 0.5, true)
 
-func _process(delta):
+func _process(_delta):
 	if not Engine.is_editor_hint():
 		return
 	queue_redraw()
