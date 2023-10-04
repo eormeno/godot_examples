@@ -68,6 +68,7 @@ stretch_mode = 5
 position = Vector2(1040, 1040)
 script = ExtResource("4_r8rts")
 place_name = "inicio"
+light_color = null
 
 [node name="transición" type="Node2D" parent="inicio" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -77,6 +78,7 @@ destination = NodePath("../../Siguiente")
 position = Vector2(925, 827)
 script = ExtResource("4_r8rts")
 place_name = "arriba"
+light_color = Color(0.960784, 0, 0, 1)
 
 [node name="PathTransition" type="Node2D" parent="Siguiente" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -86,6 +88,7 @@ destination = NodePath("../../Position_3")
 position = Vector2(854, 687)
 script = ExtResource("4_r8rts")
 place_name = "arriba"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_3" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -99,6 +102,7 @@ destination = NodePath("../../Position_16")
 position = Vector2(761, 687)
 script = ExtResource("4_r8rts")
 place_name = "izquierda"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_4" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -108,6 +112,7 @@ destination = NodePath("../../Position_5")
 position = Vector2(638, 687)
 script = ExtResource("4_r8rts")
 place_name = "izquierda"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_5" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -117,6 +122,7 @@ destination = NodePath("../../Position_6")
 position = Vector2(521, 687)
 script = ExtResource("4_r8rts")
 place_name = "izquierda"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_6" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -126,6 +132,7 @@ destination = NodePath("../../Position_7")
 position = Vector2(521, 745)
 script = ExtResource("4_r8rts")
 place_name = "abajo"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_7" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -135,6 +142,7 @@ destination = NodePath("../../Position_8")
 position = Vector2(52, 745)
 script = ExtResource("4_r8rts")
 place_name = "izquierda"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_8" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -144,6 +152,7 @@ destination = NodePath("../../Position_9")
 position = Vector2(52, 865)
 script = ExtResource("4_r8rts")
 place_name = "abajo"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_9" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -153,6 +162,7 @@ destination = NodePath("../../Position_10")
 position = Vector2(264, 865)
 script = ExtResource("4_r8rts")
 place_name = "derecha"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_10" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -162,6 +172,7 @@ destination = NodePath("../../Position_11")
 position = Vector2(264, 972)
 script = ExtResource("4_r8rts")
 place_name = "abajo"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_11" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -171,6 +182,7 @@ destination = NodePath("../../Position_12")
 position = Vector2(388, 972)
 script = ExtResource("4_r8rts")
 place_name = "derecha"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_12" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -180,6 +192,7 @@ destination = NodePath("../../Position_13")
 position = Vector2(388, 1023)
 script = ExtResource("4_r8rts")
 place_name = "abajo"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_13" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -189,6 +202,7 @@ destination = NodePath("../../Position_14")
 position = Vector2(616, 1023)
 script = ExtResource("4_r8rts")
 place_name = "derecha"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_14" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -198,6 +212,7 @@ destination = NodePath("../../Position_15")
 position = Vector2(616, 971)
 script = ExtResource("4_r8rts")
 place_name = "boton"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_15"]
 script = ExtResource("5_isq2r")
@@ -206,6 +221,7 @@ script = ExtResource("5_isq2r")
 position = Vector2(959, 608)
 script = ExtResource("4_r8rts")
 place_name = "arriba"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_16" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -215,6 +231,7 @@ destination = NodePath("../../Position_17")
 position = Vector2(1004, 460)
 script = ExtResource("4_r8rts")
 place_name = "arriba"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_17" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -224,6 +241,7 @@ destination = NodePath("../../Position_18")
 position = Vector2(1064, 483)
 script = ExtResource("4_r8rts")
 place_name = "derecha"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_18" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -233,6 +251,7 @@ destination = NodePath("../../Position_19")
 position = Vector2(1070, 534)
 script = ExtResource("4_r8rts")
 place_name = "abajo"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="Position_19" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
@@ -242,6 +261,7 @@ destination = NodePath("../../tarjeta")
 position = Vector2(1365, 534)
 script = ExtResource("4_r8rts")
 place_name = "tarjeta"
+light_color = null
 
 [node name="PathTransition" type="Node2D" parent="tarjeta"]
 script = ExtResource("5_isq2r")
