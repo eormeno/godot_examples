@@ -3,8 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://drqcff4yw3wel" path="res://assets/board.jpg" id="1_bvrql"]
 [ext_resource type="Script" path="res://iso_board/board2.gd" id="1_kpi0e"]
 [ext_resource type="PackedScene" uid="uid://dsjc64qqmtsei" path="res://player2/player_2.tscn" id="2_884au"]
-[ext_resource type="Texture2D" uid="uid://jj766ps70am1" path="res://iso_board/board.png" id="3_6ah08"]
 [ext_resource type="PackedScene" uid="uid://b4o58vyqm0ml6" path="res://levels/level.tscn" id="4_efy8w"]
+[ext_resource type="Texture2D" uid="uid://25rt6peo3a1t" path="res://themes/layout.png" id="4_h4c6r"]
 [ext_resource type="Script" path="res://path/PathNode.gd" id="4_r8rts"]
 [ext_resource type="Script" path="res://path/PathTransition.gd" id="5_isq2r"]
 [ext_resource type="Texture2D" uid="uid://djsu6wpu26ceh" path="res://assets/editor_controls/play-button.tres" id="5_kywi7"]
@@ -24,7 +24,9 @@ texture = ExtResource("1_bvrql")
 pathNode = NodePath("../inicio")
 
 [node name="Camera2D" type="Camera2D" parent="player_2"]
+offset = Vector2(130, 0)
 zoom = Vector2(2, 2)
+position_smoothing_enabled = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -38,14 +40,14 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("3_6ah08")
+texture = ExtResource("4_h4c6r")
 
 [node name="Container" type="HBoxContainer" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 221.0
-offset_top = 827.0
-offset_right = 1438.0
-offset_bottom = 916.0
+offset_left = 1047.0
+offset_top = 531.0
+offset_right = 1554.0
+offset_bottom = 909.0
 theme_override_constants/separation = 9
 
 [node name="CodeEdit" type="CodeEdit" parent="CanvasLayer/Control/Container"]

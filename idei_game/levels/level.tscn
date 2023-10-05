@@ -13,6 +13,7 @@ config = ExtResource("2_juo0i")
 layout_mode = 0
 offset_right = 856.0
 offset_bottom = 496.0
+theme_type_variation = &"BigPanelContainer"
 
 [node name="MarginContainer" type="MarginContainer" parent="main"]
 layout_mode = 2

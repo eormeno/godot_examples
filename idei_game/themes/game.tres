@@ -1,0 +1,55 @@
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://dtj0kx8j20w1a"]
+
+[ext_resource type="Texture2D" uid="uid://dme812hiqmkvc" path="res://themes/big_panel_container.png" id="1_vxs20"]
+[ext_resource type="FontFile" uid="uid://bkrl4g3tft0yk" path="res://fonts/LazenbyCompLiquid.ttf" id="1_yrk88"]
+[ext_resource type="Texture2D" uid="uid://cd200vk28ufmn" path="res://themes/panel_container.png" id="2_nj6bt"]
+[ext_resource type="Texture2D" uid="uid://bwlcikn2n75ac" path="res://themes/button_disabled.png" id="3_gwbdl"]
+[ext_resource type="Texture2D" uid="uid://cv14rrm8jp7qe" path="res://themes/button_normal.png" id="3_pnqff"]
+[ext_resource type="FontFile" uid="uid://b2r2tbm60quiq" path="res://fonts/LazenbyCompSmooth.ttf" id="4_r7vl8"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_af0qw"]
+texture = ExtResource("1_vxs20")
+texture_margin_left = 25.0
+texture_margin_top = 25.0
+texture_margin_right = 25.0
+texture_margin_bottom = 25.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3g4cm"]
+texture = ExtResource("3_gwbdl")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fcd7s"]
+texture = ExtResource("3_pnqff")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8ci7"]
+texture = ExtResource("2_nj6bt")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+
+[resource]
+BigPanelContainer/base_type = &"PanelContainer"
+BigPanelContainer/styles/panel = SubResource("StyleBoxTexture_af0qw")
+Button/fonts/font = ExtResource("4_r7vl8")
+Button/styles/disabled = SubResource("StyleBoxTexture_3g4cm")
+Button/styles/normal = SubResource("StyleBoxTexture_fcd7s")
+Label/colors/font_color = Color(0, 0.94902, 0.952941, 1)
+Label/constants/outline_size = 2
+Label/font_sizes/font_size = 18
+Label/fonts/font = ExtResource("1_yrk88")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_j8ci7")
+RichTextLabel/constants/outline_size = 1
+RichTextLabel/font_sizes/bold_font_size = 18
+RichTextLabel/font_sizes/bold_italics_font_size = 18
+RichTextLabel/font_sizes/italics_font_size = 18
+RichTextLabel/font_sizes/mono_font_size = 18
+RichTextLabel/font_sizes/normal_font_size = 18
+RichTextLabel/fonts/normal_font = ExtResource("4_r7vl8")
