@@ -1,0 +1,52 @@
+{
+	"name": "tutorial",
+	"lore": {
+		"title": "La estación espacial Omega",
+		"image": "res://levels/level_1_alt.jpg",
+		"paragraphs": [
+			"¡Aurora, despierta! Es hora de ponerse en marcha. Soy el Dr. IdeI, tu asistente virtual. Hoy tienes una misión crucial que cumplir en la Estación Espacial Omega.",
+			"Como ya sabes, la estación está programada para ser cerrada y desactivada en breve, pero antes de que eso suceda, hay una serie de sistemas críticos que debes desactivar. Tu tarea principal es asegurarte de que estos sistemas estén apagados antes de que llegue la nave de demolición para recogerte.",
+			"Sí, tal como lo escuchas, ¡serás recogida en poco tiempo!"
+		]
+	},
+	"missions": [
+		{
+			"title": "Misión 1: Desactivar el sistema de refrigeración",
+			"paragraphs": [
+				"El sistema de refrigeración de la estación está programado para mantenerse activo hasta que la nave de demolición llegue a la estación. Sin embargo, el sistema de refrigeración es un sistema de alto consumo de energía y, por lo tanto, debe apagarse antes de que la nave de demolición llegue a la estación.",
+				"Para apagar el sistema de refrigeración, debes encontrar el panel de control del sistema de refrigeración y desactivarlo. El panel de control del sistema de refrigeración se encuentra en el nivel 2 de la estación."
+			],
+			"objectives": [
+				{
+					"type": "find",
+					"target": "panel de control del sistema de refrigeración",
+					"description": "Encuentra el panel de control del sistema de refrigeración"
+				},
+				{
+					"type": "interact",
+					"target": "panel de control del sistema de refrigeración",
+					"description": "Desactiva el sistema de refrigeración"
+				}
+			]
+		},
+		{
+			"title": "Misión 2: Desactivar el sistema de comunicación",
+			"paragraphs": [
+				"El sistema de comunicación de la estación está programado para mantenerse activo hasta que la nave de demolición llegue a la estación. Sin embargo, el sistema de comunicación es un sistema de alto consumo de energía y, por lo tanto, debe apagarse antes de que la nave de demolición llegue a la estación.",
+				"Para apagar el sistema de comunicación, debes encontrar el panel de control del sistema de comunicación y desactivarlo. El panel de control del sistema de comunicación se encuentra en el nivel 3 de la estación."
+			],
+			"objectives": [
+				{
+					"type": "find",
+					"target": "panel de control del sistema de comunicación",
+					"description": "Encuentra el panel de control del sistema de comunicación"
+				},
+				{
+					"type": "interact",
+					"target": "panel de control del sistema de comunicación",
+					"description": "Desactiva el sistema de comunicación"
+				}
+			]
+		}
+	]
+}
