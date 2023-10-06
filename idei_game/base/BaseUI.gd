@@ -1,9 +1,12 @@
 extends Control
 class_name BaseUI
 
-signal finished(exit_name : String)
+signal finished(state_name : String, exit_name : String)
 var state_name : String
 var tween : Tween
+
+func _ready():
+	state_name = self.name
 
 func start():
 	tween = self.create_tween()
@@ -19,4 +22,4 @@ func fade_in():
 func notify_fade_in_finished():
 	tween.stop()
 	tween.kill()
-	finished.emit("finished")
+	finished.emit(state_name, "finished")

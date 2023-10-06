@@ -1,6 +1,0 @@
-{
-	"start" : "idei",
-	"idei": 		{ "scene" : "ui/idei", 			"next" : "laboratory"	},
-	"laboratory":	{ "scene" : "ui/laboratory",	"next" : "movert"		},
-	"movert":		{ "scene" :	"ui/movert",		"next" : "idei"			}
-}

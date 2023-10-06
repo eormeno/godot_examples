@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://n23uw77trmcy"]
+[gd_scene load_steps=10 format=3 uid="uid://n23uw77trmcy"]
 
 [ext_resource type="Texture2D" uid="uid://drqcff4yw3wel" path="res://assets/board.jpg" id="1_bvrql"]
 [ext_resource type="Script" path="res://iso_board/board2.gd" id="1_kpi0e"]
 [ext_resource type="PackedScene" uid="uid://dsjc64qqmtsei" path="res://player2/player_2.tscn" id="2_884au"]
-[ext_resource type="PackedScene" uid="uid://b4o58vyqm0ml6" path="res://levels/level.tscn" id="4_efy8w"]
 [ext_resource type="Texture2D" uid="uid://25rt6peo3a1t" path="res://themes/layout.png" id="4_h4c6r"]
 [ext_resource type="Script" path="res://path/PathNode.gd" id="4_r8rts"]
 [ext_resource type="Script" path="res://path/PathTransition.gd" id="5_isq2r"]
@@ -24,7 +23,7 @@ texture = ExtResource("1_bvrql")
 pathNode = NodePath("../inicio")
 
 [node name="Camera2D" type="Camera2D" parent="player_2"]
-offset = Vector2(130, 0)
+offset = Vector2(0, -50)
 zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 
@@ -42,36 +41,39 @@ offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("4_h4c6r")
 
-[node name="Container" type="HBoxContainer" parent="CanvasLayer/Control"]
+[node name="Container" type="VBoxContainer" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 1047.0
-offset_top = 531.0
-offset_right = 1554.0
-offset_bottom = 909.0
+offset_left = 25.0
+offset_top = 571.0
+offset_right = 725.0
+offset_bottom = 726.0
 theme_override_constants/separation = 9
 
-[node name="CodeEdit" type="CodeEdit" parent="CanvasLayer/Control/Container"]
+[node name="console" type="CodeEdit" parent="CanvasLayer/Control/Container"]
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 size_flags_horizontal = 3
+placeholder_text = "Para pedir ayuda, introduce el comando \"ayuda\"	"
+editable = false
 syntax_highlighter = SubResource("CodeHighlighter_sgunb")
 scroll_smooth = true
+caret_type = 1
 caret_blink = true
-gutters_draw_line_numbers = true
 
-[node name="RunButton" type="TextureButton" parent="CanvasLayer/Control/Container"]
-custom_minimum_size = Vector2(100, 100)
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Container"]
+layout_mode = 2
+
+[node name="prompt" type="LineEdit" parent="CanvasLayer/Control/Container/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="send button" type="TextureButton" parent="CanvasLayer/Control/Container/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture_normal = ExtResource("5_kywi7")
 texture_disabled = ExtResource("6_7and4")
 ignore_texture_size = true
 stretch_mode = 5
-
-[node name="tutorial" parent="CanvasLayer" instance=ExtResource("4_efy8w")]
-offset_left = 150.0
-offset_top = 150.0
-offset_right = 150.0
-offset_bottom = 150.0
 
 [node name="inicio" type="Node2D" parent="."]
 position = Vector2(1040, 1040)
@@ -257,4 +259,5 @@ place_name = "tarjeta"
 script = ExtResource("5_isq2r")
 
 [connection signal="send_code" from="." to="player_2" method="_on_board_2_send_code"]
-[connection signal="pressed" from="CanvasLayer/Control/Container/RunButton" to="." method="_on_run_button_pressed"]
+[connection signal="text_submitted" from="CanvasLayer/Control/Container/HBoxContainer/prompt" to="." method="_on_prompt_text_submitted"]
+[connection signal="pressed" from="CanvasLayer/Control/Container/HBoxContainer/send button" to="." method="_on_run_button_pressed"]
