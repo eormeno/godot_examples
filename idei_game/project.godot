@@ -28,6 +28,10 @@ input_processer="*res://globals/InputProcesser.gd"
 window/size/viewport_width=1600
 window/size/viewport_height=960
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
+
 [filesystem]
 
 import/blender/enabled=false

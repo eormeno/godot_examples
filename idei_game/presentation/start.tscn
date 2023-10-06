@@ -1,18 +1,72 @@
-[gd_scene load_steps=5 format=3 uid="uid://cpuom75b8ur25"]
+[gd_scene load_steps=11 format=3 uid="uid://cpuom75b8ur25"]
 
 [ext_resource type="Script" path="res://presentation/start.gd" id="1_oh8wq"]
-[ext_resource type="JSON" path="res://presentation/presentation.fem.json" id="2_gyfdp"]
-[ext_resource type="Theme" uid="uid://dtj0kx8j20w1a" path="res://themes/game.tres" id="3_3fs1l"]
-[ext_resource type="FontFile" uid="uid://1xn6bwi22ooh" path="res://fonts/ConsolaMono-Book.ttf" id="4_4iqkv"]
+[ext_resource type="PackedScene" uid="uid://diit6d271xdsm" path="res://ui/presentation_video.tscn" id="2_rpocj"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_wp7iy"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_tm6ux"]
+[ext_resource type="PackedScene" uid="uid://ck82si8mc1kd2" path="res://ui/idei.tscn" id="3_ukvn0"]
+[ext_resource type="PackedScene" uid="uid://b5uwvqu1cqaon" path="res://ui/movert.tscn" id="4_iwxwq"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_o4veu"]
+[ext_resource type="PackedScene" uid="uid://xes40px0dcqc" path="res://ui/laboratory.tscn" id="5_6fivq"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="8_y2qdp"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="9_3kp6b"]
 
-[node name="start" type="Node2D"]
+[node name="start" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_oh8wq")
-states_file = ExtResource("2_gyfdp")
+background_packed_scene = ExtResource("2_rpocj")
+idei_logo_packed_scene = ExtResource("3_ukvn0")
+laboratory_logo_packed_scene = ExtResource("5_6fivq")
+movert_logo_packed_scene = ExtResource("4_iwxwq")
 
-[node name="debug" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
-theme = ExtResource("3_3fs1l")
-theme_override_fonts/font = ExtResource("4_4iqkv")
-theme_override_font_sizes/font_size = 13
-text = "texto de prueba"
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("2_wp7iy")
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("3_tm6ux")
+initial_state = NodePath("ParallelState")
+
+[node name="ParallelState" type="Node" parent="StateChart/Root"]
+script = ExtResource("8_y2qdp")
+
+[node name="Display background" type="Node" parent="StateChart/Root/ParallelState"]
+script = ExtResource("4_o4veu")
+
+[node name="CompoundState" type="Node" parent="StateChart/Root/ParallelState"]
+script = ExtResource("3_tm6ux")
+initial_state = NodePath("Shows idei")
+
+[node name="Shows idei" type="Node" parent="StateChart/Root/ParallelState/CompoundState"]
+script = ExtResource("4_o4veu")
+
+[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/CompoundState/Shows idei"]
+script = ExtResource("9_3kp6b")
+to = NodePath("../../Shows GEL")
+event = &"finished"
+
+[node name="Shows GEL" type="Node" parent="StateChart/Root/ParallelState/CompoundState"]
+script = ExtResource("4_o4veu")
+
+[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/CompoundState/Shows GEL"]
+script = ExtResource("9_3kp6b")
+to = NodePath("../../Shows Project")
+event = &"finished"
+
+[node name="Shows Project" type="Node" parent="StateChart/Root/ParallelState/CompoundState"]
+script = ExtResource("4_o4veu")
+
+[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/CompoundState/Shows Project"]
+script = ExtResource("9_3kp6b")
+to = NodePath("../../Shows idei")
+event = &"finished"
+
+[connection signal="state_entered" from="StateChart/Root/ParallelState/Display background" to="." method="_on_display_background_state_entered"]
+[connection signal="state_entered" from="StateChart/Root/ParallelState/CompoundState/Shows idei" to="." method="_on_shows_idei_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/ParallelState/CompoundState/Shows idei" to="." method="_on_shows_idei_state_exited"]
+[connection signal="state_entered" from="StateChart/Root/ParallelState/CompoundState/Shows GEL" to="." method="_on_shows_gel_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/ParallelState/CompoundState/Shows GEL" to="." method="_on_shows_gel_state_exited"]
+[connection signal="state_entered" from="StateChart/Root/ParallelState/CompoundState/Shows Project" to="." method="_on_shows_project_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/ParallelState/CompoundState/Shows Project" to="." method="_on_shows_project_state_exited"]

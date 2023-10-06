@@ -1,13 +1,14 @@
 extends Control
 class_name BaseUI
 
-signal finished(state_name, exit_name)
+signal finished(exit_name : String)
 var state_name : String
 var tween : Tween
 
-func _ready():
+func start():
 	tween = self.create_tween()
 	self.modulate.a = 0
+	fade_in()
 	
 func fade_in():
 	tween.tween_property(self, "modulate:a", 1, 0.5).set_trans(Tween.TRANS_LINEAR)
@@ -16,4 +17,6 @@ func fade_in():
 	tween.tween_callback(notify_fade_in_finished)
 	
 func notify_fade_in_finished():
-	finished.emit(state_name, "next")
+	tween.stop()
+	tween.kill()
+	finished.emit("finished")
