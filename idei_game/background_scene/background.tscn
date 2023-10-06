@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dx3oe0xvyoto7"]
+
+[ext_resource type="Texture2D" uid="uid://b2d8x600adhyy" path="res://background_scene/space_background.jpg" id="1_6d47m"]
+[ext_resource type="Script" path="res://background_scene/background.gd" id="1_l2vki"]
+
+[node name="background" type="Node2D"]
+script = ExtResource("1_l2vki")
+
+[node name="sprite_background" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_6d47m")
+centered = false
+
+[node name="pivot" type="Node2D" parent="."]
+position = Vector2(2000, 2000)
+
+[node name="Camera2D" type="Camera2D" parent="pivot"]
+position_smoothing_speed = 1.0

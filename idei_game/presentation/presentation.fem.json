@@ -1,0 +1,26 @@
+{
+	"_init_": {
+		"transitions": [
+			{ "to" : "background" },
+			{ "to" : "idei" }
+		]
+	},
+	"background": {
+		"scene" : "presentation/background",
+	},
+	"idei": {
+		"scene" : "presentation/idei",
+		"transitions": [
+			{ "to" : "gabinete" }
+		]
+	},
+	"gabinete": {
+		"scene" : "presentation/gabinete",
+		"transitions": [
+			{ "to" : "game_name" }
+		]
+	},
+	"game_name": {
+		"scene" : "presentation/game_name"
+	}
+}

@@ -45,6 +45,7 @@ Label/colors/font_color = Color(0, 0.94902, 0.952941, 1)
 Label/constants/outline_size = 2
 Label/font_sizes/font_size = 18
 Label/fonts/font = ExtResource("1_yrk88")
+LabelDebug/base_type = &"Label"
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_j8ci7")
 RichTextLabel/constants/outline_size = 1
 RichTextLabel/font_sizes/bold_font_size = 18
