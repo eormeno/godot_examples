@@ -111,20 +111,11 @@ script = ExtResource("5_isq2r")
 destination = NodePath("../../Position_16")
 
 [node name="Position_4" type="Node2D" parent="."]
-position = Vector2(761, 687)
+position = Vector2(670, 690)
 script = ExtResource("4_r8rts")
 light_color = 2
 
 [node name="PathTransition" type="Node2D" parent="Position_4" node_paths=PackedStringArray("destination")]
-script = ExtResource("5_isq2r")
-destination = NodePath("../../Position_5")
-
-[node name="Position_5" type="Node2D" parent="."]
-position = Vector2(638, 687)
-script = ExtResource("4_r8rts")
-light_color = 3
-
-[node name="PathTransition" type="Node2D" parent="Position_5" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
 destination = NodePath("../../Position_6")
 
@@ -174,7 +165,7 @@ script = ExtResource("5_isq2r")
 destination = NodePath("../../Position_8")
 
 [node name="Position_8" type="Node2D" parent="."]
-position = Vector2(52, 745)
+position = Vector2(192, 745)
 script = ExtResource("4_r8rts")
 
 [node name="PathTransition" type="Node2D" parent="Position_8" node_paths=PackedStringArray("destination")]
@@ -182,18 +173,10 @@ script = ExtResource("5_isq2r")
 destination = NodePath("../../Position_9")
 
 [node name="Position_9" type="Node2D" parent="."]
-position = Vector2(52, 865)
+position = Vector2(140, 863)
 script = ExtResource("4_r8rts")
 
 [node name="PathTransition" type="Node2D" parent="Position_9" node_paths=PackedStringArray("destination")]
-script = ExtResource("5_isq2r")
-destination = NodePath("../../Position_10")
-
-[node name="Position_10" type="Node2D" parent="."]
-position = Vector2(264, 865)
-script = ExtResource("4_r8rts")
-
-[node name="PathTransition" type="Node2D" parent="Position_10" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
 destination = NodePath("../../Position_11")
 
@@ -245,7 +228,7 @@ script = ExtResource("5_isq2r")
 destination = NodePath("../../Position_17")
 
 [node name="Position_17" type="Node2D" parent="."]
-position = Vector2(1004, 460)
+position = Vector2(983, 443)
 script = ExtResource("4_r8rts")
 
 [node name="PathTransition" type="Node2D" parent="Position_17" node_paths=PackedStringArray("destination")]
@@ -256,13 +239,49 @@ destination = NodePath("../../Position_18")
 script = ExtResource("5_isq2r")
 destination = NodePath("../../yellow_1")
 
+[node name="PathTransition3" type="Node2D" parent="Position_17" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_23")
+
 [node name="Position_18" type="Node2D" parent="."]
-position = Vector2(1064, 483)
+position = Vector2(1064, 470)
 script = ExtResource("4_r8rts")
 
 [node name="PathTransition" type="Node2D" parent="Position_18" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
 destination = NodePath("../../Position_19")
+
+[node name="Position_23" type="Node2D" parent="."]
+position = Vector2(1028, 322)
+script = ExtResource("4_r8rts")
+light_color = 1
+
+[node name="PathTransition" type="Node2D" parent="Position_23" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_24")
+
+[node name="Position_24" type="Node2D" parent="."]
+position = Vector2(1048, 182)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_24" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_25")
+
+[node name="Position_25" type="Node2D" parent="."]
+position = Vector2(1048, 51)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_25" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../Position_26")
+
+[node name="Position_26" type="Node2D" parent="."]
+position = Vector2(858, 59)
+script = ExtResource("4_r8rts")
+
+[node name="PathTransition" type="Node2D" parent="Position_26"]
+script = ExtResource("5_isq2r")
 
 [node name="Position_19" type="Node2D" parent="."]
 position = Vector2(1070, 534)
@@ -305,7 +324,7 @@ script = ExtResource("5_isq2r")
 destination = NodePath("../../pasillo_2")
 
 [node name="pasillo_2" type="Node2D" parent="."]
-position = Vector2(810, 318)
+position = Vector2(744, 303)
 script = ExtResource("4_r8rts")
 
 [node name="PathTransition" type="Node2D" parent="pasillo_2" node_paths=PackedStringArray("destination")]
@@ -313,15 +332,16 @@ script = ExtResource("5_isq2r")
 destination = NodePath("../../pasillo_5")
 
 [node name="pasillo_5" type="Node2D" parent="."]
-position = Vector2(739, 317)
+position = Vector2(608, 302)
 script = ExtResource("4_r8rts")
+light_color = 2
 
 [node name="PathTransition" type="Node2D" parent="pasillo_5" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
 destination = NodePath("../../pasillo_6")
 
 [node name="pasillo_6" type="Node2D" parent="."]
-position = Vector2(673, 318)
+position = Vector2(525, 311)
 script = ExtResource("4_r8rts")
 
 [node name="PathTransition" type="Node2D" parent="pasillo_6" node_paths=PackedStringArray("destination")]
@@ -329,7 +349,7 @@ script = ExtResource("5_isq2r")
 destination = NodePath("../../pasillo_7")
 
 [node name="pasillo_7" type="Node2D" parent="."]
-position = Vector2(600, 318)
+position = Vector2(516, 366)
 script = ExtResource("4_r8rts")
 
 [node name="PathTransition" type="Node2D" parent="pasillo_7" node_paths=PackedStringArray("destination")]
@@ -337,15 +357,19 @@ script = ExtResource("5_isq2r")
 destination = NodePath("../../pasillo_3")
 
 [node name="pasillo_3" type="Node2D" parent="."]
-position = Vector2(530, 327)
+position = Vector2(603, 412)
 script = ExtResource("4_r8rts")
 
 [node name="PathTransition" type="Node2D" parent="pasillo_3" node_paths=PackedStringArray("destination")]
 script = ExtResource("5_isq2r")
 destination = NodePath("../../pasillo_4")
 
+[node name="PathTransition2" type="Node2D" parent="pasillo_3" node_paths=PackedStringArray("destination")]
+script = ExtResource("5_isq2r")
+destination = NodePath("../../pasillo_5")
+
 [node name="pasillo_4" type="Node2D" parent="."]
-position = Vector2(629, 467)
+position = Vector2(647, 515)
 script = ExtResource("4_r8rts")
 
 [node name="PathTransition" type="Node2D" parent="pasillo_4"]

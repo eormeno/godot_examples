@@ -10,11 +10,14 @@ func _ready():
 	editor = find_child("console")
 	text_input = find_child("prompt")
 	send_button = find_child("send button")
+	text_input.grab_focus()
 
 func _on_run_button_pressed():
 	_on_prompt_text_submitted(text_input.text)
 
-func _on_prompt_text_submitted(new_text):
+func _on_prompt_text_submitted(new_text: String):
+	if new_text.is_empty():
+		return
 	var lines : Array[String] = []
 	lines.append(new_text)
 	editor.text = editor.text + new_text + "\n"

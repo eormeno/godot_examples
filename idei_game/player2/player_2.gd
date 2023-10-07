@@ -53,15 +53,21 @@ func set_target(target_name : String):
 func _process(delta):
 	if debug_label.visible:
 		debug_label.text = str(position - target)
-		
 	if not moving:
 		return
 	position = position.move_toward(target, delta * speed)
 	var dif = position - target
 	if dif.is_equal_approx(Vector2.ZERO):
 		moving = false
+		turn_back_node(false)
 		if not is_backing:
 			previous_nodes.push_front(pathNode)
 		pathNode.disable_destinations()
 		pathNode = target_path_node
 		pathNode.enable_destinations()
+		turn_back_node(true)
+
+func turn_back_node(on : bool):
+	if not previous_nodes.is_empty():
+		var back_path_node : PathNode = previous_nodes.front()
+		back_path_node.set_as_back(on)

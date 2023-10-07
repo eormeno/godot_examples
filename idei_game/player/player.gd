@@ -1,4 +1,4 @@
-class_name Player extends StateManaged
+class_name Player extends Node2D
 
 const G : float = 980
 
@@ -12,9 +12,6 @@ const G : float = 980
 var states : Dictionary
 var velocity : Vector2 = Vector2.ZERO
 var starting_point = 0
-
-func _ready():
-	super._config(states_file, floor_raycat, debug_label)
 
 func start_waiting(_request):
 	$AnimatedSprite2D.animation = "idle"
@@ -45,11 +42,7 @@ func do_walking(_delta, request):
 		velocity = velocity.normalized() * _delta * speed
 	
 	position += velocity
-	if abs(position.x - starting_point) > grid_size:
-		position = snap(position)
-		if not request.untracked:
-			request.success.call("I did it!")
-		global_signals.send_untracked_request("wait")
+	
 		
 var jumping_time : float
 var jumping_initial_velocity : float = 20.0
@@ -77,7 +70,7 @@ func start_falling(_request):
 	$AnimatedSprite2D.animation = "jump"
 	$AnimatedSprite2D.play()
 	initial_y = position.y
-	height = (floor_collision_point.y - initial_y)
+
 	dif = initial_y - height
 	falling_duration = sqrt(2.0 * ((height + dif) / G))
 	falling_time = 0
@@ -87,7 +80,6 @@ func do_falling(delta, _request):
 		var new_y = height + 0.5 * G * pow( falling_time, 2.0 )
 		position.y = new_y
 	else:
-		position = floor_collision_point
 		printerr(falling_time - delta, " ", falling_duration)
 		global_signals.send_untracked_request("on_floor")
 		global_signals.send_untracked_request("wait")
@@ -96,9 +88,3 @@ func do_falling(delta, _request):
 
 func start_on_floor(_request):
 	global_signals.send_untracked_request("wait")
-
-func _process(delta):
-	super._process(delta)
-	var strret : String = ""
-	strret += current_states_str()
-	$Label.text = strret

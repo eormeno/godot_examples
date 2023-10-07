@@ -1,6 +1,7 @@
 @tool
 class_name PathNode extends Node2D
 const BACK_COMMAND = "back"
+const BACK_COLOR : Color = Color.WHITE
 const TEXT_FONT_SIZE : int = 8
 enum LightColors {RED, BLUE, GREEN, YELLOW, WHITE}
 var place_name : String = "next"
@@ -35,10 +36,16 @@ func _ready():
 	tween.play()
 
 func light_on():
+	light.color = color_info[light_color].color
 	light.visible = true
 
 func light_off():
 	light.visible = false
+	
+func set_as_back(on : bool):
+	if on:
+		light.color = BACK_COLOR
+	light.visible = on
 
 func _draw():
 #	if not Engine.is_editor_hint():
