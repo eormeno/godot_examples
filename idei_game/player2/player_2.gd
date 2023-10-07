@@ -10,14 +10,26 @@ var target_path_node : PathNode
 var previous_nodes : Array[PathNode]
 var is_backing : bool
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	$AnimatedSprite2D.animation = "down"
 	$AnimatedSprite2D.play()
 	debug_label = $Label
+	add_timer()
 	position = pathNode.position
 	pass
+	
+func add_timer():
+	var timer := Timer.new()
+	timer.wait_time = 2.0
+	timer.one_shot = true
+	timer.connect("timeout", _on_timer_timeout)
+	add_child(timer)
+	timer.start()
 
+func _on_timer_timeout() -> void:
+	pathNode.enable_destinations()
+	pass
+	
 func _on_board_2_send_code(code):
 	var destinations : Array[String] = pathNode.get_destinations()
 	for line in code:
@@ -50,4 +62,6 @@ func _process(delta):
 		moving = false
 		if not is_backing:
 			previous_nodes.push_front(pathNode)
-		pathNode = target_path_node	
+		pathNode.disable_destinations()
+		pathNode = target_path_node
+		pathNode.enable_destinations()

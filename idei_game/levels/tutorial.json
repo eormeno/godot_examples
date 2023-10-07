@@ -2,7 +2,7 @@
 	"name": "tutorial",
 	"lore": {
 		"title": "La estación espacial Omega",
-		"image": "res://levels/level_1_alt.jpg",
+		"image": "res://levels/level_1_alt_cut.jpg",
 		"paragraphs": [
 			"¡Aurora, despierta! Es hora de ponerse en marcha. Soy el Dr. IdeI, tu asistente virtual. Hoy tienes una misión crucial que cumplir en la Estación Espacial Omega.",
 			"Como ya sabes, la estación está programada para ser cerrada y desactivada en breve, pero antes de que eso suceda, hay una serie de sistemas críticos que debes desactivar. Tu tarea principal es asegurarte de que estos sistemas estén apagados antes de que llegue la nave de demolición para recogerte.",
