@@ -37,18 +37,24 @@ func _on_board_2_send_code(code):
 			set_target(line)
 	pass
 	
-func set_target(target_name : String):
+func check_destination(target_name : String) -> bool:
+	return pathNode.get_destinations().has(target_name)
+	
+func set_target(target_name : String) -> bool:
 	if target_name == PathNode.BACK_COMMAND:
 		var previous = previous_nodes.pop_front()
 		if not previous:
-			return
+			return false
 		target_path_node = previous
 		is_backing = true
 	else:
 		target_path_node = pathNode.get_destination(target_name)
+		if not target_path_node:
+			return false
 		is_backing = false
 	target = target_path_node.position
 	moving = true
+	return true
 	
 func _process(delta):
 	if debug_label.visible:

@@ -94,6 +94,8 @@ func disable_destinations():
 
 func get_destination(dest_name : String):
 	for trans in get_children():
+		if not trans is PathTransition:
+			continue
 		var t : PathTransition = trans
 		if t.destination.place_name == dest_name:
 			return t.destination

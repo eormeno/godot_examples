@@ -1,10 +1,11 @@
-[gd_resource type="Theme" load_steps=11 format=3 uid="uid://dtj0kx8j20w1a"]
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://dtj0kx8j20w1a"]
 
 [ext_resource type="Texture2D" uid="uid://dme812hiqmkvc" path="res://themes/big_panel_container.png" id="1_vxs20"]
 [ext_resource type="Texture2D" uid="uid://cd200vk28ufmn" path="res://themes/panel_container.png" id="2_nj6bt"]
 [ext_resource type="Texture2D" uid="uid://bwlcikn2n75ac" path="res://themes/button_disabled.png" id="3_gwbdl"]
 [ext_resource type="Texture2D" uid="uid://cv14rrm8jp7qe" path="res://themes/button_normal.png" id="3_pnqff"]
 [ext_resource type="FontFile" uid="uid://b00ra3xdigoof" path="res://fonts/Techfont.ttf" id="5_jmxwb"]
+[ext_resource type="Texture2D" uid="uid://u6etjhgy4tv2" path="res://themes/vsplit-grabber.png" id="7_0bmeq"]
 [ext_resource type="FontFile" uid="uid://qr3ko0pe7r30" path="res://fonts/Techfont-Italica.ttf" id="7_djoot"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_af0qw"]
@@ -54,3 +55,5 @@ RichTextLabel/font_sizes/mono_font_size = 16
 RichTextLabel/font_sizes/normal_font_size = 16
 RichTextLabel/fonts/italics_font = ExtResource("7_djoot")
 RichTextLabel/fonts/normal_font = ExtResource("5_jmxwb")
+VSplitContainer/constants/autohide = 0
+VSplitContainer/icons/grabber = ExtResource("7_0bmeq")
