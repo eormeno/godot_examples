@@ -1,0 +1,9 @@
+{	"type" : "folder",
+	"tuto" : {	"type": "folder",
+		"red"		: { "type" : "file" },
+		"green"		: { "type" : "file" },
+		"blue"		: { "type" : "file" },
+		"yellow"	: { "type" : "file" },
+		"back"		: { "type" : "file" },
+	}
+}

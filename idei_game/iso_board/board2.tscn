@@ -1,13 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://n23uw77trmcy"]
+[gd_scene load_steps=14 format=3 uid="uid://n23uw77trmcy"]
 
 [ext_resource type="Texture2D" uid="uid://drqcff4yw3wel" path="res://assets/board.jpg" id="1_bvrql"]
 [ext_resource type="Script" path="res://iso_board/board2.gd" id="1_kpi0e"]
 [ext_resource type="PackedScene" uid="uid://dsjc64qqmtsei" path="res://player2/player_2.tscn" id="2_884au"]
+[ext_resource type="Texture2D" uid="uid://xfxqcwqa3aqn" path="res://assets/board.png" id="3_ppc4b"]
 [ext_resource type="Texture2D" uid="uid://25rt6peo3a1t" path="res://themes/layout.png" id="4_h4c6r"]
 [ext_resource type="Script" path="res://path/PathNode.gd" id="4_r8rts"]
 [ext_resource type="Script" path="res://path/PathTransition.gd" id="5_isq2r"]
 [ext_resource type="Texture2D" uid="uid://djsu6wpu26ceh" path="res://assets/editor_controls/play-button.tres" id="5_kywi7"]
 [ext_resource type="Texture2D" uid="uid://cy4ysxhc1ujjp" path="res://assets/editor_controls/play-button-disabled.tres" id="6_7and4"]
+[ext_resource type="Script" path="res://iso_board/Tree.gd" id="6_27tlw"]
+[ext_resource type="Texture2D" uid="uid://vxdfd647dgi1" path="res://themes/folder_icon.png" id="7_7symv"]
+[ext_resource type="Texture2D" uid="uid://tpxym72jguog" path="res://themes/document_icon.png" id="8_iffmt"]
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_sgunb"]
 symbol_color = Color(0.623529, 1, 0.854902, 1)
@@ -24,6 +28,11 @@ pathNode = NodePath("../inicio")
 
 [node name="Camera2D" type="Camera2D" parent="player_2"]
 position_smoothing_enabled = true
+
+[node name="Board2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(818, 500)
+texture = ExtResource("3_ppc4b")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -54,14 +63,29 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer"]
+layout_mode = 2
+split_offset = 200
+
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer"]
 layout_mode = 2
 
-[node name="Container" type="VBoxContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/PanelContainer"]
+[node name="Tree" type="Tree" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer2"]
+texture_filter = 1
+layout_mode = 2
+hide_root = true
+script = ExtResource("6_27tlw")
+folder_icon = ExtResource("7_7symv")
+document_icon = ExtResource("8_iffmt")
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer"]
+layout_mode = 2
+
+[node name="Container" type="VBoxContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="console" type="CodeEdit" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/PanelContainer/Container"]
+[node name="console" type="CodeEdit" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -72,15 +96,15 @@ scroll_smooth = true
 caret_type = 1
 caret_blink = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/PanelContainer/Container"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container"]
 layout_mode = 2
 alignment = 2
 
-[node name="prompt" type="LineEdit" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/PanelContainer/Container/HBoxContainer"]
+[node name="prompt" type="LineEdit" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="send button" type="TextureButton" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/PanelContainer/Container/HBoxContainer"]
+[node name="send button" type="TextureButton" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container/HBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture_normal = ExtResource("5_kywi7")
@@ -391,5 +415,5 @@ script = ExtResource("4_r8rts")
 script = ExtResource("5_isq2r")
 
 [connection signal="send_code" from="." to="player_2" method="_on_board_2_send_code"]
-[connection signal="text_submitted" from="CanvasLayer/Control/VSplitContainer/MarginContainer/PanelContainer/Container/HBoxContainer/prompt" to="." method="_on_prompt_text_submitted"]
-[connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/MarginContainer/PanelContainer/Container/HBoxContainer/send button" to="." method="_on_run_button_pressed"]
+[connection signal="text_submitted" from="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container/HBoxContainer/prompt" to="." method="_on_prompt_text_submitted"]
+[connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container/HBoxContainer/send button" to="." method="_on_run_button_pressed"]
