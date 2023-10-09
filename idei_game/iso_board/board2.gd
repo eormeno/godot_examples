@@ -3,26 +3,27 @@ extends Node2D
 signal send_code(code : Array[String])
 
 var editor : CodeEdit
-var text_input : LineEdit
-var send_button : TextureButton
 var player : Area2D
 var expression : Expression
 var tree : Tree
-var prompt_dir : Label
+var terminal : Terminal
+var current_dir : TreeItem
 
 func _ready():
 	player = find_child("player_2")
 	editor = find_child("console")
-	text_input = find_child("prompt")
-	send_button = find_child("send button")
 	tree = find_child("Tree")
-	prompt_dir = find_child("prompt_dir")
-	text_input.grab_focus()
+	terminal = find_child("terminal")
+	terminal.connect("command_entered", _on_command_entered)
 	expression = Expression.new()
-	evaluate()
+#	evaluate()
 
-func _on_run_button_pressed():
-	_on_prompt_text_submitted(text_input.text)
+func _on_command_entered(command : String, callback : Callable):
+	var tokens : PackedStringArray = command.split(" ")
+	if !self.has_method("cmd_" + tokens[0]):
+		callback.call("Not found", true)
+	var ret = self.call("cmd_" + tokens[0], tokens)
+	callback.call(ret.message, ret.error)
 
 func clear():
 	if editor.get_line_count() == 0:
@@ -38,6 +39,37 @@ func move_to(target : String, success_message : String = "Ok", error_message : S
 			message = "'" + target + "' no está como posible destino"
 	return message
 	
+func cmd_dir(_arg : PackedStringArray):
+	var list : String = ""
+	for item in current_dir.get_children():
+		list += "[" + item.get_metadata(0) + "]\t" + item.get_text(0) + "\n"
+	return { message = list, error = false }
+	
+func cmd_cd(arg : PackedStringArray):
+	var path : String = arg[1]
+	var ret = { message = "", error = false }
+	if path == "..":
+		var parent = current_dir.get_parent()
+		if parent:
+			parent.select(0)
+	else:
+		var item = find_item(path)
+		if !item:
+			ret.message = "Not found"
+			ret.error = true
+		elif item.get_metadata(0) == "folder":
+			item.select(0)
+		else:
+			ret.message = arg[1] + " is not a directory."
+			ret.error = true
+	return ret
+
+func find_item(item_name : String):
+	for item in current_dir.get_children():
+		if item.get_text(0) == item_name:
+			return item
+	return null
+
 func red():
 	return move_to("red")
 	
@@ -60,17 +92,10 @@ func _on_prompt_text_submitted(new_text: String):
 	var result = expression.execute([], self)
 	if not expression.has_execute_failed():
 		editor.text = editor.text + new_text + ": " + result + "\n"
-		text_input.clear()
 		return
 	editor.text += expression.get_error_text() + "\n"
 	return
-#	var lines : Array[String] = []
-#	lines.append(new_text)
-#	editor.text = editor.text + new_text + "\n"
-##	for l in editor.get_line_count():
-##		lines.append(editor.get_line(l))
-#	text_input.clear()
-#	emit_signal("send_code", lines)
+
 func get_data():
 	return "cosa";
 
@@ -90,5 +115,6 @@ func evaluate():
 func _on_tree_item_selected():
 	var item : TreeItem = tree.get_selected()
 	if item.get_metadata(0) == "folder":
-		prompt_dir.text = item.get_text(0) + " $ :"
+		current_dir = item
+		terminal.set_prompt(item.get_text(0))
 	pass
