@@ -20,6 +20,7 @@ symbol_color = Color(0.623529, 1, 0.854902, 1)
 script = ExtResource("1_kpi0e")
 
 [node name="Board" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(818, 500)
 texture = ExtResource("1_bvrql")
 
@@ -51,17 +52,40 @@ texture = ExtResource("4_h4c6r")
 layout_mode = 0
 offset_right = 750.0
 offset_bottom = 750.0
-split_offset = 450
+split_offset = 500
 
-[node name="Control" type="Control" parent="CanvasLayer/Control/VSplitContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VSplitContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="Escenario" type="Control" parent="CanvasLayer/Control/VSplitContainer/MarginContainer2/TabContainer"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"CameraContainer"
+
+[node name="Editor" type="CodeEdit" parent="CanvasLayer/Control/VSplitContainer/MarginContainer2/TabContainer"]
+layout_mode = 2
+highlight_all_occurrences = true
+highlight_current_line = true
+line_folding = true
+gutters_draw_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_size = 3
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VSplitContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
 [node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 120)

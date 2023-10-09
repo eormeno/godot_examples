@@ -1,10 +1,11 @@
-[gd_resource type="Theme" load_steps=14 format=3 uid="uid://dtj0kx8j20w1a"]
+[gd_resource type="Theme" load_steps=17 format=3 uid="uid://dtj0kx8j20w1a"]
 
 [ext_resource type="Texture2D" uid="uid://dme812hiqmkvc" path="res://themes/big_panel_container.png" id="1_vxs20"]
 [ext_resource type="Texture2D" uid="uid://cd200vk28ufmn" path="res://themes/panel_container.png" id="2_nj6bt"]
 [ext_resource type="Texture2D" uid="uid://bwlcikn2n75ac" path="res://themes/button_disabled.png" id="3_gwbdl"]
 [ext_resource type="Texture2D" uid="uid://cv14rrm8jp7qe" path="res://themes/button_normal.png" id="3_pnqff"]
 [ext_resource type="Texture2D" uid="uid://184qcua288go" path="res://themes/hsplit-grabber.png" id="4_gc36m"]
+[ext_resource type="Texture2D" uid="uid://dfejpjk2darhw" path="res://themes/camera-container.png" id="4_nvl4i"]
 [ext_resource type="FontFile" uid="uid://b00ra3xdigoof" path="res://fonts/Techfont.ttf" id="5_jmxwb"]
 [ext_resource type="Texture2D" uid="uid://u6etjhgy4tv2" path="res://themes/vsplit-grabber.png" id="7_0bmeq"]
 [ext_resource type="FontFile" uid="uid://qr3ko0pe7r30" path="res://fonts/Techfont-Italica.ttf" id="7_djoot"]
@@ -31,8 +32,22 @@ texture_margin_top = 15.0
 texture_margin_right = 15.0
 texture_margin_bottom = 15.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w78vv"]
+texture = ExtResource("4_nvl4i")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8ci7"]
 texture = ExtResource("2_nj6bt")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t0rke"]
+texture = ExtResource("4_nvl4i")
 texture_margin_left = 15.0
 texture_margin_top = 15.0
 texture_margin_right = 15.0
@@ -44,10 +59,13 @@ BigPanelContainer/styles/panel = SubResource("StyleBoxTexture_af0qw")
 Button/fonts/font = null
 Button/styles/disabled = SubResource("StyleBoxTexture_3g4cm")
 Button/styles/normal = SubResource("StyleBoxTexture_fcd7s")
-HSplitContainer/constants/autohide = 0
+CameraContainer/base_type = &"PanelContainer"
+CameraContainer/styles/panel = SubResource("StyleBoxTexture_w78vv")
+HSplitContainer/constants/autohide = 1
+HSplitContainer/constants/separation = 5
 HSplitContainer/icons/grabber = ExtResource("4_gc36m")
 Label/colors/font_color = Color(0, 0.94902, 0.952941, 1)
-Label/font_sizes/font_size = 16
+Label/font_sizes/font_size = 15
 Label/fonts/font = ExtResource("5_jmxwb")
 LabelDebug/base_type = &"Label"
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_j8ci7")
@@ -59,12 +77,18 @@ RichTextLabel/font_sizes/mono_font_size = 16
 RichTextLabel/font_sizes/normal_font_size = 16
 RichTextLabel/fonts/italics_font = ExtResource("7_djoot")
 RichTextLabel/fonts/normal_font = ExtResource("5_jmxwb")
+TabContainer/constants/side_margin = 12
+TabContainer/font_sizes/font_size = 14
+TabContainer/fonts/font = ExtResource("5_jmxwb")
+TabContainer/styles/panel = SubResource("StyleBoxTexture_t0rke")
 Tree/constants/draw_guides = 0
 Tree/constants/draw_relationship_lines = 1
 Tree/constants/h_separation = 5
 Tree/constants/item_margin = 18
 Tree/constants/relationship_line_width = 2
+Tree/constants/v_separation = 2
 Tree/font_sizes/font_size = 15
 Tree/fonts/font = ExtResource("8_peumu")
-VSplitContainer/constants/autohide = 0
+VSplitContainer/constants/autohide = 1
+VSplitContainer/constants/separation = 5
 VSplitContainer/icons/grabber = ExtResource("7_0bmeq")

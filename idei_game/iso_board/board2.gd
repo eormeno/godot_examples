@@ -77,9 +77,9 @@ func get_data():
 func evaluate():
 	var script = GDScript.new()
 	script.set_source_code("func eval(node):
-				for i in range(1,10):
+				for i in range(1,3):
 					print(node.get_data())
-					if i == 5:
+					if i ==2 :
 						print(\"si\")
 				return")
 	script.reload()
