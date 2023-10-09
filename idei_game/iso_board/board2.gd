@@ -7,12 +7,16 @@ var text_input : LineEdit
 var send_button : TextureButton
 var player : Area2D
 var expression : Expression
+var tree : Tree
+var prompt_dir : Label
 
 func _ready():
 	player = find_child("player_2")
 	editor = find_child("console")
 	text_input = find_child("prompt")
 	send_button = find_child("send button")
+	tree = find_child("Tree")
+	prompt_dir = find_child("prompt_dir")
 	text_input.grab_focus()
 	expression = Expression.new()
 	evaluate()
@@ -82,3 +86,9 @@ func evaluate():
 	var obj = RefCounted.new()
 	obj.set_script(script)
 	return obj.eval(self)
+
+func _on_tree_item_selected():
+	var item : TreeItem = tree.get_selected()
+	if item.get_metadata(0) == "folder":
+		prompt_dir.text = item.get_text(0) + " $ :"
+	pass

@@ -51,7 +51,7 @@ texture = ExtResource("4_h4c6r")
 layout_mode = 0
 offset_right = 750.0
 offset_bottom = 750.0
-split_offset = 500
+split_offset = 450
 
 [node name="Control" type="Control" parent="CanvasLayer/Control/VSplitContainer"]
 layout_mode = 2
@@ -64,6 +64,7 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Control/VSplitContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 split_offset = 200
 
@@ -73,7 +74,6 @@ layout_mode = 2
 [node name="Tree" type="Tree" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer2"]
 texture_filter = 1
 layout_mode = 2
-hide_root = true
 script = ExtResource("6_27tlw")
 folder_icon = ExtResource("7_7symv")
 document_icon = ExtResource("8_iffmt")
@@ -89,7 +89,6 @@ theme_override_constants/separation = 10
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-placeholder_text = "Para pedir ayuda, introduce la función \"ayuda()\""
 editable = false
 syntax_highlighter = SubResource("CodeHighlighter_sgunb")
 scroll_smooth = true
@@ -100,9 +99,18 @@ caret_blink = true
 layout_mode = 2
 alignment = 2
 
+[node name="prompt_dir" type="Label" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "$ :"
+
 [node name="prompt" type="LineEdit" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+flat = true
+select_all_on_focus = true
+caret_blink = true
+caret_force_displayed = true
 
 [node name="send button" type="TextureButton" parent="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container/HBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
@@ -415,5 +423,6 @@ script = ExtResource("4_r8rts")
 script = ExtResource("5_isq2r")
 
 [connection signal="send_code" from="." to="player_2" method="_on_board_2_send_code"]
+[connection signal="item_selected" from="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer2/Tree" to="." method="_on_tree_item_selected"]
 [connection signal="text_submitted" from="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container/HBoxContainer/prompt" to="." method="_on_prompt_text_submitted"]
 [connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Container/HBoxContainer/send button" to="." method="_on_run_button_pressed"]
