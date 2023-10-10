@@ -1,7 +1,5 @@
 extends Node2D
 
-signal send_code(code : Array[String])
-
 var editor : CodeEdit
 var player : Area2D
 var expression : Expression
@@ -16,14 +14,23 @@ func _ready():
 	terminal = find_child("terminal")
 	terminal.connect("command_entered", _on_command_entered)
 	expression = Expression.new()
-#	evaluate()
+	
+var last_callback_command_response
 
 func _on_command_entered(command : String, callback : Callable):
+	last_callback_command_response = callback
 	var tokens : PackedStringArray = command.split(" ")
 	if !self.has_method("cmd_" + tokens[0]):
-		callback.call("Not found", true)
-	var ret = self.call("cmd_" + tokens[0], tokens)
-	callback.call(ret.message, ret.error)
+		var script_item : TreeItem = find_item(tokens[0])
+		if !script_item:
+			callback.call("Not found", true)
+			return
+		var script_file_name = script_item.get_metadata(0).file
+		var sub_script = tree.load_script(script_file_name)
+		evaluate(sub_script)
+	else:
+		var ret = self.call("cmd_" + tokens[0], tokens)
+		callback.call(ret.message, ret.error)
 
 func clear():
 	if editor.get_line_count() == 0:
@@ -31,18 +38,22 @@ func clear():
 	editor.clear()
 	
 func move_to(target : String, success_message : String = "Ok", error_message : String = ""):
-	var success : bool = player.set_target(target)
+	var success : bool = player.set_target(target, _on_move_to_finished)
 	var message : String = success_message
 	if not success:
 		message = error_message
 		if message.is_empty():
 			message = "'" + target + "' no está como posible destino"
 	return message
+
+func _on_move_to_finished():
+	last_callback_command_response.call("", false)
+	pass
 	
 func cmd_dir(_arg : PackedStringArray):
 	var list : String = ""
 	for item in current_dir.get_children():
-		list += "[" + item.get_metadata(0) + "]\t" + item.get_text(0) + "\n"
+		list += "[" + item.get_metadata(0).type + "]\t" + item.get_text(0) + "\n"
 	return { message = list, error = false }
 	
 func cmd_cd(arg : PackedStringArray):
@@ -57,7 +68,7 @@ func cmd_cd(arg : PackedStringArray):
 		if !item:
 			ret.message = "Not found"
 			ret.error = true
-		elif item.get_metadata(0) == "folder":
+		elif item.get_metadata(0).type == "folder":
 			item.select(0)
 		else:
 			ret.message = arg[1] + " is not a directory."
@@ -96,17 +107,9 @@ func _on_prompt_text_submitted(new_text: String):
 	editor.text += expression.get_error_text() + "\n"
 	return
 
-func get_data():
-	return "cosa";
-
-func evaluate():
+func evaluate(sub_script:String):
 	var script = GDScript.new()
-	script.set_source_code("func eval(node):
-				for i in range(1,3):
-					print(node.get_data())
-					if i ==2 :
-						print(\"si\")
-				return")
+	script.set_source_code("func eval(node):\n\tnode." + sub_script)
 	script.reload()
 	var obj = RefCounted.new()
 	obj.set_script(script)
@@ -114,7 +117,7 @@ func evaluate():
 
 func _on_tree_item_selected():
 	var item : TreeItem = tree.get_selected()
-	if item.get_metadata(0) == "folder":
+	if item.get_metadata(0).type == "folder":
 		current_dir = item
 		terminal.set_prompt(item.get_text(0))
 	pass

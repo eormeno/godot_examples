@@ -16,7 +16,6 @@
 script = ExtResource("1_kpi0e")
 
 [node name="Board" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(818, 500)
 texture = ExtResource("1_bvrql")
 
@@ -403,5 +402,4 @@ script = ExtResource("4_r8rts")
 [node name="PathTransition" type="Node2D" parent="pasillo_4"]
 script = ExtResource("5_isq2r")
 
-[connection signal="send_code" from="." to="player_2" method="_on_board_2_send_code"]
 [connection signal="item_selected" from="CanvasLayer/Control/VSplitContainer/MarginContainer/HSplitContainer/PanelContainer2/Tree" to="." method="_on_tree_item_selected"]

@@ -30,15 +30,16 @@ func _on_timer_timeout() -> void:
 	pass
 
 func add_elements(item: Dictionary, item_name : String = "/", parent_item : TreeItem = null):
+	if !item.has("file"):
+		item["file"] = ""
 	var icon : Texture2D = folder_icon if item.type == "folder" else document_icon
 	if !parent_item: parent_item = create_item()
 	parent_item.set_text(0, item_name)
 	parent_item.set_icon(0, icon)
-	parent_item.set_metadata(0, item.type)
-	if item.type == "script":
-		pass
+	parent_item.set_metadata(0, { type = item.type, file = item.file })
+		
 	for item_key_name in item:
-		if item_key_name == "type": continue
+		if item_key_name == "type" or item_key_name == "file": continue
 		var child_item : TreeItem = create_item(parent_item)
 		add_elements(item[item_key_name], item_key_name, child_item)
 	return parent_item
@@ -52,4 +53,6 @@ func load_storage(resource : Resource):
 	return ret
 
 func load_script(script_name : String):
-	var resource_path = storage. storage_resource.resource_name
+	var script_path = "res://iso_board/" + script_name
+	var file = FileAccess.open(script_path, FileAccess.READ)
+	return file.get_as_text()

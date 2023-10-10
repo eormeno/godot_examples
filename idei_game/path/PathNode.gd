@@ -97,6 +97,6 @@ func get_destination(dest_name : String):
 		if not trans is PathTransition:
 			continue
 		var t : PathTransition = trans
-		if t.destination.place_name == dest_name:
+		if t.destination and t.destination.place_name == dest_name:
 			return t.destination
 	return null

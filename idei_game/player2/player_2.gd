@@ -9,6 +9,7 @@ var debug_label : Label
 var target_path_node : PathNode
 var previous_nodes : Array[PathNode]
 var is_backing : bool
+var response_callable : Callable
 
 func _ready():
 	$AnimatedSprite2D.animation = "down"
@@ -30,17 +31,11 @@ func _on_timer_timeout() -> void:
 	pathNode.enable_destinations()
 	pass
 	
-func _on_board_2_send_code(code):
-	var destinations : Array[String] = pathNode.get_destinations()
-	for line in code:
-		if destinations.has(line):
-			set_target(line)
-	pass
-	
 func check_destination(target_name : String) -> bool:
 	return pathNode.get_destinations().has(target_name)
 	
-func set_target(target_name : String) -> bool:
+func set_target(target_name : String, callback : Callable) -> bool:
+	response_callable = callback
 	if target_name == PathNode.BACK_COMMAND:
 		var previous = previous_nodes.pop_front()
 		if not previous:
@@ -72,6 +67,8 @@ func _process(delta):
 		pathNode = target_path_node
 		pathNode.enable_destinations()
 		turn_back_node(true)
+		if response_callable:
+			response_callable.call()
 
 func turn_back_node(on : bool):
 	if not previous_nodes.is_empty():
