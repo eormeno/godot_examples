@@ -25,9 +25,8 @@ input_processer="*res://globals/InputProcesser.gd"
 
 [display]
 
-window/size/viewport_width=750
-window/size/viewport_height=750
-window/size/resizable=false
+window/size/viewport_width=1280
+window/size/viewport_height=720
 
 [editor_plugins]
 

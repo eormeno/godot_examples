@@ -88,7 +88,7 @@ func _on_command_execution_result(message: String, error : bool = false):
 			history.pop()
 			history.pop()
 		else:
-			history.append_text(message)
+			history.append_text(message + "\n")
 	input.clear()
 	input.editable = true
 	timeout_running = false

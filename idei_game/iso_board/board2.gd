@@ -71,6 +71,21 @@ func cmd_cd(arg : PackedStringArray):
 			ret.error = true
 	return ret
 
+func cmd_edit(arg : PackedStringArray):
+	var ret = { message = "", error = false }
+	if arg.size() != 2:
+		ret.message = "Este comando requiere el nombre del script que vas a editar."
+		ret.error = true
+		return ret
+	var script = find_item(arg[1])
+	if !script:
+		ret.message = "El script no fue encontrado en la carpeta actual."
+		ret.error = true
+		return ret
+	ret.message = "Ok, voy a editar " + arg[1]
+	return ret
+		
+
 func find_item(item_name : String):
 	for item in current_dir.get_children():
 		if item.get_text(0) == item_name:
