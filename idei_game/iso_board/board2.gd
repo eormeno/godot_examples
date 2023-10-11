@@ -15,10 +15,7 @@ func _ready():
 	terminal.connect("command_entered", _on_command_entered)
 	expression = Expression.new()
 	
-var last_callback_command_response
-
 func _on_command_entered(command : String, callback : Callable):
-	last_callback_command_response = callback
 	var tokens : PackedStringArray = command.split(" ")
 	if !self.has_method("cmd_" + tokens[0]):
 		var script_item : TreeItem = find_item(tokens[0])
@@ -27,7 +24,8 @@ func _on_command_entered(command : String, callback : Callable):
 			return
 		var script_file_name = script_item.get_metadata(0).file
 		var sub_script = tree.load_script(script_file_name)
-		evaluate(sub_script)
+		var result = await evaluate(sub_script)
+		callback.call(result, false)
 	else:
 		var ret = self.call("cmd_" + tokens[0], tokens)
 		callback.call(ret.message, ret.error)
@@ -38,17 +36,15 @@ func clear():
 	editor.clear()
 	
 func move_to(target : String, success_message : String = "Ok", error_message : String = ""):
-	var success : bool = player.set_target(target, _on_move_to_finished)
+	var success : bool
 	var message : String = success_message
+	success = player.set_target(target)
+	await player.target_reached
 	if not success:
 		message = error_message
 		if message.is_empty():
 			message = "'" + target + "' no está como posible destino"
 	return message
-
-func _on_move_to_finished():
-	last_callback_command_response.call("", false)
-	pass
 	
 func cmd_dir(_arg : PackedStringArray):
 	var list : String = ""
@@ -81,21 +77,6 @@ func find_item(item_name : String):
 			return item
 	return null
 
-func red():
-	return move_to("red")
-	
-func green():
-	return move_to("green")
-	
-func blue():
-	return move_to("blue")
-
-func yellow():
-	return move_to("yellow")
-
-func back():
-	return move_to("back", "Ok", "No se puede retroceder más.")
-
 func _on_prompt_text_submitted(new_text: String):
 	if new_text.is_empty():
 		return
@@ -109,15 +90,19 @@ func _on_prompt_text_submitted(new_text: String):
 
 func evaluate(sub_script:String):
 	var script = GDScript.new()
-	script.set_source_code("func eval(node):\n\tnode." + sub_script)
+	script.set_source_code("func eval(node):\n\tvar ret = await node." + sub_script + "\n\treturn ret")
 	script.reload()
 	var obj = RefCounted.new()
 	obj.set_script(script)
-	return obj.eval(self)
+	var ret = await obj.eval(self)
+	return ret
 
 func _on_tree_item_selected():
 	var item : TreeItem = tree.get_selected()
-	if item.get_metadata(0).type == "folder":
-		current_dir = item
-		terminal.set_prompt(item.get_text(0))
-	pass
+	current_dir = item
+	if item.get_metadata(0).type != "folder":
+		terminal.set_input(item.get_text(0))
+		current_dir = item.get_parent()
+	else:
+		terminal.set_input("")
+	terminal.set_prompt(tree.get_full_path(current_dir))

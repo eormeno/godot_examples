@@ -56,3 +56,13 @@ func load_script(script_name : String):
 	var script_path = "res://iso_board/" + script_name
 	var file = FileAccess.open(script_path, FileAccess.READ)
 	return file.get_as_text()
+	
+func get_full_path(item : TreeItem):
+	var ret = ""
+	if item.get_metadata(0).type == "folder":
+		ret = item.get_text(0)
+	var p = item.get_parent()
+	while p:
+		ret = p.get_text(0) + ret
+		p = p.get_parent()
+	return ret

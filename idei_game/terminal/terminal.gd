@@ -28,6 +28,11 @@ func set_prompt(directory : String):
 	var dir = directory.lstrip(' ').rstrip(' ')
 	prompt.text = dir + default_prompt
 	
+func set_input(script_name : String):
+	input.text = script_name
+	input.caret_column = script_name.length()
+	input.grab_focus()
+	
 func _process(delta):
 	if timeout_running:
 		timeout_counter += delta
@@ -43,6 +48,7 @@ func _process(delta):
 		if current_history_shown < 0:
 			current_history_shown = 0
 		input.text = commands_history[current_history_shown]
+		input.caret_column = input.text.length()
 	if Input.is_action_just_pressed("ui_down"):
 		current_history_shown += 1
 		if current_history_shown >= commands_history.size():
@@ -70,8 +76,6 @@ func _on_command_execution_result(message: String, error : bool = false):
 	history.append_text(last_command_entered)
 	history.append_text("\n")
 	if not message.is_empty():
-#		var space:String = "".lpad(prompt.text.length())
-#		history.append_text(space)
 		if error:
 			history.push_bgcolor(Color.DARK_RED)
 			history.push_color(Color.WHITE_SMOKE)
