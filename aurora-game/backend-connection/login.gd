@@ -20,7 +20,7 @@ func _on_login_button():
 	var headers = ["Content-Type: application/json"]
 	$HTTPRequest.request(LOGIN_URL, headers, HTTPClient.METHOD_POST, json)
 
-func _on_request_completed(result, response_code, headers, body):
+func _on_request_completed(_result, _response_code, _headers, body):
 	var json : Dictionary = JSON.parse_string(body.get_string_from_utf8())
 	print(JSON.stringify(json, "\t"))
 	if json.has("errors"):
@@ -33,6 +33,8 @@ func _on_request_completed(result, response_code, headers, body):
 
 func _on_connected():
 	%connection_status.text = "connected..."
+	%LoginButton.disabled = false
 	
 func _on_disconnected():
 	%connection_status.text = "disconnected..."
+	%LoginButton.disabled = true

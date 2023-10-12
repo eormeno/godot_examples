@@ -11,7 +11,5 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6tslb")
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
-
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
+use_threads = true
