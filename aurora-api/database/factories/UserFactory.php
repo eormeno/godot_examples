@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Resource;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
@@ -29,16 +30,6 @@ class UserFactory extends Factory
             'password' => Hash::make(env('FAKE_USERS_PASSWORD')),
             'remember_token' => Str::random(10),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 
     // create the admin user whose information is taken from the .env file
@@ -78,7 +69,6 @@ class UserFactory extends Factory
             'password' => Hash::make($attributes['password']),
         ]);
     }
-
     public function testAdmin(): static
     {
         return $this->state(
@@ -91,7 +81,6 @@ class UserFactory extends Factory
             ]
         );
     }
-
     public function testUser(): static
     {
         return $this->state(
