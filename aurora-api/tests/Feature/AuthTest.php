@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Resource;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,7 +22,7 @@ class AuthTest extends TestCase
             'password' => env('TEST_USER_PASSWORD'),
             'password_confirmation' => env('TEST_USER_PASSWORD')
         ]);
-        $response->assertStatus(200)->assertJson(['user' => true, 'token' => true]);
+        $response->assertStatus(200)->assertJson(['user' => true, 'folder' => true, 'token' => true]);
     }
 
     public function testUserCanLogin()
@@ -43,7 +44,11 @@ class AuthTest extends TestCase
 
     public function getLoginResponse()
     {
-        User::factory()->testAdmin()->create();
+        $user = User::factory()->testAdmin()->create();
+        $folder = Resource::factory()->folder()->ownedBy($user->id)->create();
+        $user->update(['resource_id' => $folder->id]);
+        $user->save();
+
         $response = $this->post('/api/login', [
             'email' => env('TEST_ADMIN_USER_EMAIL'),
             'password' => env('TEST_ADMIN_USER_PASSWORD')

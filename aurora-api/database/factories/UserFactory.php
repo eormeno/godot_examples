@@ -21,11 +21,13 @@ class UserFactory extends Factory
     public function definition(): array
     {
         fake()->seed(0);
+        $fake_user_name = fake()->unique()->userName();
+        $fake_email = $fake_user_name . '@' . fake()->safeEmailDomain();
         return [
-            'user_name' => fake()->unique()->userName(),
+            'user_name' => $fake_user_name,
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
-            'email' => fake()->unique()->safeEmail(),
+            'email' => $fake_email,
             'email_verified_at' => now(),
             'password' => Hash::make(env('FAKE_USERS_PASSWORD')),
             'remember_token' => Str::random(10),

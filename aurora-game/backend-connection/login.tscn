@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" path="res://backend-connection/login.gd" id="1_uqua1"]
 
-[node name="login" type="CenterContainer"]
+[node name="login" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,18 +11,25 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_uqua1")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+offset_left = 390.0
+offset_top = 248.0
+offset_right = 890.0
+offset_bottom = 472.0
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 theme_type_variation = &"BigPanelContainer"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="connection_status" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer5"]
+[node name="connection_status" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -31,17 +39,17 @@ text = " "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "usuario:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="user" type="LineEdit" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="user" type="LineEdit" parent="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -49,17 +57,17 @@ placeholder_text = "Su nombre de usuario"
 flat = true
 caret_blink = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "clave:"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="password" type="LineEdit" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="password" type="LineEdit" parent="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -67,10 +75,10 @@ placeholder_text = "Su clave"
 secret = true
 flat = true
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="message" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer4"]
+[node name="message" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -80,10 +88,10 @@ text = " "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="LoginButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="LoginButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -91,4 +99,5 @@ size_flags_horizontal = 6
 disabled = true
 text = "Ingresar"
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+[node name="HTTPRequest" type="HTTPRequest" parent="CenterContainer"]
+unique_name_in_owner = true

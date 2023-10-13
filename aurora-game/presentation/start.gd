@@ -5,12 +5,14 @@ extends Control
 @export var laboratory_logo_packed_scene : PackedScene
 @export var movert_logo_packed_scene : PackedScene
 @export var tutorial_packed_scene : PackedScene
+@export var login_packed_scene : PackedScene
 
 var background_scene : Node
 var idei_logo_scene : Node
 var laboratory_logo_scene : Node
 var movert_logo_scene : Node
 var tutorial_scene : Node
+var login_scene : Node
 
 func _on_display_background_state_entered():
 	if not background_scene:
@@ -60,3 +62,12 @@ func _on_tutorial_scene_state_entered():
 		tutorial_scene = tutorial_packed_scene.instantiate()
 #		tutorial_scene.connect("finished", _on_finished_scene)
 	add_child(tutorial_scene)
+
+func _on_login_scene_state_entered():
+	if not login_scene:
+		login_scene = login_packed_scene.instantiate()
+		login_scene.connect("finished", _on_finished_scene)
+	$CanvasLayer.add_child(login_scene)
+
+func _on_login_scene_state_exited():
+	$CanvasLayer.remove_child(login_scene)

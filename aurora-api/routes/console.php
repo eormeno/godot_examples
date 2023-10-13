@@ -13,7 +13,27 @@ Artisan::command('fresh', function () {
     }
 })->describe('Fresh database');
 
+// an artisan command that receves a resource id and returns it's children
+Artisan::command('resource {id}', function ($id) {
+    $resource = User::find($id)->userFolder;
+    $this->table(['ID', 'Name', 'Type'], $resource->children->map(function ($child) {
+        return [
+            $child->id,
+            $child->name,
+            $child->type
+        ];
+    }));
+})->purpose('Display resource children');
+
 Artisan::command('users', function () {
-    $users = User::all(['email', 'is_admin', 'is_teacher', 'is_student'])->toArray();
-    $this->table(['email', 'is_admin', 'is_teacher', 'is_student'], $users);
+    // get all users including the user's resource folder name
+    $users = User::with('userFolder')->get();
+    $this->table(['ID', 'Email', 'Folder Id', 'Folder Name'], $users->map(function ($user) {
+        return [
+            $user->id,
+            $user->email,
+            $user->userFolder->id,
+            $user->userFolder->name
+        ];
+    }));
 })->purpose('Display users');

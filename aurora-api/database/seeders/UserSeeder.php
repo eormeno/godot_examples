@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         }
 
         User::factory()->admin()->create();
-        User::factory()->teacher()->count(4)->create();
-        User::factory()->student()->count(4)->create();
+        User::factory()->teacher()->count(1)->create();
+        User::factory()->student()->count(2)->create();
     }
 }

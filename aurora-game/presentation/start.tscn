@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cpuom75b8ur25"]
+[gd_scene load_steps=13 format=3 uid="uid://cpuom75b8ur25"]
 
 [ext_resource type="Script" path="res://presentation/start.gd" id="1_oh8wq"]
 [ext_resource type="PackedScene" uid="uid://diit6d271xdsm" path="res://ui/presentation_video.tscn" id="2_rpocj"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_o4veu"]
 [ext_resource type="PackedScene" uid="uid://xes40px0dcqc" path="res://ui/laboratory.tscn" id="5_6fivq"]
 [ext_resource type="PackedScene" uid="uid://n23uw77trmcy" path="res://iso_board/board2.tscn" id="6_8d7l1"]
+[ext_resource type="PackedScene" uid="uid://dprsoitu2inq8" path="res://backend-connection/login.tscn" id="7_7p0ks"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="8_y2qdp"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="9_3kp6b"]
 
@@ -21,6 +22,7 @@ idei_logo_packed_scene = ExtResource("3_ukvn0")
 laboratory_logo_packed_scene = ExtResource("5_6fivq")
 movert_logo_packed_scene = ExtResource("4_iwxwq")
 tutorial_packed_scene = ExtResource("6_8d7l1")
+login_packed_scene = ExtResource("7_7p0ks")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -34,62 +36,72 @@ initial_state = NodePath("ParallelState")
 [node name="ParallelState" type="Node" parent="StateChart/Root"]
 script = ExtResource("8_y2qdp")
 
-[node name="CompoundState2" type="Node" parent="StateChart/Root/ParallelState"]
+[node name="Background group" type="Node" parent="StateChart/Root/ParallelState"]
 script = ExtResource("3_tm6ux")
 initial_state = NodePath("Display background")
 
-[node name="Display background" type="Node" parent="StateChart/Root/ParallelState/CompoundState2"]
+[node name="Display background" type="Node" parent="StateChart/Root/ParallelState/Background group"]
 script = ExtResource("4_o4veu")
 
-[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/CompoundState2/Display background"]
+[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/Background group/Display background"]
 script = ExtResource("9_3kp6b")
 to = NodePath("../../Stop background")
 event = &"stop background"
 
-[node name="Stop background" type="Node" parent="StateChart/Root/ParallelState/CompoundState2"]
+[node name="Stop background" type="Node" parent="StateChart/Root/ParallelState/Background group"]
 script = ExtResource("4_o4veu")
 
-[node name="CompoundState" type="Node" parent="StateChart/Root/ParallelState"]
+[node name="Logos presentation group" type="Node" parent="StateChart/Root/ParallelState"]
 script = ExtResource("3_tm6ux")
 initial_state = NodePath("Shows idei")
 
-[node name="Shows idei" type="Node" parent="StateChart/Root/ParallelState/CompoundState"]
+[node name="Shows idei" type="Node" parent="StateChart/Root/ParallelState/Logos presentation group"]
 script = ExtResource("4_o4veu")
 
-[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/CompoundState/Shows idei"]
+[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/Logos presentation group/Shows idei"]
 script = ExtResource("9_3kp6b")
 to = NodePath("../../Shows GEL")
 event = &"finished"
 
-[node name="Shows GEL" type="Node" parent="StateChart/Root/ParallelState/CompoundState"]
+[node name="Shows GEL" type="Node" parent="StateChart/Root/ParallelState/Logos presentation group"]
 script = ExtResource("4_o4veu")
 
-[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/CompoundState/Shows GEL"]
+[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/Logos presentation group/Shows GEL"]
 script = ExtResource("9_3kp6b")
 to = NodePath("../../Shows Project")
 event = &"finished"
 
-[node name="Shows Project" type="Node" parent="StateChart/Root/ParallelState/CompoundState"]
+[node name="Shows Project" type="Node" parent="StateChart/Root/ParallelState/Logos presentation group"]
 script = ExtResource("4_o4veu")
 
-[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/CompoundState/Shows Project"]
+[node name="Transition" type="Node" parent="StateChart/Root/ParallelState/Logos presentation group/Shows Project"]
 script = ExtResource("9_3kp6b")
 to = NodePath("../../../../Tutorial level group")
 event = &"finished"
 
 [node name="Tutorial level group" type="Node" parent="StateChart/Root"]
 script = ExtResource("3_tm6ux")
-initial_state = NodePath("Tutorial scene")
+initial_state = NodePath("Login scene")
+
+[node name="Login scene" type="Node" parent="StateChart/Root/Tutorial level group"]
+script = ExtResource("4_o4veu")
+
+[node name="Transition" type="Node" parent="StateChart/Root/Tutorial level group/Login scene"]
+script = ExtResource("9_3kp6b")
+to = NodePath("../../Tutorial scene")
+event = &"finished"
 
 [node name="Tutorial scene" type="Node" parent="StateChart/Root/Tutorial level group"]
 script = ExtResource("4_o4veu")
 
-[connection signal="state_entered" from="StateChart/Root/ParallelState/CompoundState2/Display background" to="." method="_on_display_background_state_entered"]
-[connection signal="state_entered" from="StateChart/Root/ParallelState/CompoundState2/Stop background" to="." method="_on_stop_background_state_entered"]
-[connection signal="state_entered" from="StateChart/Root/ParallelState/CompoundState/Shows idei" to="." method="_on_shows_idei_state_entered"]
-[connection signal="state_exited" from="StateChart/Root/ParallelState/CompoundState/Shows idei" to="." method="_on_shows_idei_state_exited"]
-[connection signal="state_entered" from="StateChart/Root/ParallelState/CompoundState/Shows GEL" to="." method="_on_shows_gel_state_entered"]
-[connection signal="state_exited" from="StateChart/Root/ParallelState/CompoundState/Shows GEL" to="." method="_on_shows_gel_state_exited"]
-[connection signal="state_entered" from="StateChart/Root/ParallelState/CompoundState/Shows Project" to="." method="_on_shows_project_state_entered"]
-[connection signal="state_exited" from="StateChart/Root/ParallelState/CompoundState/Shows Project" to="." method="_on_shows_project_state_exited"]
+[connection signal="state_entered" from="StateChart/Root/ParallelState/Background group/Display background" to="." method="_on_display_background_state_entered"]
+[connection signal="state_entered" from="StateChart/Root/ParallelState/Background group/Stop background" to="." method="_on_stop_background_state_entered"]
+[connection signal="state_entered" from="StateChart/Root/ParallelState/Logos presentation group/Shows idei" to="." method="_on_shows_idei_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/ParallelState/Logos presentation group/Shows idei" to="." method="_on_shows_idei_state_exited"]
+[connection signal="state_entered" from="StateChart/Root/ParallelState/Logos presentation group/Shows GEL" to="." method="_on_shows_gel_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/ParallelState/Logos presentation group/Shows GEL" to="." method="_on_shows_gel_state_exited"]
+[connection signal="state_entered" from="StateChart/Root/ParallelState/Logos presentation group/Shows Project" to="." method="_on_shows_project_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/ParallelState/Logos presentation group/Shows Project" to="." method="_on_shows_project_state_exited"]
+[connection signal="state_entered" from="StateChart/Root/Tutorial level group/Login scene" to="." method="_on_login_scene_state_entered"]
+[connection signal="state_exited" from="StateChart/Root/Tutorial level group/Login scene" to="." method="_on_login_scene_state_exited"]
 [connection signal="state_entered" from="StateChart/Root/Tutorial level group/Tutorial scene" to="." method="_on_tutorial_scene_state_entered"]
