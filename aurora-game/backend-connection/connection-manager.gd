@@ -1,9 +1,11 @@
-extends Control
+class_name ConnectionManager extends Control
 
 signal connected
 signal disconnected
 
-const PING_URL:String = "http://127.0.0.1:8000/api/ping"
+const BASE_URL : String = "http://127.0.0.1:8000/api/"
+const PING_URL:String = BASE_URL + "ping"
+
 const CONNECTION_TIMEOUT : float = 2
 var timeout_counter : float = 0
 

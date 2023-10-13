@@ -2,14 +2,13 @@ extends BaseUI
 
 signal logged_user(user:Dictionary)
 
-const PING_URL:String = "http://127.0.0.1:8000/api/ping"
 const LOGIN_URL:String = "http://127.0.0.1:8000/api/login"
 const RESOURCES_URL:String = "http://127.0.0.1:8000/api/resources"
 
 func _ready():
 	super._ready()
-	ping.connected.connect(_on_connected)
-	ping.disconnected.connect(_on_disconnected)
+	connection.connected.connect(_on_connected)
+	connection.disconnected.connect(_on_disconnected)
 	%user.grab_focus()
 	%user.text = persist_user_data.get_data("login.email", "")
 	%password.text = persist_user_data.get_data("login.password", "")

@@ -22,7 +22,7 @@ config/icon="res://assets/icon.svg"
 global_signals="*res://globals/Signals.tscn"
 persist_user_data="*res://globals/UserData.tscn"
 input_processer="*res://globals/InputProcesser.gd"
-ping="*res://backend-connection/ping.tscn"
+connection="*res://backend-connection/connection-manager.tscn"
 
 [display]
 
