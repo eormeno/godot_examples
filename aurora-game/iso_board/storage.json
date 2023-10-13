@@ -1,9 +1,38 @@
 {	"type" : "folder",
-	"tutorial" : {	"type": "folder",
+	"tutorial" : {
+		"type": "folder",
 		"red"		: { "type" : "script", "file" : "0001.txt"  },
 		"green"		: { "type" : "script", "file" : "0002.txt"  },
 		"blue"		: { "type" : "script", "file" : "0003.txt"  },
 		"yellow"	: { "type" : "script", "file" : "0004.txt"  },
 		"back"		: { "type" : "script", "file" : "0005.txt"  },
+	}
+}
+{
+	"folder": {
+		"tutorial": {
+			"back": {
+				"content": "move_to(\"back\")",
+				"type": "file"
+			},
+			"blue": {
+				"content": "move_to(\"blue\")",
+				"type": "file"
+			},
+			"green": {
+				"content": "move_to(\"green\")",
+				"type": "file"
+			},
+			"red": {
+				"content": "move_to(\"red\")",
+				"type": "file"
+			},
+			"type": "folder",
+			"yellow": {
+				"content": "move_to(\"yellow\")",
+				"type": "file"
+			}
+		},
+		"type": "folder"
 	}
 }

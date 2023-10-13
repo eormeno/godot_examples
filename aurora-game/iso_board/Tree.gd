@@ -8,18 +8,25 @@ var storage : Dictionary = {}
 var root : TreeItem
 
 func _ready():
+	connection.get_user_resources(_on_user_resources_response)
 	storage_resource = load("res://iso_board/storage.json")
 	storage = load_storage(storage_resource)
 	if !storage:
 		printerr("Storage config file not defined")
 		return
 #	print(JSON.stringify(storage, '\t'))
-	root = add_elements(storage)
-	add_timer()
+#	root = add_elements(storage)
+#	add_timer()
 	
+func _on_user_resources_response(response):
+	print(JSON.stringify(response, '\t'))
+#	var res : Dictionary = JSON.parse_string(response)
+#	root = add_elements(res)
+	pass
+
 func add_timer():
 	var timer := Timer.new()
-	timer.wait_time = 1.0
+	timer.wait_time = 3.0
 	timer.one_shot = true
 	timer.connect("timeout", _on_timer_timeout)
 	add_child(timer)

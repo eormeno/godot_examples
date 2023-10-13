@@ -7,16 +7,15 @@ use Illuminate\Http\Request;
 
 class ResourceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
+        $request_id = request()->header('Request-ID');
         $user = User::with('userFolder')->where('id', '=', auth()->user()->id)->first();
         $folderTree = $this->getFolderTree($user->userFolder);
-
         return response()->json([
             'folder' => $folderTree
+        ])->withHeaders([
+            'Request-ID' => $request_id,
         ]);
     }
 

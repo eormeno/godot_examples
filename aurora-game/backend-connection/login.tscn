@@ -98,6 +98,3 @@ layout_mode = 2
 size_flags_horizontal = 6
 disabled = true
 text = "Ingresar"
-
-[node name="HTTPRequest" type="HTTPRequest" parent="CenterContainer"]
-unique_name_in_owner = true

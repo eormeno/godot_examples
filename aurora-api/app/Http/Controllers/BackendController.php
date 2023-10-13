@@ -5,15 +5,21 @@ class BackendController extends Controller
 {
     public function ping()
     {
-        return [
-            'message' => 'pong'
-        ];
+        $request_id = request()->header('Request-ID');
+        return response()->json([
+            'pong' => true
+        ])->withHeaders([
+            'Request-ID' => $request_id,
+        ]);
     }
 
     public function serverTime()
     {
-        return [
+        $request_id = request()->header('Request-ID');
+        return response()->json([
             'server_time' => now()
-        ];
+        ])->withHeaders([
+            'Request-ID' => $request_id,
+        ]);
     }
 }
