@@ -23,22 +23,14 @@ class ResourceController extends Controller
     private function getFolderTree($folder)
     {
         $folderTree = [];
-        $folderTree['name'] = $folder->name;
         $folderTree['type'] = $folder->type;
-        $folderTree['children'] = [];
-
-        foreach ($folder->children as $child) {
-            if ($child->type === 'folder') {
-                $folderTree['children'][] = $this->getFolderTree($child);
-            } else {
-                $folderTree['children'][] = [
-                    'name' => $child->name,
-                    'type' => $child->type,
-                    'content' => $child->content
-                ];
+        if ($folder->type !== 'folder') {
+            $folderTree['content'] = $folder->content;
+        } else {
+            foreach ($folder->children as $child) {
+                $folderTree[$child->name] = $this->getFolderTree($child);
             }
         }
-
         return $folderTree;
     }
 

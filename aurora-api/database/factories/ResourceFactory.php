@@ -11,47 +11,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ResourceFactory extends Factory
 {
-    const TEMPLATE_FOLDER_TREE = [
-        'children' => [
-            [
-                'name' => 'tutorial',
-                'type' => 'folder',
-                'children' => [
-                    [
-                        'name' => '01-introduction',
-                        'type' => 'folder',
-                        'children' => [
-                            [
-                                'name' => '01-01-introduction',
-                                'type' => 'file',
-                                'content' => 'This is the first file in the tutorial.',
-                            ],
-                            [
-                                'name' => '01-02-introduction',
-                                'type' => 'file',
-                                'content' => 'This is the second file in the tutorial.',
-                            ],
-                        ],
-                    ],
-                    [
-                        'name' => '02-advanced',
-                        'type' => 'folder',
-                        'children' => [
-                            [
-                                'name' => '02-01-advanced',
-                                'type' => 'file',
-                                'content' => 'This is the first file in the advanced section of the tutorial.',
-                            ],
-                            [
-                                'name' => '02-02-advanced',
-                                'type' => 'file',
-                                'content' => 'This is the second file in the advanced section of the tutorial.',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ],
+    const TEMPLATE_ALT = [
+        "type" => "folder",
+        "tutorial" => [
+            "type"      => "folder",
+            "red"       => [ "type" => "script", "content" => "move_to(\"red\")"    ],
+            "green"     => [ "type" => "script", "content" => "move_to(\"green\")"  ],
+            "blue"      => [ "type" => "script", "content" => "move_to(\"blue\")"   ],
+            "yellow"    => [ "type" => "script", "content" => "move_to(\"yellow\")" ],
+            "back"      => [ "type" => "script", "content" => "move_to(\"back\")"   ],
+        ]
     ];
 
     /**
@@ -62,7 +31,7 @@ class ResourceFactory extends Factory
         $folder = Resource::factory()->folder()->named($user->user_name)->ownedBy($user->id)->create();
         $user->update(['resource_id' => $folder->id]);
         $user->save();
-        $this->createResourceTree($folder, self::TEMPLATE_FOLDER_TREE);
+        $this->createResourceTree($folder, self::TEMPLATE_ALT);
         return $this;
     }
 
@@ -71,12 +40,15 @@ class ResourceFactory extends Factory
      */
     public function createResourceTree(Resource $parent, array $tree): void
     {
-        foreach ($tree['children'] as $child) {
-            if ($child['type'] === 'file') {
-                Resource::factory()->file($child['content'])->named($child['name'])->childOf($parent)->create();
+        foreach ($tree as $name => $child) {
+            if ($name === 'type') {
                 continue;
             }
-            $resource = Resource::factory()->{$child['type']}()->named($child['name'])->childOf($parent)->create();
+            if ($child['type'] === 'script') {
+                Resource::factory()->file($child['content'])->named($name)->childOf($parent)->create();
+                continue;
+            }
+            $resource = Resource::factory()->{$child['type']}()->named($name)->childOf($parent)->create();
             $this->createResourceTree($resource, $child);
         }
     }

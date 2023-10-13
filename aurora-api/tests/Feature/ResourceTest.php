@@ -20,6 +20,9 @@ class ResourceTest extends TestCase
             'Accept' => 'application/json'
         ];
         $resourcesResponse = $this->withHeaders($headers)->get('/api/resources');
+        // stringify the response content to json
+        // $encoded = json_encode($resourcesResponse['folder'], JSON_PRETTY_PRINT);
+        // echo($encoded);
         $resourcesResponse->assertStatus(200)->assertJson(['folder' => true]);
     }
 
