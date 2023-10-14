@@ -15,3 +15,10 @@ func get_resource(id : int):
 	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_GET)
 	var response : Dictionary = await request.completed
 	return response.resource
+
+func update_resource_content(id : int, new_content : String):
+	var route = RESOURCES_URL + "/" + str(id)
+	var json = JSON.stringify({ content = new_content })
+	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_PUT, json)
+	var response : Dictionary = await request.completed
+	return response.resource

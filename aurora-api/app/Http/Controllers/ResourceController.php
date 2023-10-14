@@ -59,9 +59,15 @@ class ResourceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Resource $resource)
     {
-        //
+        $request_id = request()->header('Request-ID');
+        $resource->update($request->all());
+        return response()->json([
+            'resource' => $resource
+        ])->withHeaders([
+            'Request-ID' => $request_id,
+        ]);
     }
 
     /**

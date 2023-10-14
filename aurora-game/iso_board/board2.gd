@@ -1,15 +1,14 @@
 extends Node2D
 
-var editor : CodeEdit
 var player : Area2D
 var expression : Expression
 var tree : Tree
 var terminal : Terminal
 var current_dir : TreeItem
+var current_script_id : int
 
 func _ready():
 	player = find_child("player_2")
-	editor = find_child("console")
 	tree = find_child("Tree")
 	terminal = find_child("terminal")
 	terminal.connect("command_entered", _on_command_entered)
@@ -30,14 +29,9 @@ func _on_command_entered(command : String, callback : Callable):
 		var result = await evaluate(resource.content)
 		callback.call(result.message, result.status)
 	else:
-		var ret = self.call("cmd_" + tokens[0], tokens)
+		var ret = await self.call("cmd_" + tokens[0], tokens)
 		callback.call(ret.message, ret.status)
 
-func clear():
-	if editor.get_line_count() == 0:
-		return
-	editor.clear()
-	
 func move_to(target : String):
 	var success : bool
 	var ret = { message = "", status = Terminal.SUCCESS }
@@ -75,17 +69,38 @@ func cmd_cd(arg : PackedStringArray):
 	return ret
 
 func cmd_edit(arg : PackedStringArray):
-	var ret = { message = "", status = Terminal.SUCCESS }
+	var ret = { message = "", status = Terminal.ERROR }
 	if arg.size() != 2:
 		ret.message = "El comando " + arg[0] + " requiere el nombre del script"
-		ret.status = Terminal.ERROR
 		return ret
-	var script = find_item(arg[1])
-	if !script:
+	var item = find_item(arg[1])
+	if !item:
 		ret.message = "No encontré el script " + arg[1] + " en la carpeta actual"
-		ret.status = Terminal.ERROR
 		return ret
-	ret.message = "Ok, voy a editar " + arg[1]
+	var item_info = item.get_metadata(0)
+	if item_info.type != "file":
+		ret.message = arg[1] + " se una carpeta. No se puede editar"
+		return ret
+		
+	current_script_id = item_info.id
+	
+	var resource = await connection.get_resource(current_script_id)
+	%code_editor.text = resource.content
+	%tab_container.current_tab = 1
+	ret.status = Terminal.SUCCESS
+	return ret
+	
+func cmd_save(arg : PackedStringArray):
+	var ret = { message = "", status = Terminal.ERROR }
+	if arg.size() != 1:
+		ret.message = "El comando " + arg[0] + " no requiere ningún parámetro"
+		return ret
+	if current_script_id == 0:
+		ret.message = "El comando " + arg[0] + " guarda el script que se está editando"
+		return ret
+	var resource = await connection.update_resource_content(current_script_id, %code_editor.text)
+	ret.message = "Los cambios fueron guardados"
+	ret.status = Terminal.SUCCESS
 	return ret
 
 func find_item(item_name : String):
@@ -94,16 +109,16 @@ func find_item(item_name : String):
 			return item
 	return null
 
-func _on_prompt_text_submitted(new_text: String):
-	if new_text.is_empty():
-		return
-	var _error = expression.parse(new_text)
-	var result = expression.execute([], self)
-	if not expression.has_execute_failed():
-		editor.text = editor.text + new_text + ": " + result + "\n"
-		return
-	editor.text += expression.get_error_text() + "\n"
-	return
+#func _on_prompt_text_submitted(new_text: String):
+#	if new_text.is_empty():
+#		return
+#	var _error = expression.parse(new_text)
+#	var result = expression.execute([], self)
+#	if not expression.has_execute_failed():
+#		editor.text = editor.text + new_text + ": " + result + "\n"
+#		return
+#	editor.text += expression.get_error_text() + "\n"
+#	return
 
 func evaluate(sub_script:String):
 	var script = GDScript.new()

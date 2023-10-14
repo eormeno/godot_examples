@@ -34,6 +34,25 @@ class ResourceTest extends TestCase
         $resourcesResponse->assertStatus(200)->assertJson(['resource' => true]);
     }
 
+    public function testUpdateOneResource() {
+        $loginResponse = $this->getLoginResponse();
+        $headers = [
+            'Authorization' => 'Bearer ' . $loginResponse['token'],
+            'Accept' => 'application/json'
+        ];
+        $resourcesResponse = $this->withHeaders($headers)->put('/api/resources/3', [
+            'name' => 'other_name',
+            'content' => 'test resource with other content',
+        ]);
+        $resourcesResponse->assertStatus(200)->assertJson(['resource' => true]);
+        // assert that the resource was updated in the database
+        $this->assertDatabaseHas('resources', [
+            'id' => 3,
+            'name' => 'other_name',
+            'content' => 'test resource with other content',
+        ]);
+    }
+
     public function getLoginResponse()
     {
         $user = User::factory()->testAdmin()->create();
