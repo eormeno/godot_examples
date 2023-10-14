@@ -26,7 +26,8 @@ func _on_command_entered(command : String, callback : Callable):
 		if item_info.type != "file":
 			callback.call("No puedes ejecutar una carpeta", Terminal.ERROR)
 			return
-		var result = await evaluate(item_info.content)
+		var resource = await connection.get_resource(item_info.id)
+		var result = await evaluate(resource.content)
 		callback.call(result.message, result.status)
 	else:
 		var ret = self.call("cmd_" + tokens[0], tokens)

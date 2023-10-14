@@ -19,9 +19,7 @@ config/icon="res://assets/icon.svg"
 
 [autoload]
 
-global_signals="*res://globals/Signals.tscn"
 persist_user_data="*res://globals/UserData.tscn"
-input_processer="*res://globals/InputProcesser.gd"
 connection="*res://backend-connection/connection-manager.tscn"
 
 [display]
