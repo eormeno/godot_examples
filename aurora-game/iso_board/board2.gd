@@ -20,31 +20,33 @@ func _on_command_entered(command : String, callback : Callable):
 	if !self.has_method("cmd_" + tokens[0]):
 		var script_item : TreeItem = find_item(tokens[0])
 		if !script_item:
-			callback.call("Not found", true)
+			callback.call("No encontré ese comando", Terminal.ERROR)
 			return
-		var script_file_name = script_item.get_metadata(0).file
-		var sub_script = tree.load_script(script_file_name)
-		var result = await evaluate(sub_script)
-		callback.call(result, false)
+		var item_info = script_item.get_metadata(0)
+		if item_info.type != "file":
+			callback.call("No puedes ejecutar una carpeta", Terminal.ERROR)
+			return
+		var result = await evaluate(item_info.content)
+		callback.call(result.message, result.status)
 	else:
 		var ret = self.call("cmd_" + tokens[0], tokens)
-		callback.call(ret.message, ret.error)
+		callback.call(ret.message, ret.status)
 
 func clear():
 	if editor.get_line_count() == 0:
 		return
 	editor.clear()
 	
-func move_to(target : String, success_message : String = "Ok", error_message : String = ""):
+func move_to(target : String):
 	var success : bool
-	var message : String = success_message
+	var ret = { message = "", status = Terminal.SUCCESS }
 	success = player.set_target(target)
-	await player.target_reached
-	if not success:
-		message = error_message
-		if message.is_empty():
-			message = "'" + target + "' no está como posible destino"
-	return message
+	if !success:
+		ret.message = "Ahora no puedo realizar esa acción"
+		ret.status = Terminal.WARNING
+	else:
+		await player.target_reached
+	return ret
 	
 func cmd_dir(_arg : PackedStringArray):
 	var list : String = ""
@@ -54,7 +56,7 @@ func cmd_dir(_arg : PackedStringArray):
 	
 func cmd_cd(arg : PackedStringArray):
 	var path : String = arg[1]
-	var ret = { message = "", error = false }
+	var ret = { message = "", status = Terminal.SUCCESS }
 	if path == "..":
 		var parent = current_dir.get_parent()
 		if parent:
@@ -62,29 +64,28 @@ func cmd_cd(arg : PackedStringArray):
 	else:
 		var item = find_item(path)
 		if !item:
-			ret.message = "Not found"
-			ret.error = true
+			ret.message = "No encontré esa carpeta"
+			ret.status = Terminal.ERROR
 		elif item.get_metadata(0).type == "folder":
 			item.select(0)
 		else:
-			ret.message = arg[1] + " is not a directory."
-			ret.error = true
+			ret.message = arg[1] + " no es una carpeta"
+			ret.status = Terminal.ERROR
 	return ret
 
 func cmd_edit(arg : PackedStringArray):
-	var ret = { message = "", error = false }
+	var ret = { message = "", status = Terminal.SUCCESS }
 	if arg.size() != 2:
-		ret.message = "Este comando requiere el nombre del script que vas a editar."
-		ret.error = true
+		ret.message = "El comando " + arg[0] + " requiere el nombre del script"
+		ret.status = Terminal.ERROR
 		return ret
 	var script = find_item(arg[1])
 	if !script:
-		ret.message = "El script no fue encontrado en la carpeta actual."
-		ret.error = true
+		ret.message = "No encontré el script " + arg[1] + " en la carpeta actual"
+		ret.status = Terminal.ERROR
 		return ret
 	ret.message = "Ok, voy a editar " + arg[1]
 	return ret
-		
 
 func find_item(item_name : String):
 	for item in current_dir.get_children():

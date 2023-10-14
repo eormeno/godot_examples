@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Resource;
 use Illuminate\Http\Request;
 
 class ResourceController extends Controller
@@ -22,6 +23,7 @@ class ResourceController extends Controller
     private function getFolderTree($folder)
     {
         $folderTree = [];
+        $folderTree['id'] = $folder->id;
         $folderTree['type'] = $folder->type;
         if ($folder->type !== 'folder') {
             $folderTree['content'] = $folder->content;
@@ -44,9 +46,14 @@ class ResourceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Resource $resource)
     {
-        //
+        $request_id = request()->header('Request-ID');
+        return response()->json([
+            'resource' => $resource
+        ])->withHeaders([
+            'Request-ID' => $request_id,
+        ]);
     }
 
     /**

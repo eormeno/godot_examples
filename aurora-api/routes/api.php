@@ -13,6 +13,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/resources', [ResourceController::class, 'index']);
+    Route::post('/resources/{resource}', [ResourceController::class, 'store']);
+    Route::get('/resources/{resource}', [ResourceController::class, 'show']);
+    Route::put('/resources/{resource}', [ResourceController::class, 'update']);
+    Route::delete('/resources/{resource}', [ResourceController::class, 'destroy']);
 });
 
 Route::post('/register', [AuthController::class, 'register']);

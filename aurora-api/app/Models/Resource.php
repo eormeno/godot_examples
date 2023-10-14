@@ -14,20 +14,8 @@ class Resource extends Model
     protected $fillable = [
         'name',
         'parent_id',
-        'user_id'
-    ];
-
-    // the attributes that should be hidden for arrays
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
-
-    // the attributes that should be cast to native types
-    protected $casts = [
-        'id' => 'integer',
-        'parent_id' => 'integer',
-        'user_id' => 'integer',
+        'user_id',
+        'content',
     ];
 
     public function ownedBy()

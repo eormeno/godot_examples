@@ -1,5 +1,5 @@
 class_name Terminal extends PanelContainer
-
+enum {SUCCESS, ERROR, WARNING}
 @onready var history = $MarginContainer/ScrollContainer/PanelContainer/RichTextLabel
 @onready var input = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEdit
 @onready var prompt = $MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/prompt
@@ -71,28 +71,44 @@ func _on_line_edit_text_submitted(new_text : String):
 		timeout_running = true
 		emit_signal("command_entered", new_text, _on_command_execution_result)
 	
-func _on_command_execution_result(message: String, error : bool = false):
+func _on_command_execution_result(message: String, status: int = SUCCESS):
 	history.append_text(prompt.text)
 	history.append_text(last_command_entered)
 	history.append_text("\n")
 	if not message.is_empty():
-		if error:
-			history.push_bgcolor(Color.DARK_RED)
-			history.push_color(Color.WHITE_SMOKE)
-			history.append_text("command '")
-			history.push_bold_italics()
-			history.append_text(last_command_entered)
-			history.pop()
-			history.append_text("' exception: ")
-			history.append_text(message + "\n")
-			history.pop()
-			history.pop()
-		else:
-			history.append_text(message + "\n")
+		history.push_bgcolor(bg_color(status))
+		history.push_color(fg_color(status))
+		history.append_text(status_msg(status))
+		history.append_text("'")
+		history.push_bold_italics()
+		history.append_text(last_command_entered)
+		history.pop()
+		history.append_text("': ")
+		history.append_text(message + ".\n")
+		history.pop()
+		history.pop()
 	input.clear()
 	input.editable = true
 	timeout_running = false
 	timeout_counter = 0
+
+func status_msg(status : int) -> String:
+	match status:
+		ERROR: return "Error con "
+		WARNING: return "Cuidado con "
+		_: return "Mensaje de "
+
+func bg_color(status : int) -> Color:
+	match status:
+		ERROR: return Color.DARK_RED
+		WARNING: return Color.BURLYWOOD
+		_: return Color.DARK_OLIVE_GREEN
+
+func fg_color(status : int) -> Color:
+	match status:
+		ERROR: return Color.WHITE_SMOKE
+		WARNING: return Color.BLACK
+		_: return Color.WHITE_SMOKE
 
 func scroll_to_bottom():
 	if max_scroll != v_scroll_bar.max_value:

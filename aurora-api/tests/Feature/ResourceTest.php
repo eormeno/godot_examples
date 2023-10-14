@@ -20,10 +20,18 @@ class ResourceTest extends TestCase
             'Accept' => 'application/json'
         ];
         $resourcesResponse = $this->withHeaders($headers)->get('/api/resources');
-        // stringify the response content to json
-        // $encoded = json_encode($resourcesResponse['folder'], JSON_PRETTY_PRINT);
-        // echo($encoded);
+        // echo(json_encode($resourcesResponse['folder'], JSON_PRETTY_PRINT));
         $resourcesResponse->assertStatus(200)->assertJson(['folder' => true]);
+    }
+
+    public function testGetOneResource() {
+        $loginResponse = $this->getLoginResponse();
+        $headers = [
+            'Authorization' => 'Bearer ' . $loginResponse['token'],
+            'Accept' => 'application/json'
+        ];
+        $resourcesResponse = $this->withHeaders($headers)->get('/api/resources/3');
+        $resourcesResponse->assertStatus(200)->assertJson(['resource' => true]);
     }
 
     public function getLoginResponse()

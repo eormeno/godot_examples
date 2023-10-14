@@ -12,7 +12,7 @@ class SystemTest extends TestCase
     public function testPing()
     {
         $response = $this->get('/api/ping');
-        $response->assertStatus(200)->assertJson(['message' => 'pong']);
+        $response->assertStatus(200)->assertJson(['pong' => true]);
     }
 
     public function testServerTime()

@@ -8,31 +8,3 @@
 		"back"		: { "type" : "script", "file" : "0005.txt"  },
 	}
 }
-{
-	"folder": {
-		"tutorial": {
-			"back": {
-				"content": "move_to(\"back\")",
-				"type": "file"
-			},
-			"blue": {
-				"content": "move_to(\"blue\")",
-				"type": "file"
-			},
-			"green": {
-				"content": "move_to(\"green\")",
-				"type": "file"
-			},
-			"red": {
-				"content": "move_to(\"red\")",
-				"type": "file"
-			},
-			"type": "folder",
-			"yellow": {
-				"content": "move_to(\"yellow\")",
-				"type": "file"
-			}
-		},
-		"type": "folder"
-	}
-}

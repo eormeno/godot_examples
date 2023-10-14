@@ -8,11 +8,13 @@ const PING_URL:String = BASE_URL + "ping"
 const LOGIN_URL:String =  BASE_URL + "login"
 const RESOURCES_URL:String =  BASE_URL + "resources"
 
-const CONNECTION_TIMEOUT : float = 2
+const PING_FREQUENCY : float = 2
+const CONNECTION_TIMEOUT : float = 5
+const RESPONSE_TIMEOUT : float = CONNECTION_TIMEOUT * 1000
 var timeout_counter : float = 0
-
 static var request_id : int = 0
 var requests_queue : Dictionary = {}
+var processing_request : bool
 
 func _ready():
 	$HTTPRequest.timeout = 2
@@ -22,30 +24,38 @@ func _ready():
 	
 func _process(delta):
 	timeout_counter += delta
-	if timeout_counter > CONNECTION_TIMEOUT:
+	if timeout_counter > PING_FREQUENCY:
 		timeout_counter = 0
-		$HTTPRequest.cancel_request()
 		ping(_on_ping_response)
 		return
 	for rid in requests_queue.keys():
 		var request = requests_queue[rid]
 		if request.sent:
-			continue
-		$HTTPRequest.request(request.url, request.headers, request.method, request.data)
-		request.sent = true
-		break
+			if Time.get_ticks_msec() - request.time > RESPONSE_TIMEOUT:
+				var callback = request.callback
+				requests_queue.erase(rid)
+				callback.call({ error = "timeout" })
+				continue
+		if !processing_request:
+			$HTTPRequest.request(request.url, request.headers, request.method, request.data)
+			processing_request = true
+			request.sent = true
+			request.time = Time.get_ticks_msec()
+			break
 
 func _on_request_completed(result : int, _response_code : int, headers : PackedStringArray, body : PackedByteArray):
+	processing_request = false
 	if result != 0:
 		emit_signal("disconnected")
 		return
 	var req_id = find_in_header("Request-ID", headers)
 	if req_id:
 		var json : Dictionary = JSON.parse_string(body.get_string_from_utf8())
-		var request = requests_queue[req_id]
-		var callback = request.callback
-		requests_queue.erase(req_id)
-		callback.call(json)
+		if requests_queue.has(req_id):
+			var request = requests_queue[req_id]
+			var callback = request.callback
+			requests_queue.erase(req_id)
+			callback.call(json)
 
 func ping(callback : Callable):
 	put_request(PING_URL, HTTPClient.METHOD_GET,"", callback)
@@ -71,6 +81,7 @@ func put_request(url: String, method: HTTPClient.Method, data : String = "", cal
 	]
 	requests_queue[request_key] = {
 		sent = false,
+		time = 0.0,
 		url = url,
 		headers = headers,
 		method = method,
