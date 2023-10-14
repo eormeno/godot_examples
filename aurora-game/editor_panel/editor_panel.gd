@@ -41,7 +41,6 @@ func run_line():
 	items.select(execution_line)
 	running_command = true
 	var command : String = items.get_item_text(execution_line)
-	global_signals.send_request(command, _on_success, _on_error)
 	
 func _on_success(_response):
 	items.set_item_custom_fg_color(execution_line, Color.AQUAMARINE)

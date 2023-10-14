@@ -44,6 +44,7 @@ func call_callback(response : Dictionary):
 	if callback:
 		callback.call(response)
 	emit_signal("completed", response)
+	self.queue_free()
 
 func emit_timeout():
 	call_callback({ error = "timeout" })

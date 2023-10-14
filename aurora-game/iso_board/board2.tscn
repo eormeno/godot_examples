@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://n23uw77trmcy"]
+[gd_scene load_steps=12 format=3 uid="uid://n23uw77trmcy"]
 
 [ext_resource type="Texture2D" uid="uid://drqcff4yw3wel" path="res://assets/board.jpg" id="1_bvrql"]
 [ext_resource type="Script" path="res://iso_board/board2.gd" id="1_kpi0e"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://xfxqcwqa3aqn" path="res://assets/board.png" id="3_ppc4b"]
 [ext_resource type="Script" path="res://path/PathNode.gd" id="4_r8rts"]
 [ext_resource type="Script" path="res://path/PathTransition.gd" id="5_isq2r"]
+[ext_resource type="Script" path="res://iso_board/filled-vsplit.gd" id="5_kwp8y"]
 [ext_resource type="Script" path="res://iso_board/Tree.gd" id="6_27tlw"]
 [ext_resource type="Texture2D" uid="uid://vxdfd647dgi1" path="res://themes/folder_icon.png" id="7_7symv"]
 [ext_resource type="Texture2D" uid="uid://tpxym72jguog" path="res://themes/document_icon.png" id="8_iffmt"]
@@ -22,6 +23,7 @@ texture = ExtResource("1_bvrql")
 pathNode = NodePath("../inicio")
 
 [node name="Camera2D" type="Camera2D" parent="player_2"]
+show_behind_parent = true
 position_smoothing_enabled = true
 
 [node name="Board2" type="Sprite2D" parent="."]
@@ -44,6 +46,8 @@ theme_type_variation = &"BGMarginContainer"
 [node name="VSplitContainer" type="VSplitContainer" parent="CanvasLayer/Control"]
 layout_mode = 2
 split_offset = 500
+script = ExtResource("5_kwp8y")
+bg_color = Color(0.289063, 0.289063, 0.289063, 1)
 
 [node name="CameraContainer" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer"]
 layout_mode = 2
@@ -53,11 +57,11 @@ theme_type_variation = &"BGMarginContainer"
 layout_mode = 2
 
 [node name="Escenario" type="Control" parent="CanvasLayer/Control/VSplitContainer/CameraContainer/TabContainer"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"CameraContainer"
 
 [node name="Editor" type="CodeEdit" parent="CanvasLayer/Control/VSplitContainer/CameraContainer/TabContainer"]
-visible = false
 layout_mode = 2
 highlight_all_occurrences = true
 highlight_current_line = true

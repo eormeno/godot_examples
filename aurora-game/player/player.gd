@@ -81,10 +81,8 @@ func do_falling(delta, _request):
 		position.y = new_y
 	else:
 		printerr(falling_time - delta, " ", falling_duration)
-		global_signals.send_untracked_request("on_floor")
-		global_signals.send_untracked_request("wait")
 	falling_time += delta
 	pass
 
 func start_on_floor(_request):
-	global_signals.send_untracked_request("wait")
+	pass
