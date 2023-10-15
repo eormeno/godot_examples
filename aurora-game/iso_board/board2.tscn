@@ -49,19 +49,51 @@ split_offset = 500
 script = ExtResource("5_kwp8y")
 bg_color = Color(0.289063, 0.289063, 0.289063, 1)
 
-[node name="CameraContainer" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VSplitContainer"]
 layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"BGFilledContainer"
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 3
+
+[node name="run_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_type_variation = &"RunScriptButton"
+toggle_mode = true
+
+[node name="pause_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_type_variation = &"PauseScriptButton"
+toggle_mode = true
+
+[node name="stop_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_type_variation = &"StopScriptButton"
+toggle_mode = true
+
+[node name="CameraContainer" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 theme_type_variation = &"BGMarginContainer"
 
-[node name="tab_container" type="TabContainer" parent="CanvasLayer/Control/VSplitContainer/CameraContainer"]
+[node name="tab_container" type="TabContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Escenario" type="Control" parent="CanvasLayer/Control/VSplitContainer/CameraContainer/tab_container"]
+[node name="Escenario" type="Control" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container"]
 layout_mode = 2
 theme_type_variation = &"CameraContainer"
 
-[node name="code_editor" type="CodeEdit" parent="CanvasLayer/Control/VSplitContainer/CameraContainer/tab_container"]
+[node name="code_editor" type="CodeEdit" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

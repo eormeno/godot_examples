@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=21 format=3 uid="uid://dtj0kx8j20w1a"]
+[gd_resource type="Theme" load_steps=51 format=3 uid="uid://dtj0kx8j20w1a"]
 
 [ext_resource type="Texture2D" uid="uid://dme812hiqmkvc" path="res://themes/big_panel_container.png" id="1_vxs20"]
 [ext_resource type="Texture2D" uid="uid://ysc6ykhn77v6" path="res://themes/bg-panel-container.png" id="1_yosbm"]
@@ -11,6 +11,21 @@
 [ext_resource type="Texture2D" uid="uid://u6etjhgy4tv2" path="res://themes/vsplit-grabber.png" id="7_0bmeq"]
 [ext_resource type="FontFile" uid="uid://qr3ko0pe7r30" path="res://fonts/Techfont-Italica.ttf" id="7_djoot"]
 [ext_resource type="FontFile" uid="uid://1xn6bwi22ooh" path="res://fonts/ConsolaMono-Book.ttf" id="8_peumu"]
+[ext_resource type="Texture2D" uid="uid://dgkxuup2rtn4p" path="res://themes/pause-button-disabled.png" id="10_gprwf"]
+[ext_resource type="Texture2D" uid="uid://1xetkdbt4bfe" path="res://themes/run-button-disabled.png" id="11_2nbe7"]
+[ext_resource type="Texture2D" uid="uid://cscy6af3f8das" path="res://themes/pause-button-focus.png" id="11_g1lg4"]
+[ext_resource type="Texture2D" uid="uid://csh0uhjp6pc4j" path="res://themes/run-button-normal.png" id="11_pfe5w"]
+[ext_resource type="Texture2D" uid="uid://b02s8krn17fcd" path="res://themes/pause-button-hover.png" id="12_h76ye"]
+[ext_resource type="Texture2D" uid="uid://cpuvai5a6efsr" path="res://themes/run-button-hover.png" id="12_rhtyt"]
+[ext_resource type="Texture2D" uid="uid://bo5urh7qxjh4p" path="res://themes/run-button-focus.png" id="12_ybbet"]
+[ext_resource type="Texture2D" uid="uid://d4hv544o1iy1s" path="res://themes/pause-button-normal.png" id="13_7feem"]
+[ext_resource type="Texture2D" uid="uid://cl6i7vwdwon0n" path="res://themes/pause-button-pressed.png" id="14_7voaj"]
+[ext_resource type="Texture2D" uid="uid://c0w1o74h87xas" path="res://themes/run-button-pressed.png" id="14_uboqe"]
+[ext_resource type="Texture2D" uid="uid://120hrn76jbap" path="res://themes/stop-button-disabled.png" id="21_m60y1"]
+[ext_resource type="Texture2D" uid="uid://cnk5ro4mehlfn" path="res://themes/stop-button-focus.png" id="22_326lb"]
+[ext_resource type="Texture2D" uid="uid://bie5ac65tyjqj" path="res://themes/stop-button-hover.png" id="23_mkt4u"]
+[ext_resource type="Texture2D" uid="uid://bluamrjd1g2w6" path="res://themes/stop-button-normal.png" id="24_da1aj"]
+[ext_resource type="Texture2D" uid="uid://bkqasavpbs5x3" path="res://themes/stop-button-pressed.png" id="25_ixjl8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcgrd"]
 bg_color = Color(0.289063, 0.289063, 0.289063, 1)
@@ -57,6 +72,51 @@ texture_margin_top = 15.0
 texture_margin_right = 15.0
 texture_margin_bottom = 15.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hk4cp"]
+texture = ExtResource("10_gprwf")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fpmmb"]
+texture = ExtResource("11_g1lg4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2bc0a"]
+texture = ExtResource("12_h76ye")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qsynx"]
+texture = ExtResource("13_7feem")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w5t0n"]
+texture = ExtResource("14_7voaj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ynynu"]
+texture = ExtResource("11_2nbe7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k58x3"]
+texture = ExtResource("12_ybbet")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hsdsq"]
+texture = ExtResource("12_rhtyt")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6fp31"]
+texture = ExtResource("11_pfe5w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tgqrb"]
+texture = ExtResource("14_uboqe")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3k4fw"]
+texture = ExtResource("21_m60y1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ngdm7"]
+texture = ExtResource("22_326lb")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_amqxu"]
+texture = ExtResource("23_mkt4u")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aqxyb"]
+texture = ExtResource("24_da1aj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t5p4w"]
+texture = ExtResource("25_ixjl8")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t0rke"]
 content_margin_left = 10.0
 content_margin_top = 10.0
@@ -95,6 +155,12 @@ Label/font_sizes/font_size = 15
 Label/fonts/font = ExtResource("5_jmxwb")
 LabelDebug/base_type = &"Label"
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_j8ci7")
+PauseScriptButton/base_type = &"Button"
+PauseScriptButton/styles/disabled = SubResource("StyleBoxTexture_hk4cp")
+PauseScriptButton/styles/focus = SubResource("StyleBoxTexture_fpmmb")
+PauseScriptButton/styles/hover = SubResource("StyleBoxTexture_2bc0a")
+PauseScriptButton/styles/normal = SubResource("StyleBoxTexture_qsynx")
+PauseScriptButton/styles/pressed = SubResource("StyleBoxTexture_w5t0n")
 RichTextLabel/constants/outline_size = 1
 RichTextLabel/font_sizes/bold_font_size = 16
 RichTextLabel/font_sizes/bold_italics_font_size = 16
@@ -103,6 +169,18 @@ RichTextLabel/font_sizes/mono_font_size = 16
 RichTextLabel/font_sizes/normal_font_size = 16
 RichTextLabel/fonts/italics_font = ExtResource("7_djoot")
 RichTextLabel/fonts/normal_font = ExtResource("5_jmxwb")
+RunScriptButton/base_type = &"Button"
+RunScriptButton/styles/disabled = SubResource("StyleBoxTexture_ynynu")
+RunScriptButton/styles/focus = SubResource("StyleBoxTexture_k58x3")
+RunScriptButton/styles/hover = SubResource("StyleBoxTexture_hsdsq")
+RunScriptButton/styles/normal = SubResource("StyleBoxTexture_6fp31")
+RunScriptButton/styles/pressed = SubResource("StyleBoxTexture_tgqrb")
+StopScriptButton/base_type = &"Button"
+StopScriptButton/styles/disabled = SubResource("StyleBoxTexture_3k4fw")
+StopScriptButton/styles/focus = SubResource("StyleBoxTexture_ngdm7")
+StopScriptButton/styles/hover = SubResource("StyleBoxTexture_amqxu")
+StopScriptButton/styles/normal = SubResource("StyleBoxTexture_aqxyb")
+StopScriptButton/styles/pressed = SubResource("StyleBoxTexture_t5p4w")
 TabContainer/constants/side_margin = 0
 TabContainer/font_sizes/font_size = 14
 TabContainer/fonts/font = ExtResource("5_jmxwb")
