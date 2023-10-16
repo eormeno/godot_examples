@@ -25,7 +25,9 @@ func _on_command_entered(command : String, callback : Callable):
 		if item_info.type != "file":
 			callback.call("No puedes ejecutar una carpeta", Terminal.ERROR)
 			return
+		current_script_id = item_info.id
 		var resource = await connection.get_resource(item_info.id)
+		%code_editor.text = resource.content
 		var result = await evaluate(resource.content)
 		callback.call(result.message, result.status)
 	else:
@@ -121,8 +123,15 @@ func find_item(item_name : String):
 #	return
 
 func evaluate(sub_script:String):
+	var lines : PackedStringArray = sub_script.split("\n")
+	var new_script : String = "var ret\n\t"
+	for l in lines:
+		new_script += "ret = await node." + l + "\n\t"
+		new_script += "print(ret)\n\t"
+	var full_script = "func eval(node):\n\t" + new_script + "\n\treturn ret"
+	print(full_script)
 	var script = GDScript.new()
-	script.set_source_code("func eval(node):\n\tvar ret = await node." + sub_script + "\n\treturn ret")
+	script.set_source_code(full_script)
 	script.reload()
 	var obj = RefCounted.new()
 	obj.set_script(script)

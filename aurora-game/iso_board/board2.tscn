@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://n23uw77trmcy"]
+[gd_scene load_steps=13 format=3 uid="uid://n23uw77trmcy"]
 
 [ext_resource type="Texture2D" uid="uid://drqcff4yw3wel" path="res://assets/board.jpg" id="1_bvrql"]
 [ext_resource type="Script" path="res://iso_board/board2.gd" id="1_kpi0e"]
@@ -11,6 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://vxdfd647dgi1" path="res://themes/folder_icon.png" id="7_7symv"]
 [ext_resource type="Texture2D" uid="uid://tpxym72jguog" path="res://themes/document_icon.png" id="8_iffmt"]
 [ext_resource type="PackedScene" uid="uid://dhvvyhj35v8lk" path="res://terminal/terminal.tscn" id="9_2j2p5"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_8intw"]
+allow_unpress = true
 
 [node name="board2" type="Node2D"]
 script = ExtResource("1_kpi0e")
@@ -67,6 +70,7 @@ custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 theme_type_variation = &"RunScriptButton"
 toggle_mode = true
+button_group = SubResource("ButtonGroup_8intw")
 
 [node name="pause_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(48, 48)

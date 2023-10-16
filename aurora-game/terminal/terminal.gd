@@ -68,7 +68,7 @@ func _on_line_edit_text_submitted(new_text : String):
 	else:
 		last_command_entered = new_text
 		input.editable = false
-		timeout_running = true
+#		timeout_running = true
 		emit_signal("command_entered", new_text, _on_command_execution_result)
 	
 func _on_command_execution_result(message: String, status: int = SUCCESS):
