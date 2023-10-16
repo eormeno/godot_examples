@@ -55,6 +55,5 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_cnx0c")
 context_menu_enabled = false
 flat = true
 caret_blink = true
-caret_force_displayed = true
 
 [connection signal="text_submitted" from="MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]

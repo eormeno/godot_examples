@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=51 format=3 uid="uid://dtj0kx8j20w1a"]
+[gd_resource type="Theme" load_steps=61 format=3 uid="uid://dtj0kx8j20w1a"]
 
 [ext_resource type="Texture2D" uid="uid://dme812hiqmkvc" path="res://themes/big_panel_container.png" id="1_vxs20"]
 [ext_resource type="Texture2D" uid="uid://ysc6ykhn77v6" path="res://themes/bg-panel-container.png" id="1_yosbm"]
@@ -21,10 +21,15 @@
 [ext_resource type="Texture2D" uid="uid://d4hv544o1iy1s" path="res://themes/pause-button-normal.png" id="13_7feem"]
 [ext_resource type="Texture2D" uid="uid://cl6i7vwdwon0n" path="res://themes/pause-button-pressed.png" id="14_7voaj"]
 [ext_resource type="Texture2D" uid="uid://c0w1o74h87xas" path="res://themes/run-button-pressed.png" id="14_uboqe"]
+[ext_resource type="Texture2D" uid="uid://bpq7ebm0kmopr" path="res://themes/save-button-disabled.png" id="21_jr800"]
 [ext_resource type="Texture2D" uid="uid://120hrn76jbap" path="res://themes/stop-button-disabled.png" id="21_m60y1"]
+[ext_resource type="Texture2D" uid="uid://1eb2reehhrhp" path="res://themes/save-button-focus.png" id="22_5twju"]
 [ext_resource type="Texture2D" uid="uid://cnk5ro4mehlfn" path="res://themes/stop-button-focus.png" id="22_326lb"]
+[ext_resource type="Texture2D" uid="uid://bgncycsriyoif" path="res://themes/save-button-hover.png" id="23_hobcj"]
 [ext_resource type="Texture2D" uid="uid://bie5ac65tyjqj" path="res://themes/stop-button-hover.png" id="23_mkt4u"]
 [ext_resource type="Texture2D" uid="uid://bluamrjd1g2w6" path="res://themes/stop-button-normal.png" id="24_da1aj"]
+[ext_resource type="Texture2D" uid="uid://djcyoucwfu47m" path="res://themes/save-button-normal.png" id="24_ojrud"]
+[ext_resource type="Texture2D" uid="uid://d1fjccpcw62h6" path="res://themes/save-button-pressed.png" id="25_8nh7q"]
 [ext_resource type="Texture2D" uid="uid://bkqasavpbs5x3" path="res://themes/stop-button-pressed.png" id="25_ixjl8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcgrd"]
@@ -102,6 +107,21 @@ texture = ExtResource("11_pfe5w")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tgqrb"]
 texture = ExtResource("14_uboqe")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ul26f"]
+texture = ExtResource("21_jr800")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n3aqd"]
+texture = ExtResource("22_5twju")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_irksn"]
+texture = ExtResource("23_hobcj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nr8lk"]
+texture = ExtResource("24_ojrud")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dw5ih"]
+texture = ExtResource("25_8nh7q")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3k4fw"]
 texture = ExtResource("21_m60y1")
 
@@ -175,6 +195,12 @@ RunScriptButton/styles/focus = SubResource("StyleBoxTexture_k58x3")
 RunScriptButton/styles/hover = SubResource("StyleBoxTexture_hsdsq")
 RunScriptButton/styles/normal = SubResource("StyleBoxTexture_6fp31")
 RunScriptButton/styles/pressed = SubResource("StyleBoxTexture_tgqrb")
+SaveScriptButton/base_type = &"Button"
+SaveScriptButton/styles/disabled = SubResource("StyleBoxTexture_ul26f")
+SaveScriptButton/styles/focus = SubResource("StyleBoxTexture_n3aqd")
+SaveScriptButton/styles/hover = SubResource("StyleBoxTexture_irksn")
+SaveScriptButton/styles/normal = SubResource("StyleBoxTexture_nr8lk")
+SaveScriptButton/styles/pressed = SubResource("StyleBoxTexture_dw5ih")
 StopScriptButton/base_type = &"Button"
 StopScriptButton/styles/disabled = SubResource("StyleBoxTexture_3k4fw")
 StopScriptButton/styles/focus = SubResource("StyleBoxTexture_ngdm7")

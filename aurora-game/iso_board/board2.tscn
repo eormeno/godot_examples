@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://n23uw77trmcy"]
+[gd_scene load_steps=15 format=3 uid="uid://n23uw77trmcy"]
 
 [ext_resource type="Texture2D" uid="uid://drqcff4yw3wel" path="res://assets/board.jpg" id="1_bvrql"]
 [ext_resource type="Script" path="res://iso_board/board2.gd" id="1_kpi0e"]
@@ -14,6 +14,14 @@
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_8intw"]
 allow_unpress = true
+
+[sub_resource type="InputEventKey" id="InputEventKey_1nbvt"]
+device = -1
+ctrl_pressed = true
+keycode = 83
+
+[sub_resource type="Shortcut" id="Shortcut_7tp21"]
+events = [SubResource("InputEventKey_1nbvt")]
 
 [node name="board2" type="Node2D"]
 script = ExtResource("1_kpi0e")
@@ -66,20 +74,20 @@ size_flags_horizontal = 4
 columns = 3
 
 [node name="run_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
-custom_minimum_size = Vector2(48, 48)
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 theme_type_variation = &"RunScriptButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_8intw")
 
 [node name="pause_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
-custom_minimum_size = Vector2(48, 48)
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 theme_type_variation = &"PauseScriptButton"
 toggle_mode = true
 
 [node name="stop_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
-custom_minimum_size = Vector2(48, 48)
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 theme_type_variation = &"StopScriptButton"
 toggle_mode = true
@@ -92,19 +100,42 @@ theme_type_variation = &"BGMarginContainer"
 [node name="tab_container" type="TabContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/side_margin = 0
+theme_override_constants/icon_separation = 0
+theme_override_constants/icon_max_width = 0
+theme_override_constants/outline_size = 0
 
 [node name="Escenario" type="Control" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container"]
 layout_mode = 2
 theme_type_variation = &"CameraContainer"
 
-[node name="code_editor" type="CodeEdit" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container"]
-unique_name_in_owner = true
+[node name="Editor" type="VBoxContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container"]
 visible = false
 layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="editor_tool_bar" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container/Editor"]
+layout_mode = 2
+theme_type_variation = &"BGFilledContainer"
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container/Editor/editor_tool_bar"]
+layout_mode = 2
+
+[node name="save_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container/Editor/editor_tool_bar/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+theme_type_variation = &"SaveScriptButton"
+action_mode = 0
+shortcut = SubResource("Shortcut_7tp21")
+
+[node name="code_editor" type="CodeEdit" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container/Editor"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
 highlight_all_occurrences = true
 highlight_current_line = true
 draw_tabs = true
-caret_type = 1
 caret_blink = true
 line_folding = true
 gutters_draw_line_numbers = true
