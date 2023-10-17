@@ -7,6 +7,9 @@ use App\Models\Resource;
 use Illuminate\Http\Request;
 use App\Parser\AdventureLexer;
 use App\Parser\AdventureParser;
+use App\Parser\Context\AssignmentContext as AssignmentContext;
+use App\Parser\Context\Move_statementContext as Move_statementContext;
+use App\Parser\Context\Take_statementContext as Take_statementContext;
 use Antlr\Antlr4\Runtime\CommonTokenStream;
 use Antlr\Antlr4\Runtime\Error\Listeners\DiagnosticErrorListener;
 use Antlr\Antlr4\Runtime\InputStream;
@@ -79,6 +82,8 @@ class ResourceController extends Controller
 
     private function parseScript(string $script)
     {
+        // insert an eof character at the end of the script
+        $script .= "\n";
         $input = InputStream::fromString($script);
         $lexer = new AdventureLexer($input);
         $tokens = new CommonTokenStream($lexer);
@@ -117,20 +122,21 @@ final class TreeShapeListener implements ParseTreeListener {
     public function visitErrorNode(ErrorNode $node) : void {
         $line = $node->getSymbol()->getLine();
         $msg = $node->getSymbol()->getText();
-        echo "Error on line " . $line . ": " . $msg . "\n";
-
+        $this->code[] = "Error on line " . $line . ": " . $msg;
     }
     public function exitEveryRule(ParserRuleContext $ctx) : void {
     }
 
     public function enterEveryRule(ParserRuleContext $ctx) : void {
-        if ($ctx instanceof Context\AssignmentContext) {
+
+        if ($ctx instanceof AssignmentContext) {
             $id = $ctx->ID()->getText();
             $expr = $ctx->expression()->getText();
             $this->code[] = $id . " = " . $expr;
             $this->vars[$id] = $expr;
         }
-        if ($ctx instanceof Context\Move_statementContext) {
+
+        if ($ctx instanceof Move_statementContext) {
             $id_expr = $ctx->expression()->ID();
             $str_expr = $ctx->expression()->STRING();
             $value = null;
@@ -145,13 +151,13 @@ final class TreeShapeListener implements ParseTreeListener {
             $this->code[] = "move " . $value;
         }
 
-        if ($ctx instanceof Context\Take_statementContext) {
+        if ($ctx instanceof Take_statementContext) {
             $id_expr = $ctx->expression()->ID();
             $str_expr = $ctx->expression()->STRING();
             $value = null;
             if ($id_expr != null) {
-                $id = $id_expr->getText();
-                $value = $this->vars[$id];
+                 $id = $id_expr->getText();
+                 $value = $this->vars[$id];
             } else if ($str_expr != null) {
                 $value = $str_expr->getText();
             } else {

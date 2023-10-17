@@ -1,10 +1,11 @@
 <?php
-// require_once __DIR__ . '/../vendor/autoload.php';
-// require_once __DIR__ . '/AdventureLexer.php';
-// require_once __DIR__ . '/AdventureParser.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/AdventureLexer.php';
+require_once __DIR__ . '/AdventureParser.php';
 
 use App\Parser\AdventureLexer;
 use App\Parser\AdventureParser;
+use App\Parser\Context\AssignmentContext as AssignmentContext;
 use Antlr\Antlr4\Runtime\InputStream;
 use Antlr\Antlr4\Runtime\Tree\ErrorNode;
 use Antlr\Antlr4\Runtime\CommonTokenStream;
@@ -31,7 +32,8 @@ final class TreeShapeListener implements ParseTreeListener {
     }
 
     public function enterEveryRule(ParserRuleContext $ctx) : void {
-        if ($ctx instanceof Context\AssignmentContext) {
+        echo get_class($ctx) . "\n";
+        if ($ctx instanceof AssignmentContext) {
             $id = $ctx->ID()->getText();
             $expr = $ctx->expression()->getText();
             echo "Var:\t" . $id . " = " . $expr . "\n";

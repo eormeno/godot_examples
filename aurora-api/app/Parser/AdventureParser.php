@@ -6,21 +6,21 @@
 
 namespace App\Parser;
 
-use Antlr\Antlr4\Runtime\Atn\ATN;
-use Antlr\Antlr4\Runtime\Atn\ATNDeserializer;
-use Antlr\Antlr4\Runtime\Atn\ParserATNSimulator;
-use Antlr\Antlr4\Runtime\Dfa\DFA;
-use Antlr\Antlr4\Runtime\Error\Exceptions\FailedPredicateException;
-use Antlr\Antlr4\Runtime\Error\Exceptions\NoViableAltException;
-use Antlr\Antlr4\Runtime\PredictionContexts\PredictionContextCache;
-use Antlr\Antlr4\Runtime\Error\Exceptions\RecognitionException;
-use Antlr\Antlr4\Runtime\RuleContext;
 use Antlr\Antlr4\Runtime\Token;
-use Antlr\Antlr4\Runtime\TokenStream;
+use Antlr\Antlr4\Runtime\Parser;
+use Antlr\Antlr4\Runtime\Atn\ATN;
+use Antlr\Antlr4\Runtime\Dfa\DFA;
 use Antlr\Antlr4\Runtime\Vocabulary;
+use Antlr\Antlr4\Runtime\RuleContext;
+use Antlr\Antlr4\Runtime\TokenStream;
 use Antlr\Antlr4\Runtime\VocabularyImpl;
 use Antlr\Antlr4\Runtime\RuntimeMetaData;
-use Antlr\Antlr4\Runtime\Parser;
+use Antlr\Antlr4\Runtime\Atn\ATNDeserializer;
+use Antlr\Antlr4\Runtime\Atn\ParserATNSimulator;
+use Antlr\Antlr4\Runtime\Error\Exceptions\NoViableAltException;
+use Antlr\Antlr4\Runtime\Error\Exceptions\RecognitionException;
+use Antlr\Antlr4\Runtime\Error\Exceptions\FailedPredicateException;
+use Antlr\Antlr4\Runtime\PredictionContexts\PredictionContextCache;
 
 final class AdventureParser extends Parser
 {
@@ -505,8 +505,6 @@ use Antlr\Antlr4\Runtime\Token;
 use Antlr\Antlr4\Runtime\Tree\ParseTreeVisitor;
 use Antlr\Antlr4\Runtime\Tree\TerminalNode;
 use Antlr\Antlr4\Runtime\Tree\ParseTreeListener;
-use AdventureParser;
-use AdventureListener;
 
 class ProgramContext extends ParserRuleContext
 {
@@ -613,7 +611,7 @@ class AssignmentContext extends ParserRuleContext
 
     public function ID(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::ID, 0);
+        return $this->getToken(\App\Parser\AdventureParser::ID, 0);
     }
 
     public function expression(): ?ExpressionContext
@@ -623,7 +621,7 @@ class AssignmentContext extends ParserRuleContext
 
     public function DEDENT(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::DEDENT, 0);
+        return $this->getToken(\App\Parser\AdventureParser::DEDENT, 0);
     }
 
     public function enterRule(ParseTreeListener $listener): void
@@ -635,7 +633,7 @@ class AssignmentContext extends ParserRuleContext
 
     public function exitRule(ParseTreeListener $listener): void
     {
-        if ($listener instanceof AdventureListener) {
+        if ($listener instanceof App\Parser\AdventureListener) {
             $listener->exitAssignment($this);
         }
     }
@@ -660,19 +658,19 @@ class Move_statementContext extends ParserRuleContext
 
     public function DEDENT(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::DEDENT, 0);
+        return $this->getToken(\App\Parser\AdventureParser::DEDENT, 0);
     }
 
     public function enterRule(ParseTreeListener $listener): void
     {
-        if ($listener instanceof AdventureListener) {
+        if ($listener instanceof App\Parser\AdventureListener) {
             $listener->enterMove_statement($this);
         }
     }
 
     public function exitRule(ParseTreeListener $listener): void
     {
-        if ($listener instanceof AdventureListener) {
+        if ($listener instanceof App\Parser\AdventureListener) {
             $listener->exitMove_statement($this);
         }
     }
@@ -697,7 +695,7 @@ class Take_statementContext extends ParserRuleContext
 
     public function DEDENT(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::DEDENT, 0);
+        return $this->getToken(\App\Parser\AdventureParser::DEDENT, 0);
     }
 
     public function enterRule(ParseTreeListener $listener): void
@@ -709,7 +707,7 @@ class Take_statementContext extends ParserRuleContext
 
     public function exitRule(ParseTreeListener $listener): void
     {
-        if ($listener instanceof AdventureListener) {
+        if ($listener instanceof App\Parser\AdventureListener) {
             $listener->exitTake_statement($this);
         }
     }
@@ -729,12 +727,12 @@ class StatementsContext extends ParserRuleContext
 
     public function INDENT(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::INDENT, 0);
+        return $this->getToken(\App\Parser\AdventureParser::INDENT, 0);
     }
 
     public function DEDENT(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::DEDENT, 0);
+        return $this->getToken(\App\Parser\AdventureParser::DEDENT, 0);
     }
 
     /**
@@ -751,14 +749,14 @@ class StatementsContext extends ParserRuleContext
 
     public function enterRule(ParseTreeListener $listener): void
     {
-        if ($listener instanceof AdventureListener) {
+        if ($listener instanceof App\Parser\AdventureListener) {
             $listener->enterStatements($this);
         }
     }
 
     public function exitRule(ParseTreeListener $listener): void
     {
-        if ($listener instanceof AdventureListener) {
+        if ($listener instanceof App\Parser\AdventureListener) {
             $listener->exitStatements($this);
         }
     }
@@ -783,7 +781,7 @@ class If_statementContext extends ParserRuleContext
 
     public function DEDENT(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::DEDENT, 0);
+        return $this->getToken(\App\Parser\AdventureParser::DEDENT, 0);
     }
 
     public function statements(): ?StatementsContext
@@ -825,7 +823,7 @@ class Repeat_statementContext extends ParserRuleContext
 
     public function DEDENT(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::DEDENT, 0);
+        return $this->getToken(\App\Parser\AdventureParser::DEDENT, 0);
     }
 
     public function statements(): ?StatementsContext
@@ -842,7 +840,7 @@ class Repeat_statementContext extends ParserRuleContext
 
     public function exitRule(ParseTreeListener $listener): void
     {
-        if ($listener instanceof AdventureListener) {
+        if ($listener instanceof App\Parser\AdventureListener) {
             $listener->exitRepeat_statement($this);
         }
     }
@@ -862,17 +860,17 @@ class ExpressionContext extends ParserRuleContext
 
     public function ID(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::ID, 0);
+        return $this->getToken(\App\Parser\AdventureParser::ID, 0);
     }
 
     public function STRING(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::STRING, 0);
+        return $this->getToken(\App\Parser\AdventureParser::STRING, 0);
     }
 
     public function NUMBER(): ?TerminalNode
     {
-        return $this->getToken(AdventureParser::NUMBER, 0);
+        return $this->getToken(\App\Parser\AdventureParser::NUMBER, 0);
     }
 
     public function enterRule(ParseTreeListener $listener): void
@@ -909,14 +907,14 @@ class ConditionContext extends ParserRuleContext
 
     public function enterRule(ParseTreeListener $listener): void
     {
-        if ($listener instanceof AdventureListener) {
+        if ($listener instanceof App\Parser\AdventureListener) {
             $listener->enterCondition($this);
         }
     }
 
     public function exitRule(ParseTreeListener $listener): void
     {
-        if ($listener instanceof AdventureListener) {
+        if ($listener instanceof App\Parser\AdventureListener) {
             $listener->exitCondition($this);
         }
     }
