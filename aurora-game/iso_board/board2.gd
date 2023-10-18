@@ -28,8 +28,10 @@ func _on_command_entered(command : String, callback : Callable):
 		current_script_id = item_info.id
 		var resource = await connection.get_resource(item_info.id)
 		%code_editor.text = resource.content
-		var result = await evaluate(resource.content)
-		callback.call(result.message, result.status)
+		
+		callback.call("", Terminal.SUCCESS)
+#		var result = await evaluate(resource.content)
+#		callback.call(result.message, result.status)
 	else:
 		var ret = await self.call("cmd_" + tokens[0], tokens)
 		callback.call(ret.message, ret.status)
@@ -101,6 +103,7 @@ func cmd_save(arg : PackedStringArray):
 		ret.message = "El comando " + arg[0] + " guarda el script que se está editando"
 		return ret
 	var resource = await connection.update_resource_content(current_script_id, %code_editor.text)
+	print(resource.code)
 	ret.message = "Los cambios fueron guardados"
 	ret.status = Terminal.SUCCESS
 	return ret

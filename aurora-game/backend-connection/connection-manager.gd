@@ -21,4 +21,4 @@ func update_resource_content(id : int, new_content : String):
 	var json = JSON.stringify({ content = new_content })
 	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_PUT, json)
 	var response : Dictionary = await request.completed
-	return response.resource
+	return response
