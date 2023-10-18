@@ -19,6 +19,10 @@ func _on_login_response(response):
 		persist_user_data.set_data("login.password", %password.text)
 		visible = false
 		finished.emit(state_name, "finished")
+	if response.has("errors"):
+		%message.text = response.errors[0]
+		%user.grab_focus()
+		%user.select_all()
 
 func _on_connected():
 	%connection_status.text = "connected..."

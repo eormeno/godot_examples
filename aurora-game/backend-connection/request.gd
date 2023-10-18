@@ -26,7 +26,7 @@ func _init(_url : String, _method : HTTPClient.Method, _data : String, _callback
 	headers = [
 		"Content-Type: application/json",
 		"Request-ID: " + key,
-		"Authorization: Bearer " + persist_user_data.get_data('token')
+		"Authorization: Bearer " + persist_user_data.get_data('token', "")
 	]
 	url = _url
 	method = _method

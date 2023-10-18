@@ -78,13 +78,7 @@ func _on_command_execution_result(message: String, status: int = SUCCESS):
 	if not message.is_empty():
 		history.push_bgcolor(bg_color(status))
 		history.push_color(fg_color(status))
-		history.append_text(status_msg(status))
-		history.append_text("'")
-		history.push_bold_italics()
-		history.append_text(last_command_entered)
-		history.pop()
-		history.append_text("': ")
-		history.append_text(message + ".\n")
+		history.append_text(message)
 		history.pop()
 		history.pop()
 	input.clear()
@@ -92,17 +86,11 @@ func _on_command_execution_result(message: String, status: int = SUCCESS):
 	timeout_running = false
 	timeout_counter = 0
 
-func status_msg(status : int) -> String:
-	match status:
-		ERROR: return "Error con "
-		WARNING: return "Cuidado con "
-		_: return "Mensaje de "
-
 func bg_color(status : int) -> Color:
 	match status:
 		ERROR: return Color.DARK_RED
 		WARNING: return Color.BURLYWOOD
-		_: return Color.DARK_OLIVE_GREEN
+		_: return Color.TRANSPARENT
 
 func fg_color(status : int) -> Color:
 	match status:

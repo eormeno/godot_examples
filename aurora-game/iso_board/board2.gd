@@ -34,6 +34,7 @@ func _on_command_entered(command : String, callback : Callable):
 #		callback.call(result.message, result.status)
 	else:
 		var ret = await self.call("cmd_" + tokens[0], tokens)
+
 		callback.call(ret.message, ret.status)
 
 func move_to(target : String):
@@ -51,7 +52,7 @@ func cmd_dir(_arg : PackedStringArray):
 	var list : String = ""
 	for item in current_dir.get_children():
 		list += "[" + item.get_metadata(0).type + "]\t" + item.get_text(0) + "\n"
-	return { message = list, error = false }
+	return { message = list, status = Terminal.SUCCESS }
 	
 func cmd_cd(arg : PackedStringArray):
 	var path : String = arg[1]
@@ -103,7 +104,7 @@ func cmd_save(arg : PackedStringArray):
 		ret.message = "El comando " + arg[0] + " guarda el script que se está editando"
 		return ret
 	var resource = await connection.update_resource_content(current_script_id, %code_editor.text)
-	print(resource.code)
+	print(resource)
 	ret.message = "Los cambios fueron guardados"
 	ret.status = Terminal.SUCCESS
 	return ret
