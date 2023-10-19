@@ -22,3 +22,9 @@ func update_resource_content(id : int, new_content : String):
 	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_PUT, json)
 	var response : Dictionary = await request.completed
 	return response
+	
+func get_compiled_script(id : int):
+	var route = RESOURCES_URL + "/" + str(id) + "/compiled"
+	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_GET)
+	var response : Dictionary = await request.completed
+	return response

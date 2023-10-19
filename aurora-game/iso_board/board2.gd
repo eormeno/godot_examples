@@ -82,6 +82,7 @@ func cmd_edit(arg : PackedStringArray):
 		return ret
 		
 	current_script_id = item_info.id
+	$StateChart.send_event("loaded_script")
 	
 	var resource = await connection.get_resource(current_script_id)
 	%code_editor.text = resource.resource.content
@@ -109,12 +110,11 @@ func cmd_run(arg : PackedStringArray):
 	if arg.size() != 1:
 		ret.message = "El comando " + arg[0] + " no requiere ningún parámetro"
 		return ret
-	if current_script_id == 0:
-		ret.message = "Debes seleccionar el script que quieres ejecutar"
+	var response = await connection.get_compiled_script(current_script_id)
+	if response.has("errors"):
+		ret.message = response.errors[0]
 		return ret
-	var resource = await connection.update_resource_content(current_script_id, %code_editor.text)
-#	var resource = await connection.get_resource(current_script_id)
-	ret.message = str(resource.code)
+	ret.message = JSON.stringify(response.compiled, " ")
 	ret.status = Terminal.SUCCESS
 	return ret
 

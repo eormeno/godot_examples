@@ -40,6 +40,7 @@ script = ExtResource("3_cgvvx")
 [node name="Transition" type="Node" parent="StateChart/RW Run states/Without script"]
 script = ExtResource("5_akca7")
 to = NodePath("../../Editing script")
+event = &"loaded_script"
 
 [node name="Editing script" type="Node" parent="StateChart/RW Run states"]
 script = ExtResource("3_cgvvx")
