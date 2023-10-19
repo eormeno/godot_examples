@@ -21,20 +21,8 @@ func _on_command_entered(command : String, callback : Callable):
 		if !script_item:
 			callback.call("No encontré ese comando", Terminal.ERROR)
 			return
-		var item_info = script_item.get_metadata(0)
-		if item_info.type != "file":
-			callback.call("No puedes ejecutar una carpeta", Terminal.ERROR)
-			return
-		current_script_id = item_info.id
-		var resource = await connection.get_resource(item_info.id)
-		%code_editor.text = resource.content
-		
-		callback.call("", Terminal.SUCCESS)
-#		var result = await evaluate(resource.content)
-#		callback.call(result.message, result.status)
 	else:
 		var ret = await self.call("cmd_" + tokens[0], tokens)
-
 		callback.call(ret.message, ret.status)
 
 func move_to(target : String):
@@ -90,7 +78,7 @@ func cmd_edit(arg : PackedStringArray):
 	current_script_id = item_info.id
 	
 	var resource = await connection.get_resource(current_script_id)
-	%code_editor.text = resource.content
+	%code_editor.text = resource.resource.content
 	%tab_container.current_tab = 1
 	ret.status = Terminal.SUCCESS
 	return ret
@@ -101,11 +89,24 @@ func cmd_save(arg : PackedStringArray):
 		ret.message = "El comando " + arg[0] + " no requiere ningún parámetro"
 		return ret
 	if current_script_id == 0:
-		ret.message = "El comando " + arg[0] + " guarda el script que se está editando"
+		ret.message = "Nada que guardar en este momento"
 		return ret
 	var resource = await connection.update_resource_content(current_script_id, %code_editor.text)
-	print(resource)
 	ret.message = "Los cambios fueron guardados"
+	ret.status = Terminal.SUCCESS
+	return ret
+	
+func cmd_run(arg : PackedStringArray):
+	var ret = { message = "", status = Terminal.ERROR }
+	if arg.size() != 1:
+		ret.message = "El comando " + arg[0] + " no requiere ningún parámetro"
+		return ret
+	if current_script_id == 0:
+		ret.message = "Debes seleccionar el script que quieres ejecutar"
+		return ret
+	var resource = await connection.update_resource_content(current_script_id, %code_editor.text)
+#	var resource = await connection.get_resource(current_script_id)
+	ret.message = str(resource.code)
 	ret.status = Terminal.SUCCESS
 	return ret
 
@@ -114,17 +115,6 @@ func find_item(item_name : String):
 		if item.get_text(0) == item_name:
 			return item
 	return null
-
-#func _on_prompt_text_submitted(new_text: String):
-#	if new_text.is_empty():
-#		return
-#	var _error = expression.parse(new_text)
-#	var result = expression.execute([], self)
-#	if not expression.has_execute_failed():
-#		editor.text = editor.text + new_text + ": " + result + "\n"
-#		return
-#	editor.text += expression.get_error_text() + "\n"
-#	return
 
 func evaluate(sub_script:String):
 	var lines : PackedStringArray = sub_script.split("\n")
@@ -146,8 +136,14 @@ func _on_tree_item_selected():
 	var item : TreeItem = tree.get_selected()
 	current_dir = item
 	if item.get_metadata(0).type != "folder":
-		terminal.set_input(item.get_text(0))
 		current_dir = item.get_parent()
+		terminal.submit('edit ' + item.get_text(0))
 	else:
 		terminal.set_input("")
 	terminal.set_prompt(tree.get_full_path(current_dir))
+
+func _on_save_button_pressed():
+	terminal.submit("save")
+
+func _on_run_button_pressed():
+	terminal.submit("run")

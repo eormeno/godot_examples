@@ -14,7 +14,7 @@ func get_resource(id : int):
 	var route = RESOURCES_URL + "/" + str(id)
 	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_GET)
 	var response : Dictionary = await request.completed
-	return response.resource
+	return response
 
 func update_resource_content(id : int, new_content : String):
 	var route = RESOURCES_URL + "/" + str(id)

@@ -33,6 +33,11 @@ func set_input(script_name : String):
 	input.caret_column = script_name.length()
 	input.grab_focus()
 	
+func submit(command : String):
+	input.text = command
+	input.caret_column = command.length()
+	_on_line_edit_text_submitted(input.text)
+	
 func _process(delta):
 	if timeout_running:
 		timeout_counter += delta
@@ -81,6 +86,7 @@ func _on_command_execution_result(message: String, status: int = SUCCESS):
 		history.append_text(message)
 		history.pop()
 		history.pop()
+		if !message.ends_with("\n"): history.append_text('\n')
 	input.clear()
 	input.editable = true
 	timeout_running = false

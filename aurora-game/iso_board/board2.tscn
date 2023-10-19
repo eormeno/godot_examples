@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://n23uw77trmcy"]
+[gd_scene load_steps=14 format=3 uid="uid://n23uw77trmcy"]
 
 [ext_resource type="Texture2D" uid="uid://drqcff4yw3wel" path="res://assets/board.jpg" id="1_bvrql"]
 [ext_resource type="Script" path="res://iso_board/board2.gd" id="1_kpi0e"]
@@ -11,9 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://vxdfd647dgi1" path="res://themes/folder_icon.png" id="7_7symv"]
 [ext_resource type="Texture2D" uid="uid://tpxym72jguog" path="res://themes/document_icon.png" id="8_iffmt"]
 [ext_resource type="PackedScene" uid="uid://dhvvyhj35v8lk" path="res://terminal/terminal.tscn" id="9_2j2p5"]
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_8intw"]
-allow_unpress = true
 
 [sub_resource type="InputEventKey" id="InputEventKey_1nbvt"]
 device = -1
@@ -74,23 +71,20 @@ size_flags_horizontal = 4
 columns = 3
 
 [node name="run_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 theme_type_variation = &"RunScriptButton"
-toggle_mode = true
-button_group = SubResource("ButtonGroup_8intw")
 
 [node name="pause_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 theme_type_variation = &"PauseScriptButton"
-toggle_mode = true
 
 [node name="stop_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 theme_type_variation = &"StopScriptButton"
-toggle_mode = true
 
 [node name="CameraContainer" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer"]
 layout_mode = 2
@@ -468,4 +462,6 @@ script = ExtResource("4_r8rts")
 [node name="PathTransition" type="Node2D" parent="pasillo_4"]
 script = ExtResource("5_isq2r")
 
+[connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer/run_button" to="." method="_on_run_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container/Editor/editor_tool_bar/GridContainer/save_button" to="." method="_on_save_button_pressed"]
 [connection signal="item_selected" from="CanvasLayer/Control/VSplitContainer/PanelContainer/HSplitContainer/PanelContainer2/Tree" to="." method="_on_tree_item_selected"]
