@@ -172,3 +172,9 @@ func _on_without_script_state_entered():
 	tool.pause.can = false
 	tool.save.can = false
 	_update_ui_states()
+
+
+func _on_editing_script_state_entered():
+	tool.run.can = true
+	tool.save.can = true
+	_update_ui_states()

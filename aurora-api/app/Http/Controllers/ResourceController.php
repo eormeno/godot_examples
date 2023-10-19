@@ -25,22 +25,28 @@ class ResourceController extends Controller
     {
         $request_id = request()->header('Request-ID');
         $user = User::with('userFolder')->where('id', '=', auth()->user()->id)->first();
-        $folderTree = $this->getFolderTree($user->userFolder);
+        $folderTree = $this->getFolderTree($user->userFolder, $user->player_level);
         return response()->json([
             'folder' => $folderTree
-        ])->withHeaders(['Request-ID' => $request_id,]);
+        ])->withHeaders(['Request-ID' => $request_id]);
     }
 
-    private function getFolderTree($folder)
+    private function getFolderTree($folder, $player_level)
     {
         $folderTree = [];
         $folderTree['id'] = $folder->id;
         $folderTree['type'] = $folder->type;
         if ($folder->type !== 'folder') {
             $folderTree['content'] = $folder->content;
+            $folderTree['comment'] = $folder->comment;
+            $folderTree['extension'] = $folder->extension;
+            $folderTree['mime_type'] = $folder->mime_type;
         } else {
             foreach ($folder->children as $child) {
-                $folderTree[$child->name] = $this->getFolderTree($child);
+                if ($child->minimum_player_level > $player_level) {
+                    continue;
+                }
+                $folderTree[$child->name] = $this->getFolderTree($child, $player_level);
             }
         }
         return $folderTree;
@@ -71,12 +77,14 @@ class ResourceController extends Controller
     public function update(Request $request, Resource $resource)
     {
         $request_id = request()->header('Request-ID');
-        $script = $request->input('content');
-        $code = $this->parseScript($script);
+        if ($resource->extension == 'script') {
+            $script = $request->input('content');
+            $code = $this->parseScript($script);
+            $request->merge(['compiled' => $code]);
+        }
         $resource->update($request->all());
         return response()->json([
-            'resource' => $resource,
-            'code' => $code
+            'resource' => $resource
         ])->withHeaders(['Request-ID' => $request_id,]);
     }
 
@@ -104,30 +112,37 @@ class ResourceController extends Controller
     }
 }
 
-final class TreeShapeListener implements ParseTreeListener {
+final class TreeShapeListener implements ParseTreeListener
+{
 
     private $vars = [];
     private $code = [];
 
-    public function __construct($code = []) {
+    public function __construct($code = [])
+    {
         $this->code = $code;
     }
 
-    public function getGeneratedCode() {
+    public function getGeneratedCode()
+    {
         return $this->code;
     }
 
-    public function visitTerminal(TerminalNode $node) : void {
+    public function visitTerminal(TerminalNode $node): void
+    {
     }
-    public function visitErrorNode(ErrorNode $node) : void {
+    public function visitErrorNode(ErrorNode $node): void
+    {
         $line = $node->getSymbol()->getLine();
         $msg = $node->getSymbol()->getText();
         $this->code[] = "Error on line " . $line . ": " . $msg;
     }
-    public function exitEveryRule(ParserRuleContext $ctx) : void {
+    public function exitEveryRule(ParserRuleContext $ctx): void
+    {
     }
 
-    public function enterEveryRule(ParserRuleContext $ctx) : void {
+    public function enterEveryRule(ParserRuleContext $ctx): void
+    {
 
         if ($ctx instanceof AssignmentContext) {
             $id = $ctx->ID()->getText();
@@ -156,8 +171,8 @@ final class TreeShapeListener implements ParseTreeListener {
             $str_expr = $ctx->expression()->STRING();
             $value = null;
             if ($id_expr != null) {
-                 $id = $id_expr->getText();
-                 $value = $this->vars[$id];
+                $id = $id_expr->getText();
+                $value = $this->vars[$id];
             } else if ($str_expr != null) {
                 $value = $str_expr->getText();
             } else {

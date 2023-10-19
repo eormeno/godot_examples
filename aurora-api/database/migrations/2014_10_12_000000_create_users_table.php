@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('is_admin')->default(false);
             $table->boolean('is_teacher')->default(false);
             $table->boolean('is_student')->default(false);
+            $table->integer('player_level')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

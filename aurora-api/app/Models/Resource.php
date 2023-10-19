@@ -16,6 +16,9 @@ class Resource extends Model
         'parent_id',
         'user_id',
         'content',
+        'comment',
+        'extension',
+        'mime_type',
     ];
 
     public function ownedBy()

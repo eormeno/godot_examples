@@ -1,6 +1,6 @@
 extends Tree
 
-const SKIPPABLE_ATTRIBUTES : Array[String] = ["id", "type", "file", "content", "mime", "ext"]
+const SKIPPABLE_ATTRIBUTES : Array[String] = ["id", "type", "content", "comment", "mime_type", "extension"]
 
 @export var folder_icon : Texture2D
 @export var document_icon : Texture2D
@@ -24,6 +24,7 @@ func add_elements(item: Dictionary, item_name : String = "/", parent_item : Tree
 	parent_item.set_text(0, item_name)
 	parent_item.set_icon(0, icon)
 	parent_item.set_metadata(0, item)
+	if item.has("comment"):	parent_item.set_tooltip_text(0, item.comment)
 		
 	for item_key_name in item:
 		if SKIPPABLE_ATTRIBUTES.has(item_key_name): continue

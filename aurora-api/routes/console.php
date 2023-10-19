@@ -15,14 +15,14 @@ Artisan::command('fresh', function () {
 
 // an artisan command that receves a resource id and returns it's children
 Artisan::command('resource {id}', function ($id) {
-    $resource = User::find($id)->userFolder;
-    $this->table(['ID', 'Name', 'Type'], $resource->children->map(function ($child) {
-        return [
-            $child->id,
-            $child->name,
-            $child->type
-        ];
-    }));
+    $user = User::find($id);
+    if ($user === null) {
+        $this->error('User not found');
+        return;
+    }
+    $resource = $user->userFolder;
+    $tree = getFolderTree($resource,$user->player_level);
+    $this->info(json_encode($tree, JSON_PRETTY_PRINT));
 })->purpose('Display resource children');
 
 Artisan::command('users', function () {
@@ -37,3 +37,24 @@ Artisan::command('users', function () {
         ];
     }));
 })->purpose('Display users');
+
+function getFolderTree($folder, $player_level)
+{
+    $folderTree = [];
+    $folderTree['id'] = $folder->id;
+    $folderTree['type'] = $folder->type;
+    if ($folder->type !== 'folder') {
+        $folderTree['content'] = $folder->content;
+        $folderTree['comment'] = $folder->comment;
+        $folderTree['extension'] = $folder->extension;
+        $folderTree['mime_type'] = $folder->mime_type;
+    } else {
+        foreach ($folder->children as $child) {
+            if ($child->minimum_player_level > $player_level) {
+                continue;
+            }
+            $folderTree[$child->name] = getFolderTree($child, $player_level);
+        }
+    }
+    return $folderTree;
+}

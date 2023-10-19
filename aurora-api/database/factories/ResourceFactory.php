@@ -13,13 +13,23 @@ class ResourceFactory extends Factory
 {
     const TEMPLATE_ALT = [
         "type" => "folder",
-        "tutorial" => [
-            "type"      => "folder",
-            "red"       => [ "type" => "script", "content" => "move_to(\"red\")"    ],
-            "green"     => [ "type" => "script", "content" => "move_to(\"green\")"  ],
-            "blue"      => [ "type" => "script", "content" => "move_to(\"blue\")"   ],
-            "yellow"    => [ "type" => "script", "content" => "move_to(\"yellow\")" ],
-            "back"      => [ "type" => "script", "content" => "move_to(\"back\")"   ],
+        "tutorial" => [ "type" => "folder",
+            "mover-a-luz-roja" => [
+                "type" => "file",
+                "extension" => "script",
+                "mime_type" => "text/plain",
+                "content" => "move to \"red\"",
+                "comment" => "Mueve el bot a la próxima luz roja",
+                "minimum_player_level" => 1,
+            ],
+            "recorrer-luces-rojas" => [
+                "type" => "file",
+                "extension" => "script",
+                "mime_type" => "text/plain",
+                "content" => "move to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\n",
+                "comment" => "Hace que el bot recorra todas las luces rojas",
+                "minimum_player_level" => 2,
+            ],
         ]
     ];
 
@@ -44,8 +54,8 @@ class ResourceFactory extends Factory
             if ($name === 'type') {
                 continue;
             }
-            if ($child['type'] === 'script') {
-                Resource::factory()->file($child['content'])->named($name)->childOf($parent)->create();
+            if ($child['type'] === 'file') {
+                Resource::factory()->file($child)->named($name)->childOf($parent)->create();
                 continue;
             }
             $resource = Resource::factory()->{$child['type']}()->named($name)->childOf($parent)->create();
@@ -70,11 +80,20 @@ class ResourceFactory extends Factory
         ]);
     }
 
-    public function file(string $content = 'test'): static
+    public function file(Array $file): static
     {
+        $content = $file['content'];
+        $comment = $file['comment'];
+        $extension = $file['extension'];
+        $mime_type = $file['mime_type'] ?? 'text/plain';
+        $minimum_player_level = $file['minimum_player_level'];
         return $this->state(fn(array $attributes) => [
             'type' => 'file',
+            'mime_type' => $mime_type,
+            'extension' => $extension,
             'content' => $content,
+            'comment' => $comment,
+            'minimum_player_level' => $minimum_player_level,
         ]);
     }
 
