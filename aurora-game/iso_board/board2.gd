@@ -1,19 +1,25 @@
 extends Node2D
 
 var player : Area2D
-var expression : Expression
 var tree : Tree
 var terminal : Terminal
 var current_dir : TreeItem
 var current_script_id : int
+
+var tool : Dictionary = {}
 
 func _ready():
 	player = find_child("player_2")
 	tree = find_child("Tree")
 	terminal = find_child("terminal")
 	terminal.connect("command_entered", _on_command_entered)
-	expression = Expression.new()
-	
+	tool = {
+		run		= { can = false, button = %run_button },
+		pause	= { can = false, button = %pause_button },
+		stop	= { can = false, button = %stop_button },
+		save	= { can = false, button = %save_button }
+	}
+
 func _on_command_entered(command : String, callback : Callable):
 	var tokens : PackedStringArray = command.split(" ")
 	if !self.has_method("cmd_" + tokens[0]):
@@ -85,18 +91,20 @@ func cmd_edit(arg : PackedStringArray):
 	
 func cmd_save(arg : PackedStringArray):
 	var ret = { message = "", status = Terminal.ERROR }
+	if !can("save"): return cannot_response()
 	if arg.size() != 1:
 		ret.message = "El comando " + arg[0] + " no requiere ningún parámetro"
 		return ret
 	if current_script_id == 0:
 		ret.message = "Nada que guardar en este momento"
 		return ret
-	var resource = await connection.update_resource_content(current_script_id, %code_editor.text)
+	var _resource = await connection.update_resource_content(current_script_id, %code_editor.text)
 	ret.message = "Los cambios fueron guardados"
 	ret.status = Terminal.SUCCESS
 	return ret
 	
 func cmd_run(arg : PackedStringArray):
+	if !can("run"): return cannot_response("Primero debes abrir un archivo de script")
 	var ret = { message = "", status = Terminal.ERROR }
 	if arg.size() != 1:
 		ret.message = "El comando " + arg[0] + " no requiere ningún parámetro"
@@ -147,3 +155,20 @@ func _on_save_button_pressed():
 
 func _on_run_button_pressed():
 	terminal.submit("run")
+
+func _update_ui_states():
+	for t in tool.keys():
+		tool[t].button.disabled = !tool[t].can
+		
+func can(tool_name:String):
+	return tool[tool_name].can
+	
+func cannot_response(message : String = "No se puede ejecutar"):
+	return { message = message, status = Terminal.ERROR }
+
+func _on_without_script_state_entered():
+	tool.run.can = false
+	tool.stop.can = false
+	tool.pause.can = false
+	tool.save.can = false
+	_update_ui_states()
