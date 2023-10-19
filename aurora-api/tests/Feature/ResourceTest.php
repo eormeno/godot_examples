@@ -42,16 +42,27 @@ class ResourceTest extends TestCase
         ];
         $resourcesResponse = $this->withHeaders($headers)->put('/api/resources/3', [
             'name' => 'other_name',
-            'content' => "move to \"red\"\nmove to \"green\"\nvar place = \"blue\"\nmove to place\ntake \"energy\"",
+            'content' => "other content",
         ]);
-        echo(json_encode($resourcesResponse['code'], JSON_PRETTY_PRINT));
-        $resourcesResponse->assertStatus(200)->assertJson(['resource' => true, 'code' => true]);
+        // echo(json_encode($resourcesResponse, JSON_PRETTY_PRINT));
+        $resourcesResponse->assertStatus(200)->assertJson(['resource' => true]);
         // assert that the resource was updated in the database
         $this->assertDatabaseHas('resources', [
             'id' => 3,
             'name' => 'other_name',
-            // 'content' => 'test resource with other content',
+            'content' => 'other content',
         ]);
+    }
+
+    public function testCompileScript() {
+        $loginResponse = $this->getLoginResponse();
+        $headers = [
+            'Authorization' => 'Bearer ' . $loginResponse['token'],
+            'Accept' => 'application/json'
+        ];
+        $resourcesResponse = $this->withHeaders($headers)->get('/api/resources/3/compiled');
+        echo(json_encode($resourcesResponse['compiled'], JSON_PRETTY_PRINT));
+        $resourcesResponse->assertStatus(200)->assertJson(['compiled' => true]);
     }
 
     public function getLoginResponse()

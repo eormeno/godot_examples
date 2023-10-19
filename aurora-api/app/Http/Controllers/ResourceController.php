@@ -77,14 +77,26 @@ class ResourceController extends Controller
     public function update(Request $request, Resource $resource)
     {
         $request_id = request()->header('Request-ID');
-        if ($resource->extension == 'script') {
-            $script = $request->input('content');
-            $code = $this->parseScript($script);
-            $request->merge(['compiled' => $code]);
-        }
         $resource->update($request->all());
         return response()->json([
             'resource' => $resource
+        ])->withHeaders(['Request-ID' => $request_id,]);
+    }
+
+    public function compile(Request $request, Resource $resource)
+    {
+        $request_id = request()->header('Request-ID');
+        if ($resource->type !== 'file' || $resource->extension !== 'script') {
+            return response([
+				'errors' => ["El archivo $resource->name no es un script"]
+			], 422)->withHeaders([
+                'Request-ID' => $request_id,
+            ]);
+        }
+        $script = $resource->content;
+        $code = $this->parseScript($script);
+        return response()->json([
+            'compiled' => $code
         ])->withHeaders(['Request-ID' => $request_id,]);
     }
 
