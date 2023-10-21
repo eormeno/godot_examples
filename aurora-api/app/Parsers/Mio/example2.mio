@@ -1,0 +1,27 @@
+mapa "estacion espacial":
+
+    personaje "bot":
+        energia_maxima  = 100
+        velocidad       = 1
+
+        estado "inicial":
+            energia     = energia_maxima
+            ubicacion   = mapa.inicio
+            destino     = mapa.luz_roja
+            estado      = "caminando"
+
+        estado "caminando" si ubicacion != destino:
+            cada 1 segundo:
+                energia = energia - 1
+            moverse destino
+            si ubicacion == destino:
+                estado = "esperando"
+
+        estado "esperando":
+            cada 1 segundo:
+                energia = energia - 1
+
+        estado "muerto" si energia == 0:
+            mostrar "¡Te quedaste sin energía!"
+            estado = "inicial"
+fin

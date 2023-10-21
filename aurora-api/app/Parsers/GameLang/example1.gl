@@ -1,0 +1,33 @@
+Personaje bot
+    Inicio
+        velocidad = 1
+        energia_maxima = 100
+        ubicacion = mapa.inicial
+        siguiente estado "inicial"
+    fin
+
+    estado "inicial"
+        energia = energia_maxima
+        destino = mapa.luz_roja
+    fin
+
+    estado "caminando" si ubicacion != destino
+        bot.mover destino
+        cada 1 segundo
+            energia = energia - 1
+        fin
+    fin
+
+    estado "esperar" si ubicacion == destino
+        cada 1 segundo
+            energia = energia -1
+        fin
+    fin
+
+    estado "muerto" si energia <= 0
+        energia = 0
+        bot.mensaje "Me quedé sin energía!"
+        esperar 3 segundos
+        siguiente estado "inicial"
+    fin
+fin
