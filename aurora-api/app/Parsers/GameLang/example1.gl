@@ -10,6 +10,7 @@ PERSONAJE bot
     ESTADO "inicial"
         INICIALMENTE EJECUTA al_iniciar
         SIGUIENTE ESTADO "caminando" SI EVENTO "caminar"
+        SIGUIENTE ESTADO "muerto" SI energia <= 0
     FIN
 
     ESTADO "caminando"
@@ -22,12 +23,10 @@ PERSONAJE bot
         FIN
     FIN
 
-    ESTADO "muerto" si energia <= 0
+    ESTADO "muerto"
         entrada
             bot.mensaje "Me quedé sin energía!"
-            esperar = 0
         FIN
-
         esperar 3 segundos
         siguiente ESTADO "inicial"
     FIN
