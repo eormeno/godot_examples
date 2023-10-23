@@ -1,33 +1,46 @@
-Personaje bot
-    Inicio
+PERSONAJE bot
+    CONFIGURACION
         velocidad = 1
         energia_maxima = 100
-        ubicacion = mapa.inicial
-        siguiente estado "inicial"
-    fin
+        posicion = mapa.inicial
+        animacion = "espera"
+        estado = "inicial"
+    FIN
 
-    estado "inicial"
+    ESTADO "inicial"
+        INICIALMENTE EJECUTA al_iniciar
+        SIGUIENTE ESTADO "caminando" SI EVENTO "caminar"
+    FIN
+
+    ESTADO "caminando"
+        REPETIDAMENTE EJECUTA caminar
+    FIN
+
+    ESTADO "esperar"
+        CADA 1 SEGUNDOS
+            energia = energia -1
+        FIN
+    FIN
+
+    ESTADO "muerto" si energia <= 0
+        entrada
+            bot.mensaje "Me quedé sin energía!"
+            esperar = 0
+        FIN
+
+        esperar 3 segundos
+        siguiente ESTADO "inicial"
+    FIN
+
+    FUNCION al_iniciar
         energia = energia_maxima
         destino = mapa.luz_roja
-    fin
+        EVENTO "caminar"
+    FIN
 
-    estado "caminando" si ubicacion != destino
-        bot.mover destino
-        cada 1 segundo
-            energia = energia - 1
-        fin
-    fin
-
-    estado "esperar" si ubicacion == destino
-        cada 1 segundo
-            energia = energia -1
-        fin
-    fin
-
-    estado "muerto" si energia <= 0
-        energia = 0
-        bot.mensaje "Me quedé sin energía!"
-        esperar 3 segundos
-        siguiente estado "inicial"
-    fin
-fin
+    FUNCION caminar
+        posicion = posicion + posicion.mover_hacia destino, velocidad
+        SI posicion == destino
+            siguiente ESTADO "esperar"
+    FIN
+FIN

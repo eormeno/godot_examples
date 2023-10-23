@@ -1,38 +1,39 @@
 grammar GameLang;
 
-options { caseInsensitive = true; }
-
 program: character+;
 
-character: 'personaje' ID (starting)? state+ 'fin';
+character: 'PERSONAJE' ID (starting)? state+ 'FIN';
 
-starting: 'inicio' assignmentStatement* transition 'fin';
+starting: 'CONFIGURACION' assignment* 'FIN';
 
-state: 'estado' STRING ('si' condition)? statement+ 'fin';
+state: 'ESTADO' STRING (('SI' | 'MIENTRAS') condition)? statement+ 'FIN';
 
-transition: 'siguiente' 'estado' expression;
+transition: 'SIGUIENTE' 'ESTADO' STRING 'SI' (condition | 'EVENTO' STRING );
 
-timing: 'cada' expression timeUnit
-    statement+ 'fin';
+event: 'EVENTO' STRING;
 
-wait: 'esperar' expression timeUnit;
+timing: 'CADA' expression timeUnit
+    statement+ 'FIN';
 
-timeUnit: ('segundos' | 'segundo' | 'milisegundos' | 'milisegundo' | 'minutos' | 'minuto');
+wait: 'ESPERAR' expression timeUnit;
+
+timeUnit: ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
 
 statement: whileStatement
         | ifStatement
-        | assignmentStatement
+        | assignment
         | timing
         | wait
         | methodCall
+        | event
         | transition;
 
-whileStatement: 'mientras' condition statement* 'fin';
+whileStatement: 'MIENTRAS' condition statement* 'FIN';
 
-ifStatement: 'si' condition 'entonces' statement* ('sino' statement*)?
-'fin';
+ifStatement: 'SI' condition 'ENTONCES' statement* ('SINO' statement*)?
+'FIN';
 
-assignmentStatement: (ID | attributeCall) EQUAL expression;
+assignment: (ID | attributeCall) EQUAL expression;
 
 attributeCall : ID '.' ID;
 
@@ -52,15 +53,15 @@ expression:
 condition: expression ('==' | '!=' | '<' | '<=' | '>' | '>=') expression;
 
 // Lexer rules
-ID: [a-z_][a-z0-9_]*;
-STRING: '"' ~'"'* '"';
-INT: [0-9]+;
-PLUS: '+';
-MINUS: '-';
-MULTIPLY: '*';
-DIVIDE: '/';
-LPAREN: '(';
-RPAREN: ')';
-DOT: '.';
-EQUAL: '=';
-WS: [ \t\r\n]+ -> skip;
+ID:         [a-z_][a-z0-9_]*;
+STRING:     '"' ~'"'* '"';
+INT:        [0-9]+;
+PLUS:       '+';
+MINUS:      '-';
+MULTIPLY:   '*';
+DIVIDE:     '/';
+LPAREN:     '(';
+RPAREN:     ')';
+DOT:        '.';
+EQUAL:      '=';
+WS:         [ \t\r\n]+ -> skip;
