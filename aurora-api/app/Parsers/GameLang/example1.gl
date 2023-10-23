@@ -1,45 +1,56 @@
 PERSONAJE bot
-    CONFIGURACION
+    PRIMERAMENTE
         velocidad = 1
         energia_maxima = 100
-        posicion = mapa.inicial
-        animacion = "espera"
-        estado = "inicial"
+        QUE ESTÉ iniciando
     FIN
 
-    ESTADO "inicial"
-        INICIALMENTE EJECUTA al_iniciar
-        SIGUIENTE ESTADO "caminando" SI EVENTO "caminar"
-        SIGUIENTE ESTADO "muerto" SI energia <= 0
-    FIN
-
-    ESTADO "caminando"
-        REPETIDAMENTE EJECUTA caminar
-    FIN
-
-    ESTADO "esperar"
-        CADA 1 SEGUNDOS
-            energia = energia -1
+    ESTOY iniciando
+        PRIMERAMENTE
+            posicion = mapa.inicial
+            bot.mensaje "Hola, soy un bot!"
+            animacion = "espera"
+            energia = energia_maxima
+            destino = mapa.luz_roja
+            QUE ESTÉ caminando
         FIN
     FIN
 
-    ESTADO "muerto"
-        entrada
+    ESTOY caminando
+        PRIMERAMENTE
+            animacion = "caminar"
+        FIN
+        REPETIDAMENTE
+            LUEGO DE 1 segundo
+                energia = energia - 1
+            FIN
+            posicion = posicion + MOVER HACIA destino, velocidad
+            SI posicion == destino
+                QUE ESTÉ esperando
+            SI energia <= 0
+                QUE ESTÉ muerto
+        FIN
+    FIN
+
+    ESTOY esperando
+        REPETIDAMENTE
+            LUEGO DE 1 segundo
+                energia = energia - 1
+            FIN
+            SI energia <= 0
+                QUE ESTÉ muerto
+        FIN
+    FIN
+
+    ESTOY muerto
+        PRIMERAMENTE
+            animacion = "muerto"
             bot.mensaje "Me quedé sin energía!"
         FIN
-        esperar 3 segundos
-        siguiente ESTADO "inicial"
-    FIN
-
-    FUNCION al_iniciar
-        energia = energia_maxima
-        destino = mapa.luz_roja
-        EVENTO "caminar"
-    FIN
-
-    FUNCION caminar
-        posicion = posicion + posicion.mover_hacia destino, velocidad
-        SI posicion == destino
-            siguiente ESTADO "esperar"
+        REPETIDAMENTE
+            LUEGO DE 1 segundo
+                QUE ESTÉ iniciando
+            FIN
+        FIN
     FIN
 FIN
