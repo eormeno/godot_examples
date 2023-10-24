@@ -1,37 +1,26 @@
 grammar GameLang;
 
-program: character+;
+program:    character+;
 
-character: 'PERSONAJE' ID (definitions)? state+ functionDef* 'FIN';
+character:  'PERSONAJE' ID (definitions) state* functionDef* 'FIN';
 
-definitions:
-    'DEFINE'
-        (assignment | animationDef | soundDef)* (transition)?
-    'FIN';
+definitions: (assignment | animationDef | soundDef)* (transition)?;
 
-state: 'ESTA' ID (entering)? statement* (exiting)? 'FIN';
+state:      'ESTA' ID (entering)? statement* (exiting)? 'FIN';
 
 transition: 'ESTARA' ID;
 
-event: 'EVENTO' STRING;
-
-timing: 'CADA' expression timeUnit
-    statement+ 'FIN';
-
-wait: 'ESPERAR' expression timeUnit;
-
-timeUnit: ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
+timeUnit:   ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
 
 statement: whileStatement
-        | ifStatement
-        | assignment
-        | timing
-        | wait
-        | methodCall
-        | event
-        | afterTimer
-        | everyTimer
-        | transition;
+		| ifStatement
+		| assignment
+		| animationDef
+		| soundDef
+		| methodCall
+		| afterTimer
+		| everyTimer
+		| transition;
 
 whileStatement: 'MIENTRAS' condition statement* 'FIN';
 
@@ -40,9 +29,9 @@ ifStatement: 'SI' condition statement* ('SINO' statement*)?
 
 assignment: (ID | attributeCall) EQUAL expression;
 
-animationDef: 'ANIMACION' ID;
+animationDef: 'ANIMACION' (ID | 'ACTUAL') ('REPRODUCIR' | 'DETENER');
 
-soundDef: 'SONIDO' ID;
+soundDef: 'SONIDO' (ID | 'ACTUAL') ('REPRODUCIR' | 'DETENER');
 
 attributeCall : ID '.' ID;
 
@@ -51,34 +40,34 @@ entering: 'ENTRANDO' statement* 'FIN';
 exiting: 'SALIENDO' statement* 'FIN';
 
 afterTimer: 'LUEGO' ('DE')?
-    expression timeUnit
-    statement*
-    'FIN';
+	expression timeUnit
+	statement*
+	'FIN';
 
 everyTimer: 'CADA'
-    expression timeUnit
-    statement*
-    'FIN';
+	expression timeUnit
+	statement*
+	'FIN';
 
-methodCall: ((ID '.')? ID '(' (expression (',' expression)*)? ')') | (ID '=' expression ';' ) ;
+methodCall: ((ID '.')? ID LPAREN (expression (',' expression)*)? RPAREN);
 
 functionDef: 'FUNCION' ID '(' (ID (',' ID)*)? ')'
-    statement*
-    'RETORNAR' (ID)?;
+	statement*
+	'RETORNAR' (ID)?;
 
 expression:
-            INT
-        |   STRING
-        |   ID
-        |   'NULO'
-        |   'NULA'
-        |   attributeCall
-        |   methodCall
-        |   expression PLUS expression
-        |   expression MINUS expression
-        |   expression MULTIPLY expression
-        |   expression DIVIDE expression
-        |   LPAREN expression RPAREN;
+			INT
+		|	STRING
+		|	ID
+		|	'NULO'
+		|	'NULA'
+		|	attributeCall
+		|	methodCall
+		|	expression PLUS expression
+		|	expression MINUS expression
+		|	expression MULTIPLY expression
+		|	expression DIVIDE expression
+		|	LPAREN expression RPAREN;
 
 condition: expression ('==' | '!=' | '<' | '<=' | '>' | '>=') expression;
 
