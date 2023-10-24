@@ -1,56 +1,54 @@
 PERSONAJE bot
-    PRIMERAMENTE
-        velocidad = 1
-        energia_maxima = 100
-        QUE ESTÉ iniciando
-    FIN
+    velocidad = 1
+    energia_maxima = 100
+    ESTARÁ reviviendo
 
-    ESTOY iniciando
-        PRIMERAMENTE
+    ESTÁ reviviendo
+        AL EMPEZAR
             posicion = mapa.inicial
             bot.mensaje "Hola, soy un bot!"
             animacion = "espera"
             energia = energia_maxima
             destino = mapa.luz_roja
-            QUE ESTÉ caminando
+        FIN
+        LUEGO DE 2 segundos
+            bot.mensaje "Voy a caminar hacia la luz roja"
+            ESTARÁ caminando
         FIN
     FIN
 
-    ESTOY caminando
-        PRIMERAMENTE
+    ESTÁ caminando
+        AL EMPEZAR
             animacion = "caminar"
         FIN
-        REPETIDAMENTE
-            LUEGO DE 1 segundo
-                energia = energia - 1
-            FIN
-            posicion = posicion + MOVER HACIA destino, velocidad
-            SI posicion == destino
-                QUE ESTÉ esperando
-            SI energia <= 0
-                QUE ESTÉ muerto
+        LUEGO DE 1 segundos
+            energia = energia - 1
+        FIN
+        posicion = posicion + MOVER HACIA destino, velocidad
+        SI posicion == destino
+            ESTARÁ esperando
+        FIN
+        SI energia <= 0
+            ESTARÁ muerto
         FIN
     FIN
 
-    ESTOY esperando
-        REPETIDAMENTE
-            LUEGO DE 1 segundo
-                energia = energia - 1
-            FIN
-            SI energia <= 0
-                QUE ESTÉ muerto
+    ESTÁ esperando
+        LUEGO DE 1 segundos
+            energia = energia - 1
+        FIN
+        SI energia <= 0
+            ESTARÁ muerto
         FIN
     FIN
 
-    ESTOY muerto
-        PRIMERAMENTE
+    ESTÁ muerto
+        AL EMPEZAR
             animacion = "muerto"
             bot.mensaje "Me quedé sin energía!"
         FIN
-        REPETIDAMENTE
-            LUEGO DE 1 segundo
-                QUE ESTÉ iniciando
-            FIN
+        LUEGO DE 1 segundos
+            ESTARÁ reviviendo
         FIN
     FIN
 FIN

@@ -1,0 +1,30 @@
+PERSONAJE bot:
+    velocidad = 1
+    energia_maxima = 100
+    ESTARÁ reviviendo
+
+    ESTÁ reviviendo:
+        AL EMPEZAR:
+            posicion = mapa.inicial
+            bot.mensaje "Hola, soy un bot!"
+            animacion = "espera"
+            energia = energia_maxima
+            destino = mapa.luz_roja
+        LUEGO DE 2 segundos:
+            bot.mensaje "Voy a caminar hacia la luz roja"
+            ESTARÁ caminando
+
+    ESTÁ caminando:
+        AL EMPEZAR: animacion = "caminar"
+        LUEGO DE 1 segundos: energia = energia - 1
+        posicion = posicion + MOVER HACIA destino, velocidad
+        SI posicion == destino: ESTARÁ esperando
+
+    ESTÁ esperando:
+        LUEGO DE 1 segundos: energia = energia - 1
+
+    ESTÁ muerto SI energia <= 0:
+        AL EMPEZAR:
+            animacion = "muerto"
+            bot.mensaje "Me quedé sin energía!"
+        LUEGO DE 1 segundos: ESTARÁ reviviendo
