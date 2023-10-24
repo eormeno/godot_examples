@@ -1,17 +1,19 @@
 PERSONAJE bot
-    ANIMACION animacion_espera
-    ANIMACION animacion_caminar
-    ANIMACION animacion_muerto
-    SONIDO sonido_muerte
-    SONIDO sonido_caminar
-    SONIDO sonido_revivir
-    SONIDO sonido_espera
-    velocidad = 1
-    energia_maxima = 100
-    ESTARÁ reviviendo
+    DEFINE
+        ANIMACION animacion_espera
+        ANIMACION animacion_caminar
+        ANIMACION animacion_muerto
+        SONIDO sonido_muerte
+        SONIDO sonido_caminar
+        SONIDO sonido_revivir
+        SONIDO sonido_espera
+        velocidad = 1
+        energia_maxima = 100
+        ESTARA reviviendo
+    FIN
 
-    ESTÁ reviviendo
-        AL ENTRAR
+    ESTA reviviendo
+        ENTRANDO
             posicion = mapa.inicial
             dice ("Hola, soy un bot!")
             animacion = "espera"
@@ -19,56 +21,56 @@ PERSONAJE bot
             destino = mapa.luz_roja
             sonido_revivir.reproducir()
         FIN
-        LUEGO DE 2 segundos
+        LUEGO DE 2 SEGUNDOS
             dice ("Voy a caminar hacia la luz roja")
-            ESTARÁ caminando
+            ESTARA caminando
         FIN
-        AL SALIR
+        SALIENDO
             animacion = NULA
         FIN
     FIN
 
-    ESTÁ caminando
-        AL ENTRAR
+    ESTA caminando
+        ENTRANDO
             animacion = "caminar"
         FIN
         sonido_caminar.reproducir()
-        CADA 1 segundos
+        CADA 1 SEGUNDOS
             reducir_energia()
         FIN
         posicion = mover_a_destino()
         SI posicion == destino
-            ESTARÁ esperando
+            ESTARA esperando
         FIN
     FIN
 
-    ESTÁ esperando
+    ESTA esperando
         sonido_espera.reproducir()
-        CADA 1 segundos
+        CADA 1 SEGUNDOS
             reducir_energia()
         FIN
     FIN
 
-    ESTÁ muerto
-        AL ENTRAR
+    ESTA muerto
+        ENTRANDO
             animacion = "muerto"
             dice ("Me quedé sin energía!")
         FIN
-        LUEGO DE 1 segundos
-            ESTARÁ reviviendo
+        LUEGO DE 1 SEGUNDOS
+            ESTARA reviviendo
         FIN
     FIN
 
     FUNCION mover_a_destino()
-        nueva_posicion = posicion + TIEMPO.transcurrido * velocidad
-        RETORNAR nueva_posicion
+        nueva_posicion = posicion + transcurrido * velocidad
+    RETORNAR nueva_posicion
 
     FUNCION reducir_energia()
         energia = energia - 1
         SI energia <= 0
-            ESTARÁ muerto
+            ESTARA muerto
         FIN
-    FIN
+    RETORNAR
 
     FUNCION dice(texto, color, duracion)
         SI color == NULO
@@ -77,6 +79,7 @@ PERSONAJE bot
         SI duracion == NULO
             duracion = 2
         FIN
-        mapa.mensaje texto, color, duracion
-    FIN
+        mapa.mensaje (texto, color, duracion)
+    RETORNAR
+
 FIN
