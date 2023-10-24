@@ -1,54 +1,73 @@
 grammar GameLang;
 
-program: character+;
+program:    character+;
 
-character: 'PERSONAJE' ID (starting)? state+ 'FIN';
+character:  'PERSONAJE' ID (definitions) state* functionDef* 'FIN';
 
-starting: 'CONFIGURACION' assignment* 'FIN';
+definitions: (assignment | animationDef | soundDef)* (transition)?;
 
-state: 'ESTADO' STRING (('SI' | 'MIENTRAS') condition)? statement+ 'FIN';
+state:      'ESTA' ID (entering)? statement* (exiting)? 'FIN';
 
-transition: 'SIGUIENTE' 'ESTADO' STRING 'SI' (condition | 'EVENTO' STRING );
+transition: 'ESTARA' ID;
 
-event: 'EVENTO' STRING;
-
-timing: 'CADA' expression timeUnit
-    statement+ 'FIN';
-
-wait: 'ESPERAR' expression timeUnit;
-
-timeUnit: ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
+timeUnit:   ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
 
 statement: whileStatement
-        | ifStatement
-        | assignment
-        | timing
-        | wait
-        | methodCall
-        | event
-        | transition;
+		| ifStatement
+		| assignment
+		| animationDef
+		| soundDef
+		| methodCall
+		| afterTimer
+		| everyTimer
+		| transition;
 
 whileStatement: 'MIENTRAS' condition statement* 'FIN';
 
-ifStatement: 'SI' condition 'ENTONCES' statement* ('SINO' statement*)?
+ifStatement: 'SI' condition statement* ('SINO' statement*)?
 'FIN';
 
 assignment: (ID | attributeCall) EQUAL expression;
 
+animationDef: 'ANIMACION' (ID | 'ACTUAL') ('REPRODUCIR' | 'DETENER');
+
+soundDef: 'SONIDO' (ID | 'ACTUAL') ('REPRODUCIR' | 'DETENER');
+
 attributeCall : ID '.' ID;
 
-methodCall: (ID '.' ID (expression (',' expression)*)? );
+entering: 'ENTRANDO' statement* 'FIN';
+
+exiting: 'SALIENDO' statement* 'FIN';
+
+afterTimer: 'LUEGO' ('DE')?
+	expression timeUnit
+	statement*
+	'FIN';
+
+everyTimer: 'CADA'
+	expression timeUnit
+	statement*
+	'FIN';
+
+methodCall: ((ID '.')? ID LPAREN (expression (',' expression)*)? RPAREN);
+
+functionDef: 'FUNCION' ID '(' (ID (',' ID)*)? ')'
+	statement*
+	'RETORNAR' (ID)?;
 
 expression:
-            INT
-        |   STRING
-        |   ID
-        |   attributeCall
-        |   expression PLUS expression
-        |   expression MINUS expression
-        |   expression MULTIPLY expression
-        |   expression DIVIDE expression
-        |   LPAREN expression RPAREN;
+			INT
+		|	STRING
+		|	ID
+		|	'NULO'
+		|	'NULA'
+		|	attributeCall
+		|	methodCall
+		|	expression PLUS expression
+		|	expression MINUS expression
+		|	expression MULTIPLY expression
+		|	expression DIVIDE expression
+		|	LPAREN expression RPAREN;
 
 condition: expression ('==' | '!=' | '<' | '<=' | '>' | '>=') expression;
 
