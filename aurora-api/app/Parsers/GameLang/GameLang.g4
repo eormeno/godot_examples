@@ -4,7 +4,9 @@ program:    character+;
 
 character:  'PERSONAJE' ID (definitions) state* functionDef* 'FIN';
 
-definitions: (assignment | animationDef | soundDef)* (transition)?;
+definitions: (parameters | assignment | animationDef | soundDef)* (transition)?;
+
+parameters: 'PARAMETROS' (ID (',' ID)*)?;
 
 state:      'ESTA' ID (entering)? statement* (exiting)? 'FIN';
 

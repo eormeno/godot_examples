@@ -1,15 +1,15 @@
-PERSONAJE bot
+PERSONAJE bot PARAMETROS juego, sistema, mundo
 	velocidad = 1
 	energia_maxima = 100
 	ESTARA reviviendo
 
 	ESTA reviviendo
 		ENTRANDO
-			posicion = mapa.inicial
+			posicion = juego.nacimiento
 			dice ("Hola, soy un bot!")
-			animacion = "espera"
 			energia = energia_maxima
-			destino = mapa.luz_roja
+			destino = juego.luz_roja
+			ANIMACION espera REPRODUCIR
 			SONIDO revivir REPRODUCIR
 		FIN
 		LUEGO DE 2 SEGUNDOS
@@ -53,7 +53,7 @@ PERSONAJE bot
 	FIN
 
 	FUNCION mover_a_destino()
-		nueva_posicion = posicion + transcurrido * velocidad
+		nueva_posicion = posicion + juego.transcurrido * velocidad
 	RETORNAR nueva_posicion
 
 	FUNCION reducir_energia()
@@ -70,7 +70,7 @@ PERSONAJE bot
 		SI duracion == NULO
 			duracion = 2
 		FIN
-		mapa.mensaje (texto, color, duracion)
+		juego.mensaje (texto, color, duracion)
 	RETORNAR
 
 FIN

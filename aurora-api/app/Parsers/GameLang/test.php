@@ -34,25 +34,18 @@ class MyErrorListener extends DiagnosticErrorListener
 
 class GameLangSpecificVisitor extends GameLangBaseVisitor
 {
-    public function visitDefinitions(Context\DefinitionsContext $context)
+    public function visitParameters(Context\ParametersContext $context)
     {
-        echo "Definitions:\n";
-        foreach ($context->children as $definition) {
-            $childCount = $definition->getChildCount();
-            if ($childCount == 1) {
-                echo "\t" . $definition->getText() . "\n";
-                continue;
-            } elseif ($childCount == 2) {
-                $name = $definition->getChild(0)->getText();
-                $value = $definition->getChild(1)->getText();
-                echo "\t" . $name . " " . $value . "\n";
-                continue;
-            } else {
-                $name = $definition->getChild(0)->getText();
-                $value = $definition->getChild(2)->getText();
-                echo "\t" . $name . " = " . $value . "\n";
-            }
+        $identificators = $context->ID();
+        foreach ($identificators as $identificator) {
+            echo "param: $identificator \n";
         }
+    }
+
+    public function visitAssignment(Context\AssignmentContext $context) {
+        $identificator = $context->ID()->getText();
+        $expression = $context->expression()->getText();
+        echo "$identificator = $expression\n";
     }
 }
 

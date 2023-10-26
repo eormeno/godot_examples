@@ -61,6 +61,19 @@ class GameLangBaseListener implements GameLangListener
 	 *
 	 * The default implementation does nothing.
 	 */
+	public function enterParameters(Context\ParametersContext $context): void {}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function exitParameters(Context\ParametersContext $context): void {}
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
 	public function enterState(Context\StateContext $context): void {}
 
 	/**
