@@ -1,5 +1,5 @@
 PERSONAJE bot PARAMETROS juego, sistema, mundo
-	velocidad = (3 + 2) * 4
+	velocidad = (3 + 2) * 4 * 2 - 1
 	energia_maxima = 100
 	ESTARA reviviendo
 

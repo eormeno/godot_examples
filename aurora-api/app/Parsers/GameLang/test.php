@@ -84,7 +84,7 @@ class GameLangSpecificVisitor extends GameLangBaseVisitor
         elseif ($divide)
             $res = $this->visit($context->expression(0)) . " / " . $this->visit($context->expression(1));
         elseif ($leftParen)
-             $res = "'(" . $this->visit($context->expression(0)) . ")'";
+            $res = "'(" . $this->visit($context->expression(0)) . ")'";
         elseif ($rightParen)
             $res = "'(" . $this->visit($context->expression(0)) . ")'";
         elseif ($expression) {
@@ -102,11 +102,62 @@ class GameLangSpecificVisitor extends GameLangBaseVisitor
     }
 }
 
-$input = InputStream::fromPath("example.gl");
+class GameLangSpecificListener extends GameLangBaseListener
+{
+
+    private $stack = [];
+
+    public function valueOnStack()
+    {
+        return implode(", ", $this->stack);
+    }
+
+    public function enterExpression(Context\ExpressionContext $context): void
+    {
+        if ($context->INT()) {
+            array_push($this->stack, intval($context->INT()->getText()));
+            //echo "INT: " . $context->INT()->getText() . "\n";
+        }
+    }
+
+    public function exitExpression(Context\ExpressionContext $context): void
+    {
+        $op = $context->PLUS() ?? $context->MINUS() ?? $context->MULTIPLY() ?? $context->DIVIDE();
+
+        if ($op) {
+            // echo "OP: $op\n";
+            $right = array_pop($this->stack);
+            $left = array_pop($this->stack);
+            $res = 0;
+            switch ($op->getText()) {
+                case '+':
+                    $res = $left + $right;
+                    break;
+                case '-':
+                    $res = $left - $right;
+                    break;
+                case '*':
+                    $res = $left * $right;
+                    break;
+                case '/':
+                    $res = $left / $right;
+                    break;
+            }
+            array_push($this->stack, $res);
+        }
+    }
+}
+
+$input = InputStream::fromPath("example-1.gl");
 $lexer = new GameLangLexer($input);
 $tokens = new CommonTokenStream($lexer);
 $parser = new GameLangParser($tokens);
 $parser->addErrorListener(new MyErrorListener());
 $tree = $parser->program();
 $visitor = new GameLangSpecificVisitor();
-$visitor->visit($tree);
+
+$listener = new GameLangSpecificListener();
+// $visitor->visit($tree);
+ParseTreeWalker::default()->walk($listener, $tree);
+
+echo "Result: " . $listener->valueOnStack() . "\n";
