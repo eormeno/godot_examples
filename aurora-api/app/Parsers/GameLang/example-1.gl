@@ -1,5 +1,5 @@
 PERSONAJE bot PARAMETROS juego
-	velocidad = (3 + 2) * 4 * 2 - 1
+	velocidad = 3 + 2 * 4 * 2 - 1
 	ESTARA saludando
 
 	ESTA saludando

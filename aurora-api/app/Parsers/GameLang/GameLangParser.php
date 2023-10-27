@@ -206,10 +206,10 @@ namespace App\Parsers\GameLang {
 		    267, 1, 0, 0, 0, 266, 254, 1, 0, 0, 0, 266, 256, 1, 0, 0, 0, 266, 
 		    257, 1, 0, 0, 0, 266, 258, 1, 0, 0, 0, 266, 259, 1, 0, 0, 0, 266, 
 		    260, 1, 0, 0, 0, 266, 261, 1, 0, 0, 0, 266, 262, 1, 0, 0, 0, 267, 
-		    282, 1, 0, 0, 0, 268, 269, 10, 5, 0, 0, 269, 270, 5, 36, 0, 0, 270, 
-		    281, 3, 40, 20, 6, 271, 272, 10, 4, 0, 0, 272, 273, 5, 37, 0, 0, 273, 
-		    281, 3, 40, 20, 5, 274, 275, 10, 3, 0, 0, 275, 276, 5, 38, 0, 0, 276, 
-		    281, 3, 40, 20, 4, 277, 278, 10, 2, 0, 0, 278, 279, 5, 39, 0, 0, 279, 
+		    282, 1, 0, 0, 0, 268, 269, 10, 5, 0, 0, 269, 270, 5, 38, 0, 0, 270, 
+		    281, 3, 40, 20, 6, 271, 272, 10, 4, 0, 0, 272, 273, 5, 39, 0, 0, 273, 
+		    281, 3, 40, 20, 5, 274, 275, 10, 3, 0, 0, 275, 276, 5, 36, 0, 0, 276, 
+		    281, 3, 40, 20, 4, 277, 278, 10, 2, 0, 0, 278, 279, 5, 37, 0, 0, 279, 
 		    281, 3, 40, 20, 3, 280, 268, 1, 0, 0, 0, 280, 271, 1, 0, 0, 0, 280, 
 		    274, 1, 0, 0, 0, 280, 277, 1, 0, 0, 0, 281, 284, 1, 0, 0, 0, 282, 
 		    280, 1, 0, 0, 0, 282, 283, 1, 0, 0, 0, 283, 41, 1, 0, 0, 0, 284, 282, 
@@ -1332,7 +1332,7 @@ namespace App\Parsers\GameLang {
 							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 5)");
 							    }
 							    $this->setState(269);
-							    $this->match(self::PLUS);
+							    $this->match(self::MULTIPLY);
 							    $this->setState(270);
 							    $this->recursiveExpression(6);
 							break;
@@ -1346,7 +1346,7 @@ namespace App\Parsers\GameLang {
 							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 4)");
 							    }
 							    $this->setState(272);
-							    $this->match(self::MINUS);
+							    $this->match(self::DIVIDE);
 							    $this->setState(273);
 							    $this->recursiveExpression(5);
 							break;
@@ -1360,7 +1360,7 @@ namespace App\Parsers\GameLang {
 							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 3)");
 							    }
 							    $this->setState(275);
-							    $this->match(self::MULTIPLY);
+							    $this->match(self::PLUS);
 							    $this->setState(276);
 							    $this->recursiveExpression(4);
 							break;
@@ -1374,7 +1374,7 @@ namespace App\Parsers\GameLang {
 							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 2)");
 							    }
 							    $this->setState(278);
-							    $this->match(self::DIVIDE);
+							    $this->match(self::MINUS);
 							    $this->setState(279);
 							    $this->recursiveExpression(3);
 							break;
@@ -2668,16 +2668,6 @@ namespace App\Parsers\GameLang\Context {
 	        return $this->getToken(GameLangParser::RPAREN, 0);
 	    }
 
-	    public function PLUS(): ?TerminalNode
-	    {
-	        return $this->getToken(GameLangParser::PLUS, 0);
-	    }
-
-	    public function MINUS(): ?TerminalNode
-	    {
-	        return $this->getToken(GameLangParser::MINUS, 0);
-	    }
-
 	    public function MULTIPLY(): ?TerminalNode
 	    {
 	        return $this->getToken(GameLangParser::MULTIPLY, 0);
@@ -2686,6 +2676,16 @@ namespace App\Parsers\GameLang\Context {
 	    public function DIVIDE(): ?TerminalNode
 	    {
 	        return $this->getToken(GameLangParser::DIVIDE, 0);
+	    }
+
+	    public function PLUS(): ?TerminalNode
+	    {
+	        return $this->getToken(GameLangParser::PLUS, 0);
+	    }
+
+	    public function MINUS(): ?TerminalNode
+	    {
+	        return $this->getToken(GameLangParser::MINUS, 0);
 	    }
 
 		public function enterRule(ParseTreeListener $listener): void

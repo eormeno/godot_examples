@@ -109,7 +109,7 @@ class GameLangSpecificListener extends GameLangBaseListener
 
     public function valueOnStack()
     {
-        return implode(", ", $this->stack);
+        return implode("\n", $this->stack);
     }
 
     public function enterExpression(Context\ExpressionContext $context): void
@@ -125,6 +125,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         $op = $context->PLUS() ?? $context->MINUS() ?? $context->MULTIPLY() ?? $context->DIVIDE();
 
         if ($op) {
+            // array_push($this->stack, $op->getText());
             // echo "OP: $op\n";
             $right = array_pop($this->stack);
             $left = array_pop($this->stack);
@@ -160,4 +161,4 @@ $listener = new GameLangSpecificListener();
 // $visitor->visit($tree);
 ParseTreeWalker::default()->walk($listener, $tree);
 
-echo "Result: " . $listener->valueOnStack() . "\n";
+echo $listener->valueOnStack() . "\n";

@@ -65,10 +65,10 @@ expression:
 		|	'NULA'
 		|	attributeCall
 		|	methodCall
-		|	expression PLUS expression
-		|	expression MINUS expression
 		|	expression MULTIPLY expression
 		|	expression DIVIDE expression
+		|	expression PLUS expression
+		|	expression MINUS expression
 		|	LPAREN expression RPAREN;
 
 condition: expression ('==' | '!=' | '<' | '<=' | '>' | '>=') expression;
