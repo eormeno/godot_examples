@@ -213,6 +213,16 @@ interface GameLangListener extends ParseTreeListener {
 	 */
 	public function exitFunctionDef(Context\FunctionDefContext $context): void;
 	/**
+	 * Enter a parse tree produced by {@see GameLangParser::num()}.
+	 * @param $context The parse tree.
+	 */
+	public function enterNum(Context\NumContext $context): void;
+	/**
+	 * Exit a parse tree produced by {@see GameLangParser::num()}.
+	 * @param $context The parse tree.
+	 */
+	public function exitNum(Context\NumContext $context): void;
+	/**
 	 * Enter a parse tree produced by {@see GameLangParser::expression()}.
 	 * @param $context The parse tree.
 	 */

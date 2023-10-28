@@ -57,22 +57,21 @@ functionDef: 'FUNCION' ID '(' (ID (',' ID)*)? ')'
 	statement*
 	'RETORNAR' (ID)?;
 
-negated: MINUS expression;
+num: (MINUS) ? NUMBER;
 
-expression:
-			NUMBER
-		|	STRING
+expression
+		:	STRING
 		|	ID
 		|	'NULO'
 		|	'NULA'
 		|	attributeCall
 		|	methodCall
 		|	LPAREN expression RPAREN
-        |   negated
 		|	expression MULTIPLY expression
 		|	expression DIVIDE expression
 		|	expression PLUS expression
-		|	expression MINUS expression;
+		|	expression MINUS expression
+        |   num;
 
 condition: expression ('==' | '!=' | '<' | '<=' | '>' | '>=') expression;
 

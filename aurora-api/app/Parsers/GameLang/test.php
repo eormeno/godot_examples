@@ -60,7 +60,7 @@ class GameLangSpecificVisitor extends GameLangBaseVisitor
         $divide = $context->DIVIDE();
         $leftParen = $context->LPAREN();
         $rightParen = $context->RPAREN();
-        $number = $context->NUMBER();
+        $number = $context->num();
         $string = $context->STRING();
         $method = $context->methodCall();
         $attribute = $context->attributeCall();
@@ -114,8 +114,8 @@ class GameLangSpecificListener extends GameLangBaseListener
 
     public function enterExpression(Context\ExpressionContext $context): void
     {
-        if ($context->NUMBER()) {
-            array_push($this->stack, floatval($context->NUMBER()->getText()));
+        if ($context->num()) {
+            array_push($this->stack, floatval($context->num()->getText()));
             //echo "INT: " . $context->INT()->getText() . "\n";
         }
     }
@@ -133,7 +133,14 @@ class GameLangSpecificListener extends GameLangBaseListener
             return;
         }
 
-        $op = $op->getText();
+        if (is_array($op)) {
+            $op = $op[0];
+            // echo "OP: [". implode(" ", $op) . "]\n";
+        } else {
+            $op = $op->getText();
+            // echo "OP: ". $op . "\n";
+        }
+
         if ($op == '(' || $op == ')') {
             return;
         }
