@@ -29,9 +29,9 @@ namespace App\Parsers\GameLang {
                T__17 = 18, T__18 = 19, T__19 = 20, T__20 = 21, T__21 = 22, 
                T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, T__26 = 27, 
                T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
-               ID = 33, STRING = 34, INT = 35, PLUS = 36, MINUS = 37, MULTIPLY = 38, 
-               DIVIDE = 39, LPAREN = 40, RPAREN = 41, DOT = 42, EQUAL = 43, 
-               WS = 44;
+               ID = 33, NUMBER = 34, STRING = 35, PLUS = 36, MINUS = 37, 
+               MULTIPLY = 38, DIVIDE = 39, LPAREN = 40, RPAREN = 41, DOT = 42, 
+               EQUAL = 43, WS = 44;
 
 		public const RULE_program = 0, RULE_character = 1, RULE_definitions = 2, 
                RULE_parameters = 3, RULE_state = 4, RULE_transition = 5, 
@@ -72,7 +72,7 @@ namespace App\Parsers\GameLang {
 		    null, null, null, null, null, null, null, null, null, null, null, 
 		    null, null, null, null, null, null, null, null, null, null, null, 
 		    null, null, null, null, null, null, null, null, null, null, null, 
-		    "ID", "STRING", "INT", "PLUS", "MINUS", "MULTIPLY", "DIVIDE", "LPAREN", 
+		    "ID", "NUMBER", "STRING", "PLUS", "MINUS", "MULTIPLY", "DIVIDE", "LPAREN", 
 		    "RPAREN", "DOT", "EQUAL", "WS"
 		];
 
@@ -199,18 +199,18 @@ namespace App\Parsers\GameLang {
 		    1, 0, 0, 0, 247, 245, 1, 0, 0, 0, 247, 248, 1, 0, 0, 0, 248, 250, 
 		    1, 0, 0, 0, 249, 247, 1, 0, 0, 0, 250, 252, 5, 24, 0, 0, 251, 253, 
 		    5, 33, 0, 0, 252, 251, 1, 0, 0, 0, 252, 253, 1, 0, 0, 0, 253, 39, 
-		    1, 0, 0, 0, 254, 255, 6, 20, -1, 0, 255, 267, 5, 35, 0, 0, 256, 267, 
-		    5, 34, 0, 0, 257, 267, 5, 33, 0, 0, 258, 267, 5, 25, 0, 0, 259, 267, 
+		    1, 0, 0, 0, 254, 255, 6, 20, -1, 0, 255, 267, 5, 34, 0, 0, 256, 267, 
+		    5, 35, 0, 0, 257, 267, 5, 33, 0, 0, 258, 267, 5, 25, 0, 0, 259, 267, 
 		    5, 26, 0, 0, 260, 267, 3, 26, 13, 0, 261, 267, 3, 36, 18, 0, 262, 
 		    263, 5, 40, 0, 0, 263, 264, 3, 40, 20, 0, 264, 265, 5, 41, 0, 0, 265, 
 		    267, 1, 0, 0, 0, 266, 254, 1, 0, 0, 0, 266, 256, 1, 0, 0, 0, 266, 
 		    257, 1, 0, 0, 0, 266, 258, 1, 0, 0, 0, 266, 259, 1, 0, 0, 0, 266, 
 		    260, 1, 0, 0, 0, 266, 261, 1, 0, 0, 0, 266, 262, 1, 0, 0, 0, 267, 
-		    282, 1, 0, 0, 0, 268, 269, 10, 5, 0, 0, 269, 270, 5, 38, 0, 0, 270, 
-		    281, 3, 40, 20, 6, 271, 272, 10, 4, 0, 0, 272, 273, 5, 39, 0, 0, 273, 
-		    281, 3, 40, 20, 5, 274, 275, 10, 3, 0, 0, 275, 276, 5, 36, 0, 0, 276, 
-		    281, 3, 40, 20, 4, 277, 278, 10, 2, 0, 0, 278, 279, 5, 37, 0, 0, 279, 
-		    281, 3, 40, 20, 3, 280, 268, 1, 0, 0, 0, 280, 271, 1, 0, 0, 0, 280, 
+		    282, 1, 0, 0, 0, 268, 269, 10, 4, 0, 0, 269, 270, 5, 38, 0, 0, 270, 
+		    281, 3, 40, 20, 5, 271, 272, 10, 3, 0, 0, 272, 273, 5, 39, 0, 0, 273, 
+		    281, 3, 40, 20, 4, 274, 275, 10, 2, 0, 0, 275, 276, 5, 36, 0, 0, 276, 
+		    281, 3, 40, 20, 3, 277, 278, 10, 1, 0, 0, 278, 279, 5, 37, 0, 0, 279, 
+		    281, 3, 40, 20, 2, 280, 268, 1, 0, 0, 0, 280, 271, 1, 0, 0, 0, 280, 
 		    274, 1, 0, 0, 0, 280, 277, 1, 0, 0, 0, 281, 284, 1, 0, 0, 0, 282, 
 		    280, 1, 0, 0, 0, 282, 283, 1, 0, 0, 0, 283, 41, 1, 0, 0, 0, 284, 282, 
 		    1, 0, 0, 0, 285, 286, 3, 40, 20, 0, 286, 287, 7, 3, 0, 0, 287, 288, 
@@ -1264,7 +1264,7 @@ namespace App\Parsers\GameLang {
 				switch ($this->getInterpreter()->adaptivePredict($this->input, 29, $this->ctx)) {
 					case 1:
 					    $this->setState(255);
-					    $this->match(self::INT);
+					    $this->match(self::NUMBER);
 					break;
 
 					case 2:
@@ -1328,13 +1328,13 @@ namespace App\Parsers\GameLang {
 							    $this->pushNewRecursionContext($localContext, $startState, self::RULE_expression);
 							    $this->setState(268);
 
-							    if (!($this->precpred($this->ctx, 5))) {
-							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 5)");
+							    if (!($this->precpred($this->ctx, 4))) {
+							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 4)");
 							    }
 							    $this->setState(269);
 							    $this->match(self::MULTIPLY);
 							    $this->setState(270);
-							    $this->recursiveExpression(6);
+							    $this->recursiveExpression(5);
 							break;
 
 							case 2:
@@ -1342,13 +1342,13 @@ namespace App\Parsers\GameLang {
 							    $this->pushNewRecursionContext($localContext, $startState, self::RULE_expression);
 							    $this->setState(271);
 
-							    if (!($this->precpred($this->ctx, 4))) {
-							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 4)");
+							    if (!($this->precpred($this->ctx, 3))) {
+							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 3)");
 							    }
 							    $this->setState(272);
 							    $this->match(self::DIVIDE);
 							    $this->setState(273);
-							    $this->recursiveExpression(5);
+							    $this->recursiveExpression(4);
 							break;
 
 							case 3:
@@ -1356,13 +1356,13 @@ namespace App\Parsers\GameLang {
 							    $this->pushNewRecursionContext($localContext, $startState, self::RULE_expression);
 							    $this->setState(274);
 
-							    if (!($this->precpred($this->ctx, 3))) {
-							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 3)");
+							    if (!($this->precpred($this->ctx, 2))) {
+							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 2)");
 							    }
 							    $this->setState(275);
 							    $this->match(self::PLUS);
 							    $this->setState(276);
-							    $this->recursiveExpression(4);
+							    $this->recursiveExpression(3);
 							break;
 
 							case 4:
@@ -1370,13 +1370,13 @@ namespace App\Parsers\GameLang {
 							    $this->pushNewRecursionContext($localContext, $startState, self::RULE_expression);
 							    $this->setState(277);
 
-							    if (!($this->precpred($this->ctx, 2))) {
-							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 2)");
+							    if (!($this->precpred($this->ctx, 1))) {
+							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 1)");
 							    }
 							    $this->setState(278);
 							    $this->match(self::MINUS);
 							    $this->setState(279);
-							    $this->recursiveExpression(3);
+							    $this->recursiveExpression(2);
 							break;
 						} 
 					}
@@ -1452,16 +1452,16 @@ namespace App\Parsers\GameLang {
 		{
 			switch ($predicateIndex) {
 			    case 0:
-			        return $this->precpred($this->ctx, 5);
-
-			    case 1:
 			        return $this->precpred($this->ctx, 4);
 
-			    case 2:
+			    case 1:
 			        return $this->precpred($this->ctx, 3);
 
-			    case 3:
+			    case 2:
 			        return $this->precpred($this->ctx, 2);
+
+			    case 3:
+			        return $this->precpred($this->ctx, 1);
 			}
 
 			return true;
@@ -2621,9 +2621,9 @@ namespace App\Parsers\GameLang\Context {
 		    return GameLangParser::RULE_expression;
 	    }
 
-	    public function INT(): ?TerminalNode
+	    public function NUMBER(): ?TerminalNode
 	    {
-	        return $this->getToken(GameLangParser::INT, 0);
+	        return $this->getToken(GameLangParser::NUMBER, 0);
 	    }
 
 	    public function STRING(): ?TerminalNode

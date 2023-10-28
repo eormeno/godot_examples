@@ -57,26 +57,29 @@ functionDef: 'FUNCION' ID '(' (ID (',' ID)*)? ')'
 	statement*
 	'RETORNAR' (ID)?;
 
+negated: MINUS expression;
+
 expression:
-			INT
+			NUMBER
 		|	STRING
 		|	ID
 		|	'NULO'
 		|	'NULA'
 		|	attributeCall
 		|	methodCall
+		|	LPAREN expression RPAREN
+        |   negated
 		|	expression MULTIPLY expression
 		|	expression DIVIDE expression
 		|	expression PLUS expression
-		|	expression MINUS expression
-		|	LPAREN expression RPAREN;
+		|	expression MINUS expression;
 
 condition: expression ('==' | '!=' | '<' | '<=' | '>' | '>=') expression;
 
 // Lexer rules
 ID:         [a-z_][a-z0-9_]*;
+NUMBER:     ('0' .. '9') + ('.' ('0' .. '9') +)? ;
 STRING:     '"' ~'"'* '"';
-INT:        [0-9]+;
 PLUS:       '+';
 MINUS:      '-';
 MULTIPLY:   '*';

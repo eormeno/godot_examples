@@ -60,15 +60,15 @@ class GameLangSpecificVisitor extends GameLangBaseVisitor
         $divide = $context->DIVIDE();
         $leftParen = $context->LPAREN();
         $rightParen = $context->RPAREN();
-        $integer = $context->INT();
+        $number = $context->NUMBER();
         $string = $context->STRING();
         $method = $context->methodCall();
         $attribute = $context->attributeCall();
         $expression = $context->expression();
         if ($identificator)
             $res = "[" . $identificator->getText() . "]";
-        elseif ($integer)
-            $res = $integer->getText() . ".00";
+        elseif ($number)
+            $res = $number->getText() . ".00";
         elseif ($string)
             $res = "\"" . $string->getText() . "\"";
         elseif ($method)
@@ -114,38 +114,49 @@ class GameLangSpecificListener extends GameLangBaseListener
 
     public function enterExpression(Context\ExpressionContext $context): void
     {
-        if ($context->INT()) {
-            array_push($this->stack, intval($context->INT()->getText()));
+        if ($context->NUMBER()) {
+            array_push($this->stack, floatval($context->NUMBER()->getText()));
             //echo "INT: " . $context->INT()->getText() . "\n";
         }
     }
 
     public function exitExpression(Context\ExpressionContext $context): void
     {
-        $op = $context->PLUS() ?? $context->MINUS() ?? $context->MULTIPLY() ?? $context->DIVIDE();
+        $op = $context->PLUS() ??
+            $context->MINUS() ??
+            $context->MULTIPLY() ??
+            $context->DIVIDE() ??
+            $context->LPAREN() ??
+            $context->RPAREN();
 
-        if ($op) {
-            // array_push($this->stack, $op->getText());
-            // echo "OP: $op\n";
-            $right = array_pop($this->stack);
-            $left = array_pop($this->stack);
-            $res = 0;
-            switch ($op->getText()) {
-                case '+':
-                    $res = $left + $right;
-                    break;
-                case '-':
-                    $res = $left - $right;
-                    break;
-                case '*':
-                    $res = $left * $right;
-                    break;
-                case '/':
-                    $res = $left / $right;
-                    break;
-            }
-            array_push($this->stack, $res);
+        if (!$op) {
+            return;
         }
+
+        $op = $op->getText();
+        if ($op == '(' || $op == ')') {
+            return;
+        }
+        // array_push($this->stack, $op->getText());
+        // echo "OP: $op\n";
+        $right = array_pop($this->stack);
+        $left = array_pop($this->stack);
+        $res = 0;
+        switch ($op) {
+            case '+':
+                $res = $left + $right;
+                break;
+            case '-':
+                $res = $left - $right;
+                break;
+            case '*':
+                $res = $left * $right;
+                break;
+            case '/':
+                $res = $left / $right;
+                break;
+        }
+        array_push($this->stack, $res);
     }
 }
 
