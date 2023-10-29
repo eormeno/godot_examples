@@ -296,7 +296,6 @@ function runCode(array $code)
                 break;
             case Operation::pop:
                 $regs[$reg] = array_pop($stack);
-                // echo $regs[$reg] . " " . $reg . "\n";
                 break;
             case Operation::add:
                 $left = $regs[1];
