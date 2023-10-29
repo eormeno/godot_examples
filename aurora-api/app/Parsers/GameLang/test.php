@@ -104,26 +104,28 @@ class GameLangSpecificVisitor extends GameLangBaseVisitor
 
 enum Operation implements \JsonSerializable
 {
-    case mem;
+    case reg;
     case psh;
     case pop;
-    case tmp;
     case add;
     case sub;
     case mul;
     case div;
+    case mem;
+    case get;
 
     public function jsonSerialize()
     {
         return match ($this) {
             self::psh => 'psh',
             self::pop => 'pop',
-            self::tmp => 'tmp',
             self::add => 'add',
             self::sub => 'sub',
             self::mul => 'mul',
             self::div => 'div',
+            self::reg => 'reg',
             self::mem => 'mem',
+            self::get => 'get',
         };
     }
 }
@@ -131,23 +133,40 @@ enum Operation implements \JsonSerializable
 
 class GameLangSpecificListener extends GameLangBaseListener
 {
-
-    // private $stack = [];
     private $code = [];
-
 
     public function getCode()
     {
         return $this->code;
     }
 
-    private function insMem(int $line, int $reg, $data): void
+    private function insReg(int $line, int $reg, $data): void
+    {
+        $this->code[] = [
+            $line,
+            Operation::reg,
+            $reg,
+            $data
+        ];
+    }
+
+    private function insMem(int $line, int $reg, string $identificator): void
     {
         $this->code[] = [
             $line,
             Operation::mem,
             $reg,
-            $data
+            $identificator
+        ];
+    }
+
+    private function insGet(int $line, int $reg, string $identificator): void
+    {
+        $this->code[] = [
+            $line,
+            Operation::get,
+            $reg,
+            $identificator
         ];
     }
 
@@ -181,12 +200,24 @@ class GameLangSpecificListener extends GameLangBaseListener
         ];
     }
 
+    public function exitAssignment(Context\AssignmentContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $identificator = $context->ID()->getText();
+        $this->insPop($line, 0);
+        $this->insMem($line, 0, $identificator);
+    }
+
     public function enterExpression(Context\ExpressionContext $context): void
     {
         $line = $context->getStart()->getLine();
         if ($context->num()) {
             $value = floatval($context->num()->getText());
-            $this->insMem($line, 0, $value);
+            $this->insReg($line, 0, $value);
+            $this->insPsh($line, 0);
+        } elseif ($context->ID()) {
+            $identificator = $context->ID()->getText();
+            $this->insGet($line, 0, $identificator);
             $this->insPsh($line, 0);
         }
     }
@@ -210,31 +241,23 @@ class GameLangSpecificListener extends GameLangBaseListener
         if ($op == '(' || $op == ')') {
             return;
         }
-        // $right = array_pop($this->stack);
-        // $left = array_pop($this->stack);
         $this->insPop($line, 2);
         $this->insPop($line, 1);
 
-        // $res = 0;
         switch ($op) {
             case '+':
-                // $res = $left + $right;
                 $this->insOp($line, Operation::add, 3);
                 break;
             case '-':
-                // $res = $left - $right;
                 $this->insOp($line, Operation::sub, 3);
                 break;
             case '*':
-                // $res = $left * $right;
                 $this->insOp($line, Operation::mul, 3);
                 break;
             case '/':
-                // $res = $left / $right;
                 $this->insOp($line, Operation::div, 3);
                 break;
         }
-        // array_push($this->stack, $res);
         $this->insPsh($line, 3);
     }
 }
@@ -250,16 +273,22 @@ $visitor = new GameLangSpecificVisitor();
 $listener = new GameLangSpecificListener();
 // $visitor->visit($tree);
 ParseTreeWalker::default()->walk($listener, $tree);
-echo runCode($listener->getCode()) . "\n";
+
+try {
+    runCode($listener->getCode());
+} catch (\Exception $e) {
+    echo $e->getMessage() . "\n";
+}
 
 function runCode(array $code)
 {
     $stack = [];
     $regs = [3];
+    $mem = [];
     foreach ($code as $line) {
         [$lineNumber, $op, $reg, $data] = $line;
         switch ($op) {
-            case Operation::mem:
+            case Operation::reg:
                 $regs[$reg] = $data;
                 break;
             case Operation::psh:
@@ -267,6 +296,7 @@ function runCode(array $code)
                 break;
             case Operation::pop:
                 $regs[$reg] = array_pop($stack);
+                // echo $regs[$reg] . " " . $reg . "\n";
                 break;
             case Operation::add:
                 $left = $regs[1];
@@ -288,11 +318,18 @@ function runCode(array $code)
                 $right = $regs[2];
                 $regs[$reg] = $left / $right;
                 break;
+            case Operation::mem:
+                $result = $regs[$reg];
+                $mem[$data] = $result;
+                break;
+            case Operation::get:
+                if (!array_key_exists($data, $mem)) {
+                    throw new \Exception("Undefined variable '$data'");
+                }
+                $value = $mem[$data];
+                $regs[$reg] = $value;
+                break;
         }
     }
-
-    if (count($stack) != 1) {
-        throw new \Exception("Stack is not empty");
-    }
-    return array_pop($stack);
+    echo json_encode($mem, JSON_PRETTY_PRINT) . "\n";
 }
