@@ -250,7 +250,7 @@ $visitor = new GameLangSpecificVisitor();
 $listener = new GameLangSpecificListener();
 // $visitor->visit($tree);
 ParseTreeWalker::default()->walk($listener, $tree);
-echo runCode($listener->getCode())[0] . "\n";
+echo runCode($listener->getCode()) . "\n";
 
 function runCode(array $code)
 {
@@ -269,26 +269,30 @@ function runCode(array $code)
                 $regs[$reg] = array_pop($stack);
                 break;
             case Operation::add:
-                $left = $regs[0];
-                $right = $regs[1];
+                $left = $regs[1];
+                $right = $regs[2];
                 $regs[$reg] = $left + $right;
                 break;
             case Operation::sub:
-                $left = $regs[0];
-                $right = $regs[1];
+                $left = $regs[1];
+                $right = $regs[2];
                 $regs[$reg] = $left - $right;
                 break;
             case Operation::mul:
-                $left = $regs[0];
-                $right = $regs[1];
+                $left = $regs[1];
+                $right = $regs[2];
                 $regs[$reg] = $left * $right;
                 break;
             case Operation::div:
-                $left = $regs[0];
-                $right = $regs[1];
+                $left = $regs[1];
+                $right = $regs[2];
                 $regs[$reg] = $left / $right;
                 break;
         }
     }
-    return $stack;
+
+    if (count($stack) != 1) {
+        throw new \Exception("Stack is not empty");
+    }
+    return array_pop($stack);
 }
