@@ -102,26 +102,98 @@ class GameLangSpecificVisitor extends GameLangBaseVisitor
     }
 }
 
+enum Operation implements \JsonSerializable
+{
+    case mem;
+    case psh;
+    case pop;
+    case tmp;
+    case add;
+    case sub;
+    case mul;
+    case div;
+
+    public function jsonSerialize()
+    {
+        return match ($this) {
+            self::psh => 'psh',
+            self::pop => 'pop',
+            self::tmp => 'tmp',
+            self::add => 'add',
+            self::sub => 'sub',
+            self::mul => 'mul',
+            self::div => 'div',
+            self::mem => 'mem',
+        };
+    }
+}
+
+
 class GameLangSpecificListener extends GameLangBaseListener
 {
 
-    private $stack = [];
+    // private $stack = [];
+    private $code = [];
 
-    public function valueOnStack()
+
+    public function getCode()
     {
-        return implode("\n", $this->stack);
+        return $this->code;
+    }
+
+    private function insMem(int $line, int $reg, $data): void
+    {
+        $this->code[] = [
+            $line,
+            Operation::mem,
+            $reg,
+            $data
+        ];
+    }
+
+    private function insPsh(int $line, int $reg): void
+    {
+        $this->code[] = [
+            $line,
+            Operation::psh,
+            $reg,
+            null
+        ];
+    }
+
+    private function insPop(int $line, int $reg): void
+    {
+        $this->code[] = [
+            $line,
+            Operation::pop,
+            $reg,
+            null
+        ];
+    }
+
+    private function insOp(int $line, Operation $op, int $reg): void
+    {
+        $this->code[] = [
+            $line,
+            $op,
+            $reg,
+            null
+        ];
     }
 
     public function enterExpression(Context\ExpressionContext $context): void
     {
+        $line = $context->getStart()->getLine();
         if ($context->num()) {
-            array_push($this->stack, floatval($context->num()->getText()));
-            //echo "INT: " . $context->INT()->getText() . "\n";
+            $value = floatval($context->num()->getText());
+            $this->insMem($line, 0, $value);
+            $this->insPsh($line, 0);
         }
     }
 
     public function exitExpression(Context\ExpressionContext $context): void
     {
+        $line = $context->getStart()->getLine();
         $op = $context->PLUS() ??
             $context->MINUS() ??
             $context->MULTIPLY() ??
@@ -133,37 +205,37 @@ class GameLangSpecificListener extends GameLangBaseListener
             return;
         }
 
-        if (is_array($op)) {
-            $op = $op[0];
-            // echo "OP: [". implode(" ", $op) . "]\n";
-        } else {
-            $op = $op->getText();
-            // echo "OP: ". $op . "\n";
-        }
+        $op = $op->getText();
 
         if ($op == '(' || $op == ')') {
             return;
         }
-        // array_push($this->stack, $op->getText());
-        // echo "OP: $op\n";
-        $right = array_pop($this->stack);
-        $left = array_pop($this->stack);
-        $res = 0;
+        // $right = array_pop($this->stack);
+        // $left = array_pop($this->stack);
+        $this->insPop($line, 2);
+        $this->insPop($line, 1);
+
+        // $res = 0;
         switch ($op) {
             case '+':
-                $res = $left + $right;
+                // $res = $left + $right;
+                $this->insOp($line, Operation::add, 3);
                 break;
             case '-':
-                $res = $left - $right;
+                // $res = $left - $right;
+                $this->insOp($line, Operation::sub, 3);
                 break;
             case '*':
-                $res = $left * $right;
+                // $res = $left * $right;
+                $this->insOp($line, Operation::mul, 3);
                 break;
             case '/':
-                $res = $left / $right;
+                // $res = $left / $right;
+                $this->insOp($line, Operation::div, 3);
                 break;
         }
-        array_push($this->stack, $res);
+        // array_push($this->stack, $res);
+        $this->insPsh($line, 3);
     }
 }
 
@@ -178,5 +250,45 @@ $visitor = new GameLangSpecificVisitor();
 $listener = new GameLangSpecificListener();
 // $visitor->visit($tree);
 ParseTreeWalker::default()->walk($listener, $tree);
+echo runCode($listener->getCode())[0] . "\n";
 
-echo $listener->valueOnStack() . "\n";
+function runCode(array $code)
+{
+    $stack = [];
+    $regs = [3];
+    foreach ($code as $line) {
+        [$lineNumber, $op, $reg, $data] = $line;
+        switch ($op) {
+            case Operation::mem:
+                $regs[$reg] = $data;
+                break;
+            case Operation::psh:
+                array_push($stack, $regs[$reg]);
+                break;
+            case Operation::pop:
+                $regs[$reg] = array_pop($stack);
+                break;
+            case Operation::add:
+                $left = $regs[0];
+                $right = $regs[1];
+                $regs[$reg] = $left + $right;
+                break;
+            case Operation::sub:
+                $left = $regs[0];
+                $right = $regs[1];
+                $regs[$reg] = $left - $right;
+                break;
+            case Operation::mul:
+                $left = $regs[0];
+                $right = $regs[1];
+                $regs[$reg] = $left * $right;
+                break;
+            case Operation::div:
+                $left = $regs[0];
+                $right = $regs[1];
+                $regs[$reg] = $left / $right;
+                break;
+        }
+    }
+    return $stack;
+}
