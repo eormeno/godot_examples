@@ -61,11 +61,10 @@ expression
 		|	expression MINUS expression
 		|   num;
 
-// condition: expression ('==' | '!=' | '<' | '<=' | '>' | '>=') expression;
-
 logicExpression
 		:   TRUE
 		|   FALSE
+        |   ID
 		|   NOT logicExpression
 		|   LPAREN logicExpression RPAREN
 		|   logicExpression AND logicExpression
@@ -93,7 +92,7 @@ AND:        'Y';
 LOR:        'O';
 TRUE:       'V';
 FALSE:      'F';
-NOT:        ('NO' | '!');
+NOT:        'NO';
 EQL:        '==';
 NEQ:        '!=';
 LST:        '<';

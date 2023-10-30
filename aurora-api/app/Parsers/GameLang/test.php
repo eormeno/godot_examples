@@ -304,13 +304,16 @@ class GameLangSpecificListener extends GameLangBaseListener
     public function exitLogicExpression(Context\LogicExpressionContext $context): void
     {
         $line = $context->getStart()->getLine();
-        $op = $context->LOR() ??
+        $op =
+            $context->LOR() ??
             $context->AND() ??
             $context->GRT() ??
             $context->LST() ??
             $context->GTE() ??
             $context->LTE() ??
-            $context->EQL();
+            $context->EQL() ??
+            $context->NEQ() ??
+            $context->NOT();
 
         if (!$op) {
             return;
@@ -322,15 +325,12 @@ class GameLangSpecificListener extends GameLangBaseListener
             return;
         }
 
-        if ($op == 'NO'){
+        if ($op == 'NO') {
             $this->insPop($line, 1);
-            $this->insOp($line, Operation::not, 2);
-            $this->insPsh($line, 2);
-            return;
+        } else {
+            $this->insPop($line, 2);
+            $this->insPop($line, 1);
         }
-
-        $this->insPop($line, 2);
-        $this->insPop($line, 1);
 
         switch ($op) {
             case 'O':
@@ -356,6 +356,9 @@ class GameLangSpecificListener extends GameLangBaseListener
                 break;
             case '!=':
                 $this->insOp($line, Operation::neq, 3);
+                break;
+            case 'NO':
+                $this->insOp($line, Operation::not, 3);
                 break;
         }
         $this->insPsh($line, 3);
@@ -395,6 +398,9 @@ function runCode(array $code)
                 array_push($stack, $regs[$reg]);
                 break;
             case Operation::pop:
+                if ($reg == 9) {
+                    dd('stack:', $stack);
+                }
                 $regs[$reg] = array_pop($stack);
                 break;
             case Operation::add:

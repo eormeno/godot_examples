@@ -72,7 +72,7 @@ namespace App\Parsers\GameLang {
 		];
 
 		private const SERIALIZED_ATN =
-			[4, 1, 42, 271, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 
+			[4, 1, 42, 272, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 
 		    7, 4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 
 		    2, 10, 7, 10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 
 		    14, 2, 15, 7, 15, 2, 16, 7, 16, 1, 0, 4, 0, 36, 8, 0, 11, 0, 12, 0, 
@@ -100,26 +100,26 @@ namespace App\Parsers\GameLang {
 		    226, 8, 15, 10, 15, 12, 15, 229, 9, 15, 1, 16, 1, 16, 1, 16, 1, 16, 
 		    1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 
 		    16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 
-		    1, 16, 1, 16, 1, 16, 1, 16, 3, 16, 258, 8, 16, 1, 16, 1, 16, 1, 16, 
-		    1, 16, 1, 16, 1, 16, 5, 16, 266, 8, 16, 10, 16, 12, 16, 269, 9, 16, 
-		    1, 16, 0, 2, 30, 32, 17, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 
-		    24, 26, 28, 30, 32, 0, 2, 1, 0, 5, 7, 2, 0, 19, 19, 21, 21, 305, 0, 
-		    35, 1, 0, 0, 0, 2, 39, 1, 0, 0, 0, 4, 52, 1, 0, 0, 0, 6, 63, 1, 0, 
-		    0, 0, 8, 72, 1, 0, 0, 0, 10, 74, 1, 0, 0, 0, 12, 85, 1, 0, 0, 0, 14, 
-		    95, 1, 0, 0, 0, 16, 116, 1, 0, 0, 0, 18, 123, 1, 0, 0, 0, 20, 127, 
-		    1, 0, 0, 0, 22, 141, 1, 0, 0, 0, 24, 154, 1, 0, 0, 0, 26, 170, 1, 
-		    0, 0, 0, 28, 195, 1, 0, 0, 0, 30, 211, 1, 0, 0, 0, 32, 257, 1, 0, 
-		    0, 0, 34, 36, 3, 2, 1, 0, 35, 34, 1, 0, 0, 0, 36, 37, 1, 0, 0, 0, 
-		    37, 35, 1, 0, 0, 0, 37, 38, 1, 0, 0, 0, 38, 1, 1, 0, 0, 0, 39, 40, 
-		    5, 1, 0, 0, 40, 42, 5, 19, 0, 0, 41, 43, 3, 4, 2, 0, 42, 41, 1, 0, 
-		    0, 0, 42, 43, 1, 0, 0, 0, 43, 47, 1, 0, 0, 0, 44, 46, 3, 8, 4, 0, 
-		    45, 44, 1, 0, 0, 0, 46, 49, 1, 0, 0, 0, 47, 45, 1, 0, 0, 0, 47, 48, 
-		    1, 0, 0, 0, 48, 50, 1, 0, 0, 0, 49, 47, 1, 0, 0, 0, 50, 51, 5, 2, 
-		    0, 0, 51, 3, 1, 0, 0, 0, 52, 61, 5, 3, 0, 0, 53, 58, 5, 19, 0, 0, 
-		    54, 55, 5, 4, 0, 0, 55, 57, 5, 19, 0, 0, 56, 54, 1, 0, 0, 0, 57, 60, 
-		    1, 0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0, 0, 59, 62, 1, 0, 
-		    0, 0, 60, 58, 1, 0, 0, 0, 61, 53, 1, 0, 0, 0, 61, 62, 1, 0, 0, 0, 
-		    62, 5, 1, 0, 0, 0, 63, 64, 7, 0, 0, 0, 64, 7, 1, 0, 0, 0, 65, 73, 
+		    1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 3, 16, 259, 8, 16, 1, 16, 1, 16, 
+		    1, 16, 1, 16, 1, 16, 1, 16, 5, 16, 267, 8, 16, 10, 16, 12, 16, 270, 
+		    9, 16, 1, 16, 0, 2, 30, 32, 17, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 
+		    20, 22, 24, 26, 28, 30, 32, 0, 2, 1, 0, 5, 7, 2, 0, 19, 19, 21, 21, 
+		    307, 0, 35, 1, 0, 0, 0, 2, 39, 1, 0, 0, 0, 4, 52, 1, 0, 0, 0, 6, 63, 
+		    1, 0, 0, 0, 8, 72, 1, 0, 0, 0, 10, 74, 1, 0, 0, 0, 12, 85, 1, 0, 0, 
+		    0, 14, 95, 1, 0, 0, 0, 16, 116, 1, 0, 0, 0, 18, 123, 1, 0, 0, 0, 20, 
+		    127, 1, 0, 0, 0, 22, 141, 1, 0, 0, 0, 24, 154, 1, 0, 0, 0, 26, 170, 
+		    1, 0, 0, 0, 28, 195, 1, 0, 0, 0, 30, 211, 1, 0, 0, 0, 32, 258, 1, 
+		    0, 0, 0, 34, 36, 3, 2, 1, 0, 35, 34, 1, 0, 0, 0, 36, 37, 1, 0, 0, 
+		    0, 37, 35, 1, 0, 0, 0, 37, 38, 1, 0, 0, 0, 38, 1, 1, 0, 0, 0, 39, 
+		    40, 5, 1, 0, 0, 40, 42, 5, 19, 0, 0, 41, 43, 3, 4, 2, 0, 42, 41, 1, 
+		    0, 0, 0, 42, 43, 1, 0, 0, 0, 43, 47, 1, 0, 0, 0, 44, 46, 3, 8, 4, 
+		    0, 45, 44, 1, 0, 0, 0, 46, 49, 1, 0, 0, 0, 47, 45, 1, 0, 0, 0, 47, 
+		    48, 1, 0, 0, 0, 48, 50, 1, 0, 0, 0, 49, 47, 1, 0, 0, 0, 50, 51, 5, 
+		    2, 0, 0, 51, 3, 1, 0, 0, 0, 52, 61, 5, 3, 0, 0, 53, 58, 5, 19, 0, 
+		    0, 54, 55, 5, 4, 0, 0, 55, 57, 5, 19, 0, 0, 56, 54, 1, 0, 0, 0, 57, 
+		    60, 1, 0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0, 0, 59, 62, 1, 
+		    0, 0, 0, 60, 58, 1, 0, 0, 0, 61, 53, 1, 0, 0, 0, 61, 62, 1, 0, 0, 
+		    0, 62, 5, 1, 0, 0, 0, 63, 64, 7, 0, 0, 0, 64, 7, 1, 0, 0, 0, 65, 73, 
 		    3, 12, 6, 0, 66, 73, 3, 14, 7, 0, 67, 73, 3, 16, 8, 0, 68, 73, 3, 
 		    24, 12, 0, 69, 73, 3, 20, 10, 0, 70, 73, 3, 22, 11, 0, 71, 73, 3, 
 		    10, 5, 0, 72, 65, 1, 0, 0, 0, 72, 66, 1, 0, 0, 0, 72, 67, 1, 0, 0, 
@@ -185,26 +185,27 @@ namespace App\Parsers\GameLang {
 		    5, 23, 0, 0, 224, 226, 3, 30, 15, 3, 225, 213, 1, 0, 0, 0, 225, 216, 
 		    1, 0, 0, 0, 225, 219, 1, 0, 0, 0, 225, 222, 1, 0, 0, 0, 226, 229, 
 		    1, 0, 0, 0, 227, 225, 1, 0, 0, 0, 227, 228, 1, 0, 0, 0, 228, 31, 1, 
-		    0, 0, 0, 229, 227, 1, 0, 0, 0, 230, 231, 6, 16, -1, 0, 231, 258, 5, 
-		    32, 0, 0, 232, 258, 5, 33, 0, 0, 233, 234, 5, 34, 0, 0, 234, 258, 
-		    3, 32, 16, 10, 235, 236, 5, 26, 0, 0, 236, 237, 3, 32, 16, 0, 237, 
-		    238, 5, 27, 0, 0, 238, 258, 1, 0, 0, 0, 239, 240, 5, 19, 0, 0, 240, 
-		    241, 5, 35, 0, 0, 241, 258, 3, 30, 15, 0, 242, 243, 5, 19, 0, 0, 243, 
-		    244, 5, 36, 0, 0, 244, 258, 3, 30, 15, 0, 245, 246, 5, 19, 0, 0, 246, 
-		    247, 5, 37, 0, 0, 247, 258, 3, 30, 15, 0, 248, 249, 5, 19, 0, 0, 249, 
-		    250, 5, 38, 0, 0, 250, 258, 3, 30, 15, 0, 251, 252, 5, 19, 0, 0, 252, 
-		    253, 5, 39, 0, 0, 253, 258, 3, 30, 15, 0, 254, 255, 5, 19, 0, 0, 255, 
-		    256, 5, 40, 0, 0, 256, 258, 3, 30, 15, 0, 257, 230, 1, 0, 0, 0, 257, 
-		    232, 1, 0, 0, 0, 257, 233, 1, 0, 0, 0, 257, 235, 1, 0, 0, 0, 257, 
-		    239, 1, 0, 0, 0, 257, 242, 1, 0, 0, 0, 257, 245, 1, 0, 0, 0, 257, 
-		    248, 1, 0, 0, 0, 257, 251, 1, 0, 0, 0, 257, 254, 1, 0, 0, 0, 258, 
-		    267, 1, 0, 0, 0, 259, 260, 10, 8, 0, 0, 260, 261, 5, 30, 0, 0, 261, 
-		    266, 3, 32, 16, 9, 262, 263, 10, 7, 0, 0, 263, 264, 5, 31, 0, 0, 264, 
-		    266, 3, 32, 16, 8, 265, 259, 1, 0, 0, 0, 265, 262, 1, 0, 0, 0, 266, 
-		    269, 1, 0, 0, 0, 267, 265, 1, 0, 0, 0, 267, 268, 1, 0, 0, 0, 268, 
-		    33, 1, 0, 0, 0, 269, 267, 1, 0, 0, 0, 31, 37, 42, 47, 58, 61, 72, 
-		    80, 83, 90, 100, 107, 110, 116, 121, 129, 136, 147, 154, 163, 166, 
-		    178, 181, 187, 192, 195, 211, 225, 227, 257, 265, 267];
+		    0, 0, 0, 229, 227, 1, 0, 0, 0, 230, 231, 6, 16, -1, 0, 231, 259, 5, 
+		    32, 0, 0, 232, 259, 5, 33, 0, 0, 233, 259, 5, 19, 0, 0, 234, 235, 
+		    5, 34, 0, 0, 235, 259, 3, 32, 16, 10, 236, 237, 5, 26, 0, 0, 237, 
+		    238, 3, 32, 16, 0, 238, 239, 5, 27, 0, 0, 239, 259, 1, 0, 0, 0, 240, 
+		    241, 5, 19, 0, 0, 241, 242, 5, 35, 0, 0, 242, 259, 3, 30, 15, 0, 243, 
+		    244, 5, 19, 0, 0, 244, 245, 5, 36, 0, 0, 245, 259, 3, 30, 15, 0, 246, 
+		    247, 5, 19, 0, 0, 247, 248, 5, 37, 0, 0, 248, 259, 3, 30, 15, 0, 249, 
+		    250, 5, 19, 0, 0, 250, 251, 5, 38, 0, 0, 251, 259, 3, 30, 15, 0, 252, 
+		    253, 5, 19, 0, 0, 253, 254, 5, 39, 0, 0, 254, 259, 3, 30, 15, 0, 255, 
+		    256, 5, 19, 0, 0, 256, 257, 5, 40, 0, 0, 257, 259, 3, 30, 15, 0, 258, 
+		    230, 1, 0, 0, 0, 258, 232, 1, 0, 0, 0, 258, 233, 1, 0, 0, 0, 258, 
+		    234, 1, 0, 0, 0, 258, 236, 1, 0, 0, 0, 258, 240, 1, 0, 0, 0, 258, 
+		    243, 1, 0, 0, 0, 258, 246, 1, 0, 0, 0, 258, 249, 1, 0, 0, 0, 258, 
+		    252, 1, 0, 0, 0, 258, 255, 1, 0, 0, 0, 259, 268, 1, 0, 0, 0, 260, 
+		    261, 10, 8, 0, 0, 261, 262, 5, 30, 0, 0, 262, 267, 3, 32, 16, 9, 263, 
+		    264, 10, 7, 0, 0, 264, 265, 5, 31, 0, 0, 265, 267, 3, 32, 16, 8, 266, 
+		    260, 1, 0, 0, 0, 266, 263, 1, 0, 0, 0, 267, 270, 1, 0, 0, 0, 268, 
+		    266, 1, 0, 0, 0, 268, 269, 1, 0, 0, 0, 269, 33, 1, 0, 0, 0, 270, 268, 
+		    1, 0, 0, 0, 31, 37, 42, 47, 58, 61, 72, 80, 83, 90, 100, 107, 110, 
+		    116, 121, 129, 136, 147, 154, 163, 166, 178, 181, 187, 192, 195, 211, 
+		    225, 227, 258, 266, 268];
 		protected static $atn;
 		protected static $decisionToDFA;
 		protected static $sharedContextCache;
@@ -1178,7 +1179,7 @@ namespace App\Parsers\GameLang {
 
 			try {
 				$this->enterOuterAlt($localContext, 1);
-				$this->setState(257);
+				$this->setState(258);
 				$this->errorHandler->sync($this);
 
 				switch ($this->getInterpreter()->adaptivePredict($this->input, 28, $this->ctx)) {
@@ -1194,76 +1195,81 @@ namespace App\Parsers\GameLang {
 
 					case 3:
 					    $this->setState(233);
-					    $this->match(self::NOT);
-					    $this->setState(234);
-					    $this->recursiveLogicExpression(10);
+					    $this->match(self::ID);
 					break;
 
 					case 4:
+					    $this->setState(234);
+					    $this->match(self::NOT);
 					    $this->setState(235);
-					    $this->match(self::LPAREN);
-					    $this->setState(236);
-					    $this->recursiveLogicExpression(0);
-					    $this->setState(237);
-					    $this->match(self::RPAREN);
+					    $this->recursiveLogicExpression(10);
 					break;
 
 					case 5:
-					    $this->setState(239);
-					    $this->match(self::ID);
-					    $this->setState(240);
-					    $this->match(self::EQL);
-					    $this->setState(241);
-					    $this->recursiveExpression(0);
+					    $this->setState(236);
+					    $this->match(self::LPAREN);
+					    $this->setState(237);
+					    $this->recursiveLogicExpression(0);
+					    $this->setState(238);
+					    $this->match(self::RPAREN);
 					break;
 
 					case 6:
-					    $this->setState(242);
+					    $this->setState(240);
 					    $this->match(self::ID);
-					    $this->setState(243);
-					    $this->match(self::NEQ);
-					    $this->setState(244);
+					    $this->setState(241);
+					    $this->match(self::EQL);
+					    $this->setState(242);
 					    $this->recursiveExpression(0);
 					break;
 
 					case 7:
-					    $this->setState(245);
+					    $this->setState(243);
 					    $this->match(self::ID);
-					    $this->setState(246);
-					    $this->match(self::LST);
-					    $this->setState(247);
+					    $this->setState(244);
+					    $this->match(self::NEQ);
+					    $this->setState(245);
 					    $this->recursiveExpression(0);
 					break;
 
 					case 8:
-					    $this->setState(248);
+					    $this->setState(246);
 					    $this->match(self::ID);
-					    $this->setState(249);
-					    $this->match(self::LTE);
-					    $this->setState(250);
+					    $this->setState(247);
+					    $this->match(self::LST);
+					    $this->setState(248);
 					    $this->recursiveExpression(0);
 					break;
 
 					case 9:
-					    $this->setState(251);
+					    $this->setState(249);
 					    $this->match(self::ID);
-					    $this->setState(252);
-					    $this->match(self::GRT);
-					    $this->setState(253);
+					    $this->setState(250);
+					    $this->match(self::LTE);
+					    $this->setState(251);
 					    $this->recursiveExpression(0);
 					break;
 
 					case 10:
-					    $this->setState(254);
+					    $this->setState(252);
 					    $this->match(self::ID);
+					    $this->setState(253);
+					    $this->match(self::GRT);
+					    $this->setState(254);
+					    $this->recursiveExpression(0);
+					break;
+
+					case 11:
 					    $this->setState(255);
-					    $this->match(self::GTE);
+					    $this->match(self::ID);
 					    $this->setState(256);
+					    $this->match(self::GTE);
+					    $this->setState(257);
 					    $this->recursiveExpression(0);
 					break;
 				}
 				$this->ctx->stop = $this->input->LT(-1);
-				$this->setState(267);
+				$this->setState(268);
 				$this->errorHandler->sync($this);
 
 				$alt = $this->getInterpreter()->adaptivePredict($this->input, 30, $this->ctx);
@@ -1275,41 +1281,41 @@ namespace App\Parsers\GameLang {
 						}
 
 						$previousContext = $localContext;
-						$this->setState(265);
+						$this->setState(266);
 						$this->errorHandler->sync($this);
 
 						switch ($this->getInterpreter()->adaptivePredict($this->input, 29, $this->ctx)) {
 							case 1:
 							    $localContext = new Context\LogicExpressionContext($parentContext, $parentState);
 							    $this->pushNewRecursionContext($localContext, $startState, self::RULE_logicExpression);
-							    $this->setState(259);
+							    $this->setState(260);
 
 							    if (!($this->precpred($this->ctx, 8))) {
 							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 8)");
 							    }
-							    $this->setState(260);
-							    $this->match(self::AND);
 							    $this->setState(261);
+							    $this->match(self::AND);
+							    $this->setState(262);
 							    $this->recursiveLogicExpression(9);
 							break;
 
 							case 2:
 							    $localContext = new Context\LogicExpressionContext($parentContext, $parentState);
 							    $this->pushNewRecursionContext($localContext, $startState, self::RULE_logicExpression);
-							    $this->setState(262);
+							    $this->setState(263);
 
 							    if (!($this->precpred($this->ctx, 7))) {
 							        throw new FailedPredicateException($this, "\\\$this->precpred(\\\$this->ctx, 7)");
 							    }
-							    $this->setState(263);
-							    $this->match(self::LOR);
 							    $this->setState(264);
+							    $this->match(self::LOR);
+							    $this->setState(265);
 							    $this->recursiveLogicExpression(8);
 							break;
 						} 
 					}
 
-					$this->setState(269);
+					$this->setState(270);
 					$this->errorHandler->sync($this);
 
 					$alt = $this->getInterpreter()->adaptivePredict($this->input, 30, $this->ctx);
@@ -2356,6 +2362,11 @@ namespace App\Parsers\GameLang\Context {
 	        return $this->getToken(GameLangParser::FALSE, 0);
 	    }
 
+	    public function ID(): ?TerminalNode
+	    {
+	        return $this->getToken(GameLangParser::ID, 0);
+	    }
+
 	    public function NOT(): ?TerminalNode
 	    {
 	        return $this->getToken(GameLangParser::NOT, 0);
@@ -2381,11 +2392,6 @@ namespace App\Parsers\GameLang\Context {
 	    public function RPAREN(): ?TerminalNode
 	    {
 	        return $this->getToken(GameLangParser::RPAREN, 0);
-	    }
-
-	    public function ID(): ?TerminalNode
-	    {
-	        return $this->getToken(GameLangParser::ID, 0);
 	    }
 
 	    public function EQL(): ?TerminalNode

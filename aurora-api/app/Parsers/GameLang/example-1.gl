@@ -7,5 +7,7 @@ PERSONAJE bot PARAMETROS juego
     resultdo1 = velocidad > 0
     resultdo2 = velocidad < 0
     resultdo3 = velocidad == 29.875
+    resultdo4 = velocidad != 29.875
+    resultdo5 = NO resultdo1
 
 FIN
