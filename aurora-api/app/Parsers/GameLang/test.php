@@ -102,6 +102,9 @@ class GameLangSpecificVisitor extends GameLangBaseVisitor
     }
 }
 
+const INTERNAL_STATE = "__state__";
+const PREVIOUS_STATE = "__previous_state__";
+
 enum Operation implements \JsonSerializable
 {
     case reg;
@@ -208,6 +211,14 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->insMem($line, 0, $identificator);
     }
 
+    public function exitTransition(Context\TransitionContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $identificator = $context->ID()->getText();
+        $this->insReg($line, 0, $identificator);
+        $this->insMem($line, 0, INTERNAL_STATE);
+    }
+
     public function enterExpression(Context\ExpressionContext $context): void
     {
         $line = $context->getStart()->getLine();
@@ -260,6 +271,13 @@ class GameLangSpecificListener extends GameLangBaseListener
         }
         $this->insPsh($line, 3);
     }
+
+    public function exitState(Context\StateContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $identificator = $context->ID()->getText();
+        dd($identificator);
+    }
 }
 
 $input = InputStream::fromPath("example-1.gl");
@@ -284,7 +302,7 @@ function runCode(array $code)
 {
     $stack = [];
     $regs = [3];
-    $mem = [];
+    $mem = [INTERNAL_STATE => "", PREVIOUS_STATE => ""];
     foreach ($code as $line) {
         [$lineNumber, $op, $reg, $data] = $line;
         switch ($op) {
