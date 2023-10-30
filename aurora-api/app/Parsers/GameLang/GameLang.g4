@@ -25,7 +25,11 @@ statement
 		| methodCall
 		| afterTimer
 		| everyTimer
-		| transition;
+		| transition
+		| consoleStatement;
+
+consoleStatement
+		: 'CONSOLA' ((STRING|ID) (',' (STRING|ID))*)?;
 
 whileStatement: 'MIENTRAS' logicExpression statement* 'FIN';
 
