@@ -2,7 +2,9 @@ grammar GameLang;
 
 program:    character+;
 
-character:  'PERSONAJE' ID (definitions) state* functionDef* 'FIN';
+// character:  'PERSONAJE' ID (definitions) state* functionDef* 'FIN';
+
+character:  'PERSONAJE' ID (definitions) statement* 'FIN';
 
 definitions: (parameters | assignment | animationDef | soundDef)* (transition)?;
 
@@ -14,7 +16,8 @@ transition: 'ESTARA' ID;
 
 timeUnit:   ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
 
-statement: whileStatement
+statement
+		: whileStatement
 		| ifStatement
 		| assignment
 		| animationDef
@@ -24,9 +27,9 @@ statement: whileStatement
 		| everyTimer
 		| transition;
 
-whileStatement: 'MIENTRAS' condition statement* 'FIN';
+whileStatement: 'MIENTRAS' logicExpression statement* 'FIN';
 
-ifStatement: 'SI' condition statement* ('SINO' statement*)?
+ifStatement: 'SI' logicExpression statement* ('SINO' statement*)?
 'FIN';
 
 assignment: (ID | attributeCall) EQUAL expression;
@@ -71,9 +74,23 @@ expression
 		|	expression DIVIDE expression
 		|	expression PLUS expression
 		|	expression MINUS expression
-        |   num;
+		|   num;
 
-condition: expression ('==' | '!=' | '<' | '<=' | '>' | '>=') expression;
+// condition: expression ('==' | '!=' | '<' | '<=' | '>' | '>=') expression;
+
+logicExpression
+		:   TRUE
+		|   FALSE
+		|   NOT logicExpression
+		|   LPAREN logicExpression RPAREN
+		|   expression AND expression
+		|   expression OR  expression
+		|   expression EQUALS expression
+		|   expression NOTEQUALS expression
+		|   expression LT expression
+		|   expression LTE expression
+		|   expression GT expression
+		|   expression GTE expression;
 
 // Lexer rules
 ID:         [a-z_][a-z0-9_]*;
@@ -87,4 +104,16 @@ LPAREN:     '(';
 RPAREN:     ')';
 DOT:        '.';
 EQUAL:      '=';
+AND:        'Y';
+OR:         'O';
+TRUE:       'V';
+FALSE:      'F';
+NOT         'NO';
+EQUALS:     '==';
+NOTEQUALS:  '!=';
+LT:         '<';
+LTE:        '<=';
+GT:         '>';
+GTE:        '>=';
 WS:         [ \t\r\n]+ -> skip;
+COMMENT:    '//' ~[\r\n]* -> skip;
