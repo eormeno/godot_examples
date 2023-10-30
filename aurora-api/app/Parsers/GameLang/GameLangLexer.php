@@ -24,9 +24,9 @@ namespace App\Parsers\GameLang {
                T__12 = 13, T__13 = 14, T__14 = 15, T__15 = 16, T__16 = 17, 
                T__17 = 18, ID = 19, NUMBER = 20, STRING = 21, PLUS = 22, 
                MINUS = 23, MULTIPLY = 24, DIVIDE = 25, LPAREN = 26, RPAREN = 27, 
-               DOT = 28, EQUAL = 29, AND = 30, OR = 31, TRUE = 32, FALSE = 33, 
-               NOT = 34, EQUALS = 35, NOTEQUALS = 36, LT = 37, LTE = 38, 
-               GT = 39, GTE = 40, WS = 41, COMMENT = 42;
+               DOT = 28, EQUAL = 29, AND = 30, LOR = 31, TRUE = 32, FALSE = 33, 
+               NOT = 34, EQL = 35, NEQ = 36, LST = 37, LTE = 38, GRT = 39, 
+               GTE = 40, WS = 41, COMMENT = 42;
 
 		/**
 		 * @var array<string>
@@ -49,8 +49,8 @@ namespace App\Parsers\GameLang {
 			'T__0', 'T__1', 'T__2', 'T__3', 'T__4', 'T__5', 'T__6', 'T__7', 'T__8', 
 			'T__9', 'T__10', 'T__11', 'T__12', 'T__13', 'T__14', 'T__15', 'T__16', 
 			'T__17', 'ID', 'NUMBER', 'STRING', 'PLUS', 'MINUS', 'MULTIPLY', 'DIVIDE', 
-			'LPAREN', 'RPAREN', 'DOT', 'EQUAL', 'AND', 'OR', 'TRUE', 'FALSE', 'NOT', 
-			'EQUALS', 'NOTEQUALS', 'LT', 'LTE', 'GT', 'GTE', 'WS', 'COMMENT'
+			'LPAREN', 'RPAREN', 'DOT', 'EQUAL', 'AND', 'LOR', 'TRUE', 'FALSE', 'NOT', 
+			'EQL', 'NEQ', 'LST', 'LTE', 'GRT', 'GTE', 'WS', 'COMMENT'
 		];
 
 		/**
@@ -72,8 +72,8 @@ namespace App\Parsers\GameLang {
 		    null, null, null, null, null, null, null, null, null, null, null, 
 		    null, null, null, null, null, null, null, null, "ID", "NUMBER", "STRING", 
 		    "PLUS", "MINUS", "MULTIPLY", "DIVIDE", "LPAREN", "RPAREN", "DOT", 
-		    "EQUAL", "AND", "OR", "TRUE", "FALSE", "NOT", "EQUALS", "NOTEQUALS", 
-		    "LT", "LTE", "GT", "GTE", "WS", "COMMENT"
+		    "EQUAL", "AND", "LOR", "TRUE", "FALSE", "NOT", "EQL", "NEQ", "LST", 
+		    "LTE", "GRT", "GTE", "WS", "COMMENT"
 		];
 
 		private const SERIALIZED_ATN =

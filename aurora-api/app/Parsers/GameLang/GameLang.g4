@@ -27,7 +27,7 @@ ifStatement
         : 'SI' logicExpression statement* ('SINO' statement*)? 'FIN';
 
 assignment
-        : (ID | attributeCall) EQUAL expression;
+        : (ID | attributeCall) EQUAL (expression | logicExpression);
 
 attributeCall
         : ID '.' ID;
@@ -68,14 +68,14 @@ logicExpression
 		|   FALSE
 		|   NOT logicExpression
 		|   LPAREN logicExpression RPAREN
-		|   expression AND expression
-		|   expression OR  expression
-		|   expression EQUALS expression
-		|   expression NOTEQUALS expression
-		|   expression LT expression
-		|   expression LTE expression
-		|   expression GT expression
-		|   expression GTE expression;
+		|   logicExpression AND logicExpression
+		|   logicExpression LOR logicExpression
+		|   ID EQL expression
+		|   ID NEQ expression
+		|   ID LST expression
+		|   ID LTE expression
+		|   ID GRT expression
+		|   ID GTE expression;
 
 // Lexer rules
 ID:         [a-z_][a-z0-9_]*;
@@ -90,15 +90,15 @@ RPAREN:     ')';
 DOT:        '.';
 EQUAL:      '=';
 AND:        'Y';
-OR:         'O';
+LOR:        'O';
 TRUE:       'V';
 FALSE:      'F';
 NOT:        'NO';
-EQUALS:     '==';
-NOTEQUALS:  '!=';
-LT:         '<';
+EQL:        '==';
+NEQ:        '!=';
+LST:        '<';
 LTE:        '<=';
-GT:         '>';
+GRT:        '>';
 GTE:        '>=';
 WS:         [ \t\r\n]+ -> skip;
 COMMENT:    '//' ~[\r\n]* -> skip;

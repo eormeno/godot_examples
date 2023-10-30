@@ -103,15 +103,24 @@ class GameLangSpecificVisitor extends GameLangBaseVisitor
 }
 enum Operation implements \JsonSerializable
 {
-    case reg;
-    case psh;
-    case pop;
-    case add;
-    case sub;
-    case mul;
-    case div;
-    case mem;
-    case get;
+    case reg; // register
+    case psh; // push
+    case pop; // pop
+    case add; // math add operation
+    case sub; // math substract operation
+    case mul; // math muliplication operation
+    case div; // math div operation
+    case lor; // logical or
+    case and; // logical and
+    case grt; // greater than
+    case not; // not
+    case lst; // less than
+    case gte; // greater than or equal
+    case lte; // less than or equal
+    case eql; // equal
+    case neq; // not equal
+    case mem; // store in memory
+    case get; // get from memory
 
     public function jsonSerialize()
     {
@@ -125,6 +134,15 @@ enum Operation implements \JsonSerializable
             self::reg => 'reg',
             self::mem => 'mem',
             self::get => 'get',
+            self::lor => 'lor',
+            self::and => 'and',
+            self::grt => 'grt',
+            self::lst => 'lst',
+            self::gte => 'gte',
+            self::lte => 'lte',
+            self::eql => 'eql',
+            self::neq => 'neq',
+            self::not => 'not',
         };
     }
 }
@@ -258,6 +276,73 @@ class GameLangSpecificListener extends GameLangBaseListener
         }
         $this->insPsh($line, 3);
     }
+
+    public function enterLogicExpression(Context\LogicExpressionContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        if ($context->TRUE()) {
+            $value = True;
+            $this->insReg($line, 0, $value);
+            $this->insPsh($line, 0);
+        } elseif ($context->FALSE()) {
+            $value = False;
+            $this->insReg($line, 0, $value);
+            $this->insPsh($line, 0);
+        } elseif ($context->ID()) {
+            $identificator = $context->ID()->getText();
+            $this->insGet($line, 0, $identificator);
+            $this->insPsh($line, 0);
+        }
+    }
+
+    public function exitLogicExpression(Context\LogicExpressionContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $op = $context->LOR() ??
+            $context->AND() ??
+            $context->GRT() ??
+            $context->LST() ??
+            $context->GTE() ??
+            $context->LTE() ??
+            $context->EQL();
+
+        if (!$op) {
+            return;
+        }
+
+        $op = $op->getText();
+
+        $this->insPop($line, 2);
+        $this->insPop($line, 1);
+
+        switch ($op) {
+            case 'O':
+                $this->insOp($line, Operation::lor, 3);
+                break;
+            case 'Y':
+                $this->insOp($line, Operation::and , 3);
+                break;
+            case '>':
+                $this->insOp($line, Operation::grt, 3);
+                break;
+            case '<':
+                $this->insOp($line, Operation::lst, 3);
+                break;
+            case '>=':
+                $this->insOp($line, Operation::gte, 3);
+                break;
+            case '<=':
+                $this->insOp($line, Operation::lte, 3);
+                break;
+            case '==':
+                $this->insOp($line, Operation::eql, 3);
+                break;
+            case '!=':
+                $this->insOp($line, Operation::neq, 3);
+                break;
+        }
+        $this->insPsh($line, 3);
+    }
 }
 
 $input = InputStream::fromPath("example-1.gl");
@@ -325,6 +410,36 @@ function runCode(array $code)
                 }
                 $value = $mem[$data];
                 $regs[$reg] = $value;
+                break;
+            case Operation::eql:
+                $left = $regs[1];
+                $right = $regs[2];
+                $regs[$reg] = $left == $right;
+                break;
+            case Operation::neq:
+                $left = $regs[1];
+                $right = $regs[2];
+                $regs[$reg] = $left != $right;
+                break;
+            case Operation::grt:
+                $left = $regs[1];
+                $right = $regs[2];
+                $regs[$reg] = $left > $right;
+                break;
+            case Operation::lst:
+                $left = $regs[1];
+                $right = $regs[2];
+                $regs[$reg] = $left < $right;
+                break;
+            case Operation::gte:
+                $left = $regs[1];
+                $right = $regs[2];
+                $regs[$reg] = $left >= $right;
+                break;
+            case Operation::lte:
+                $left = $regs[1];
+                $right = $regs[2];
+                $regs[$reg] = $left <= $right;
                 break;
         }
     }
