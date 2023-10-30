@@ -93,7 +93,7 @@ AND:        'Y';
 LOR:        'O';
 TRUE:       'V';
 FALSE:      'F';
-NOT:        'NO';
+NOT:        ('NO' | '!');
 EQL:        '==';
 NEQ:        '!=';
 LST:        '<';

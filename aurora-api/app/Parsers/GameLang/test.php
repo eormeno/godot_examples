@@ -121,6 +121,9 @@ enum Operation implements \JsonSerializable
     case neq; // not equal
     case mem; // store in memory
     case get; // get from memory
+    case out; // output
+    case inp; // input
+    case jmp; // jump
 
     public function jsonSerialize()
     {
@@ -143,6 +146,9 @@ enum Operation implements \JsonSerializable
             self::eql => 'eql',
             self::neq => 'neq',
             self::not => 'not',
+            self::out => 'out',
+            self::inp => 'inp',
+            self::jmp => 'jmp',
         };
     }
 }
@@ -312,6 +318,17 @@ class GameLangSpecificListener extends GameLangBaseListener
 
         $op = $op->getText();
 
+        if ($op == '(' || $op == ')') {
+            return;
+        }
+
+        if ($op == 'NO'){
+            $this->insPop($line, 1);
+            $this->insOp($line, Operation::not, 2);
+            $this->insPsh($line, 2);
+            return;
+        }
+
         $this->insPop($line, 2);
         $this->insPop($line, 1);
 
@@ -440,6 +457,20 @@ function runCode(array $code)
                 $left = $regs[1];
                 $right = $regs[2];
                 $regs[$reg] = $left <= $right;
+                break;
+            case Operation::lor:
+                $left = $regs[1];
+                $right = $regs[2];
+                $regs[$reg] = $left || $right;
+                break;
+            case Operation::and:
+                $left = $regs[1];
+                $right = $regs[2];
+                $regs[$reg] = $left && $right;
+                break;
+            case Operation::not:
+                $left = $regs[1];
+                $regs[$reg] = !$left;
                 break;
         }
     }
