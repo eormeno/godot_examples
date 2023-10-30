@@ -42,40 +42,7 @@ class GameLangBaseVisitor extends AbstractParseTreeVisitor implements GameLangVi
 	 * The default implementation returns the result of calling
 	 * {@see self::visitChildren()} on `context`.
 	 */
-	public function visitDefinitions(Context\DefinitionsContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
 	public function visitParameters(Context\ParametersContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
-	public function visitState(Context\StateContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
-	public function visitTransition(Context\TransitionContext $context)
 	{
 	    return $this->visitChildren($context);
 	}
@@ -98,6 +65,17 @@ class GameLangBaseVisitor extends AbstractParseTreeVisitor implements GameLangVi
 	 * {@see self::visitChildren()} on `context`.
 	 */
 	public function visitStatement(Context\StatementContext $context)
+	{
+	    return $this->visitChildren($context);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation returns the result of calling
+	 * {@see self::visitChildren()} on `context`.
+	 */
+	public function visitConsoleStatement(Context\ConsoleStatementContext $context)
 	{
 	    return $this->visitChildren($context);
 	}
@@ -141,51 +119,7 @@ class GameLangBaseVisitor extends AbstractParseTreeVisitor implements GameLangVi
 	 * The default implementation returns the result of calling
 	 * {@see self::visitChildren()} on `context`.
 	 */
-	public function visitAnimationDef(Context\AnimationDefContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
-	public function visitSoundDef(Context\SoundDefContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
 	public function visitAttributeCall(Context\AttributeCallContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
-	public function visitEntering(Context\EnteringContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
-	public function visitExiting(Context\ExitingContext $context)
 	{
 	    return $this->visitChildren($context);
 	}
@@ -262,7 +196,7 @@ class GameLangBaseVisitor extends AbstractParseTreeVisitor implements GameLangVi
 	 * The default implementation returns the result of calling
 	 * {@see self::visitChildren()} on `context`.
 	 */
-	public function visitCondition(Context\ConditionContext $context)
+	public function visitLogicExpression(Context\LogicExpressionContext $context)
 	{
 	    return $this->visitChildren($context);
 	}

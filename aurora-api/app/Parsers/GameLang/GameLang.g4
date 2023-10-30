@@ -2,17 +2,9 @@ grammar GameLang;
 
 program:    character+;
 
-// character:  'PERSONAJE' ID (definitions) state* functionDef* 'FIN';
-
-character:  'PERSONAJE' ID (definitions) statement* 'FIN';
-
-definitions: (parameters | assignment | animationDef | soundDef)* (transition)?;
+character:  'PERSONAJE' ID (parameters)? statement* 'FIN';
 
 parameters: 'PARAMETROS' (ID (',' ID)*)?;
-
-state:      'ESTA' ID (entering)? statement* (exiting)? 'FIN';
-
-transition: 'ESTARA' ID;
 
 timeUnit:   ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
 
@@ -20,51 +12,40 @@ statement
 		: whileStatement
 		| ifStatement
 		| assignment
-		| animationDef
-		| soundDef
 		| methodCall
 		| afterTimer
 		| everyTimer
-		| transition
 		| consoleStatement;
 
 consoleStatement
 		: 'CONSOLA' ((STRING|ID) (',' (STRING|ID))*)?;
 
-whileStatement: 'MIENTRAS' logicExpression statement* 'FIN';
+whileStatement
+        : 'MIENTRAS' logicExpression statement* 'FIN';
 
-ifStatement: 'SI' logicExpression statement* ('SINO' statement*)?
-'FIN';
+ifStatement
+        : 'SI' logicExpression statement* ('SINO' statement*)? 'FIN';
 
-assignment: (ID | attributeCall) EQUAL expression;
+assignment
+        : (ID | attributeCall) EQUAL expression;
 
-animationDef: 'ANIMACION' (ID | 'ACTUAL') ('REPRODUCIR' | 'DETENER');
+attributeCall
+        : ID '.' ID;
 
-soundDef: 'SONIDO' (ID | 'ACTUAL') ('REPRODUCIR' | 'DETENER');
+afterTimer
+        : 'LUEGO' ('DE')? expression timeUnit statement* 'FIN';
 
-attributeCall : ID '.' ID;
+everyTimer
+        : 'CADA' expression timeUnit statement* 'FIN';
 
-entering: 'ENTRANDO' statement* 'FIN';
+methodCall
+        : ((ID '.')? ID LPAREN (expression (',' expression)*)? RPAREN);
 
-exiting: 'SALIENDO' statement* 'FIN';
+functionDef
+        : 'FUNCION' ID '(' (ID (',' ID)*)? ')' statement* 'RETORNAR' (ID)?;
 
-afterTimer: 'LUEGO' ('DE')?
-	expression timeUnit
-	statement*
-	'FIN';
-
-everyTimer: 'CADA'
-	expression timeUnit
-	statement*
-	'FIN';
-
-methodCall: ((ID '.')? ID LPAREN (expression (',' expression)*)? RPAREN);
-
-functionDef: 'FUNCION' ID '(' (ID (',' ID)*)? ')'
-	statement*
-	'RETORNAR' (ID)?;
-
-num: (MINUS) ? NUMBER;
+num
+        : (MINUS) ? NUMBER;
 
 expression
 		:	STRING
@@ -112,7 +93,7 @@ AND:        'Y';
 OR:         'O';
 TRUE:       'V';
 FALSE:      'F';
-NOT         'NO';
+NOT:        'NO';
 EQUALS:     '==';
 NOTEQUALS:  '!=';
 LT:         '<';

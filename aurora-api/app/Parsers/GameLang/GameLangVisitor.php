@@ -32,15 +32,6 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitCharacter(Context\CharacterContext $context);
 
 	/**
-	 * Visit a parse tree produced by {@see GameLangParser::definitions()}.
-	 *
-	 * @param Context\DefinitionsContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitDefinitions(Context\DefinitionsContext $context);
-
-	/**
 	 * Visit a parse tree produced by {@see GameLangParser::parameters()}.
 	 *
 	 * @param Context\ParametersContext $context The parse tree.
@@ -48,24 +39,6 @@ interface GameLangVisitor extends ParseTreeVisitor
 	 * @return mixed The visitor result.
 	 */
 	public function visitParameters(Context\ParametersContext $context);
-
-	/**
-	 * Visit a parse tree produced by {@see GameLangParser::state()}.
-	 *
-	 * @param Context\StateContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitState(Context\StateContext $context);
-
-	/**
-	 * Visit a parse tree produced by {@see GameLangParser::transition()}.
-	 *
-	 * @param Context\TransitionContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitTransition(Context\TransitionContext $context);
 
 	/**
 	 * Visit a parse tree produced by {@see GameLangParser::timeUnit()}.
@@ -84,6 +57,15 @@ interface GameLangVisitor extends ParseTreeVisitor
 	 * @return mixed The visitor result.
 	 */
 	public function visitStatement(Context\StatementContext $context);
+
+	/**
+	 * Visit a parse tree produced by {@see GameLangParser::consoleStatement()}.
+	 *
+	 * @param Context\ConsoleStatementContext $context The parse tree.
+	 *
+	 * @return mixed The visitor result.
+	 */
+	public function visitConsoleStatement(Context\ConsoleStatementContext $context);
 
 	/**
 	 * Visit a parse tree produced by {@see GameLangParser::whileStatement()}.
@@ -113,24 +95,6 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitAssignment(Context\AssignmentContext $context);
 
 	/**
-	 * Visit a parse tree produced by {@see GameLangParser::animationDef()}.
-	 *
-	 * @param Context\AnimationDefContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitAnimationDef(Context\AnimationDefContext $context);
-
-	/**
-	 * Visit a parse tree produced by {@see GameLangParser::soundDef()}.
-	 *
-	 * @param Context\SoundDefContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitSoundDef(Context\SoundDefContext $context);
-
-	/**
 	 * Visit a parse tree produced by {@see GameLangParser::attributeCall()}.
 	 *
 	 * @param Context\AttributeCallContext $context The parse tree.
@@ -138,24 +102,6 @@ interface GameLangVisitor extends ParseTreeVisitor
 	 * @return mixed The visitor result.
 	 */
 	public function visitAttributeCall(Context\AttributeCallContext $context);
-
-	/**
-	 * Visit a parse tree produced by {@see GameLangParser::entering()}.
-	 *
-	 * @param Context\EnteringContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitEntering(Context\EnteringContext $context);
-
-	/**
-	 * Visit a parse tree produced by {@see GameLangParser::exiting()}.
-	 *
-	 * @param Context\ExitingContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitExiting(Context\ExitingContext $context);
 
 	/**
 	 * Visit a parse tree produced by {@see GameLangParser::afterTimer()}.
@@ -212,11 +158,11 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitExpression(Context\ExpressionContext $context);
 
 	/**
-	 * Visit a parse tree produced by {@see GameLangParser::condition()}.
+	 * Visit a parse tree produced by {@see GameLangParser::logicExpression()}.
 	 *
-	 * @param Context\ConditionContext $context The parse tree.
+	 * @param Context\LogicExpressionContext $context The parse tree.
 	 *
 	 * @return mixed The visitor result.
 	 */
-	public function visitCondition(Context\ConditionContext $context);
+	public function visitLogicExpression(Context\LogicExpressionContext $context);
 }

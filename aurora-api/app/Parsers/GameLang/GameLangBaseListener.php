@@ -48,19 +48,6 @@ class GameLangBaseListener implements GameLangListener
 	 *
 	 * The default implementation does nothing.
 	 */
-	public function enterDefinitions(Context\DefinitionsContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitDefinitions(Context\DefinitionsContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
 	public function enterParameters(Context\ParametersContext $context): void {}
 
 	/**
@@ -69,32 +56,6 @@ class GameLangBaseListener implements GameLangListener
 	 * The default implementation does nothing.
 	 */
 	public function exitParameters(Context\ParametersContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function enterState(Context\StateContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitState(Context\StateContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function enterTransition(Context\TransitionContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitTransition(Context\TransitionContext $context): void {}
 	/**
 	 * {@inheritdoc}
 	 *
@@ -121,6 +82,19 @@ class GameLangBaseListener implements GameLangListener
 	 * The default implementation does nothing.
 	 */
 	public function exitStatement(Context\StatementContext $context): void {}
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function enterConsoleStatement(Context\ConsoleStatementContext $context): void {}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function exitConsoleStatement(Context\ConsoleStatementContext $context): void {}
 	/**
 	 * {@inheritdoc}
 	 *
@@ -165,32 +139,6 @@ class GameLangBaseListener implements GameLangListener
 	 *
 	 * The default implementation does nothing.
 	 */
-	public function enterAnimationDef(Context\AnimationDefContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitAnimationDef(Context\AnimationDefContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function enterSoundDef(Context\SoundDefContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitSoundDef(Context\SoundDefContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
 	public function enterAttributeCall(Context\AttributeCallContext $context): void {}
 
 	/**
@@ -199,32 +147,6 @@ class GameLangBaseListener implements GameLangListener
 	 * The default implementation does nothing.
 	 */
 	public function exitAttributeCall(Context\AttributeCallContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function enterEntering(Context\EnteringContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitEntering(Context\EnteringContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function enterExiting(Context\ExitingContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitExiting(Context\ExitingContext $context): void {}
 	/**
 	 * {@inheritdoc}
 	 *
@@ -308,14 +230,14 @@ class GameLangBaseListener implements GameLangListener
 	 *
 	 * The default implementation does nothing.
 	 */
-	public function enterCondition(Context\ConditionContext $context): void {}
+	public function enterLogicExpression(Context\LogicExpressionContext $context): void {}
 
 	/**
 	 * {@inheritdoc}
 	 *
 	 * The default implementation does nothing.
 	 */
-	public function exitCondition(Context\ConditionContext $context): void {}
+	public function exitLogicExpression(Context\LogicExpressionContext $context): void {}
 
 	/**
 	 * {@inheritdoc}
