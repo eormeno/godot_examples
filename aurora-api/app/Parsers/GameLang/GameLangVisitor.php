@@ -59,6 +59,15 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitStatement(Context\StatementContext $context);
 
 	/**
+	 * Visit a parse tree produced by {@see GameLangParser::printable()}.
+	 *
+	 * @param Context\PrintableContext $context The parse tree.
+	 *
+	 * @return mixed The visitor result.
+	 */
+	public function visitPrintable(Context\PrintableContext $context);
+
+	/**
 	 * Visit a parse tree produced by {@see GameLangParser::consoleStatement()}.
 	 *
 	 * @param Context\ConsoleStatementContext $context The parse tree.

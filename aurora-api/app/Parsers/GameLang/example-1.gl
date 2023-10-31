@@ -2,6 +2,8 @@ PERSONAJE bot PARAMETROS juego
 	velocidad = (((3 + 2) * 4.2 * (2 - -3.5)) / 4)
     velocidad = velocidad + 1
 
+    texto = "Hola Mundo"
+
     valor = V
 
     resultdo1 = velocidad > 0
@@ -9,5 +11,12 @@ PERSONAJE bot PARAMETROS juego
     resultdo3 = velocidad == 29.875
     resultdo4 = velocidad != 29.875
     resultdo5 = NO resultdo1
+
+    CONSOLA "Velocidad:"    TB velocidad NL
+            "Valor:"        TB TB valor NL
+            "Resultado1:"   TB resultdo1 NL
+            "Resultado2:"   TB resultdo2 NL
+            "Resultado5:"   TB resultdo5 NL
+            "Texto:"        TB TB texto
 
 FIN

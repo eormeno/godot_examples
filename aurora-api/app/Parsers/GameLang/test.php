@@ -124,6 +124,7 @@ enum Operation implements \JsonSerializable
     case out; // output
     case inp; // input
     case jmp; // jump
+    case cat; // concatenate
 
     public function jsonSerialize()
     {
@@ -149,6 +150,7 @@ enum Operation implements \JsonSerializable
             self::out => 'out',
             self::inp => 'inp',
             self::jmp => 'jmp',
+            self::cat => 'cat',
         };
     }
 }
@@ -240,6 +242,12 @@ class GameLangSpecificListener extends GameLangBaseListener
         } elseif ($context->ID()) {
             $identificator = $context->ID()->getText();
             $this->insGet($line, 0, $identificator);
+            $this->insPsh($line, 0);
+        } elseif ($context->STRING()) {
+            $string = $context->STRING()->getText();
+            // remove the quotes
+            $string = substr($string, 1, -1);
+            $this->insReg($line, 0, $string);
             $this->insPsh($line, 0);
         }
     }
@@ -363,6 +371,37 @@ class GameLangSpecificListener extends GameLangBaseListener
         }
         $this->insPsh($line, 3);
     }
+
+    public function exitConsoleStatement(Context\ConsoleStatementContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $printable = $context->printable();
+        $count = count($printable);
+        // this is like to do: reg[1] = ""
+        $this->insReg($line, 1, "");
+        for ($i = 0; $i < $count; $i++) {
+            if ($printable[$i]->ID()) {
+                $identificator = $printable[$i]->ID()->getText();
+                // this is like to do: reg[2] = value(identificator)
+                $this->insGet($line, 2, $identificator);
+            } elseif ($printable[$i]->STRING()) {
+                $string = $printable[$i]->STRING()->getText();
+                // remove the quotes
+                $string = substr($string, 1, -1);
+                // this is like to do: reg[2] = "string"
+                $this->insReg($line, 2, $string);
+            } elseif ($printable[$i]->NL()) {
+                // this is like to do: reg[2] = "\n"
+                $this->insReg($line, 2, "\n");
+            } elseif ($printable[$i]->TB()) {
+                // this is like to do: reg[2] = "\t"
+                $this->insReg($line, 2, "\t");
+            }
+            // this is like to do: reg[1] = reg[1] . reg[2]
+            $this->insOp($line, Operation::cat, 1);
+        }
+        $this->insOp($line, Operation::out, 1);
+    }
 }
 
 $input = InputStream::fromPath("example-1.gl");
@@ -429,7 +468,7 @@ function runCode(array $code)
                 break;
             case Operation::get:
                 if (!array_key_exists($data, $mem)) {
-                    throw new \Exception("Undefined variable '$data'");
+                    throw new \Exception("Undefined variable '$data' at line $lineNumber.");
                 }
                 $value = $mem[$data];
                 $regs[$reg] = $value;
@@ -478,7 +517,22 @@ function runCode(array $code)
                 $left = $regs[1];
                 $regs[$reg] = !$left;
                 break;
+            case Operation::cat:
+                $left = $regs[1];
+                $right = $regs[2];
+                if (is_bool($left)) {
+                    $left = $left ? 'V' : 'F';
+                }
+                if (is_bool($right)) {
+                    $right = $right ? 'V' : 'F';
+                }
+                $regs[$reg] = $left . $right;
+                break;
+            case Operation::out:
+                $str = $regs[$reg];
+                echo $str . "\n";
+                break;
         }
     }
-    echo json_encode($mem, JSON_PRETTY_PRINT) . "\n";
+    // echo json_encode($mem, JSON_PRETTY_PRINT) . "\n";
 }

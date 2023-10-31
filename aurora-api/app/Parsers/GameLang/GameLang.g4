@@ -17,8 +17,14 @@ statement
 		| everyTimer
 		| consoleStatement;
 
+printable
+        : STRING
+        | NL
+        | TB
+        | ID;
+
 consoleStatement
-		: 'CONSOLA' ((STRING|ID) (',' (STRING|ID))*)?;
+		: 'CONSOLA' (printable (printable)*)?;
 
 whileStatement
         : 'MIENTRAS' logicExpression statement* 'FIN';
@@ -80,6 +86,8 @@ logicExpression
 ID:         [a-z_][a-z0-9_]*;
 NUMBER:     ('0' .. '9') + ('.' ('0' .. '9') +)? ;
 STRING:     '"' ~'"'* '"';
+NL:         'NL';
+TB:         'TB';
 PLUS:       '+';
 MINUS:      '-';
 MULTIPLY:   '*';
