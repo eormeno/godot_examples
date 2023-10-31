@@ -123,7 +123,7 @@ enum Operation implements \JsonSerializable
     case get; // get from memory
     case out; // output
     case inp; // input
-    case jmp; // jump
+    case ifi; // if instruction
     case cat; // concatenate
 
     public function jsonSerialize()
@@ -149,7 +149,7 @@ enum Operation implements \JsonSerializable
             self::not => 'not',
             self::out => 'out',
             self::inp => 'inp',
-            self::jmp => 'jmp',
+            self::ifi => 'ifi',
             self::cat => 'cat',
         };
     }
@@ -162,6 +162,10 @@ class GameLangSpecificListener extends GameLangBaseListener
     public function getCode()
     {
         return $this->code;
+    }
+
+    public function lastIndex() {
+        return count($this->code) - 1;
     }
 
     private function insReg(int $line, int $reg, $data): void
@@ -372,6 +376,22 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->insPsh($line, 3);
     }
 
+    public function enterIfStatement(Context\IfStatementContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $this->insReg($line, 0, False); // reg[0] = False
+        $this->insPsh($line, 0); // push reg[0] to the stack
+    }
+
+    public function exitIfStatement(Context\IfStatementContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $last = $this->lastIndex();
+        $this->insPop($line, 0); // pop the logicExpression result and store it in reg[0]
+        $this->insReg($line, 1, $last); // reg[1] = last index (the end of the current if statement)
+        $this->insOp($line, Operation::ifi, 1); // check if reg[0] is true, if not, jump to reg[1]
+    }
+
     public function exitConsoleStatement(Context\ConsoleStatementContext $context): void
     {
         $line = $context->getStart()->getLine();
@@ -427,8 +447,8 @@ function runCode(array $code)
     $stack = [];
     $regs = [3];
     $mem = [];
-    foreach ($code as $line) {
-        [$lineNumber, $op, $reg, $data] = $line;
+    for ($i = 0; $i < count($code); $i++) {
+        [$lineNumber, $op, $reg, $data] = $code[$i];
         switch ($op) {
             case Operation::reg:
                 $regs[$reg] = $data;
@@ -438,7 +458,7 @@ function runCode(array $code)
                 break;
             case Operation::pop:
                 if ($reg == 9) {
-                    dd('stack:', $stack);
+                    dd($i, count($code));
                 }
                 $regs[$reg] = array_pop($stack);
                 break;
@@ -531,6 +551,15 @@ function runCode(array $code)
             case Operation::out:
                 $str = $regs[$reg];
                 echo $str . "\n";
+                break;
+            case Operation::ifi:
+                // dd($regs[0], $regs[1], $i, count($code));
+                $condition = $regs[0];
+                if (!$condition) {
+                    dd($i, $regs[1]);
+                    $i = $regs[1];
+
+                }
                 break;
         }
     }
