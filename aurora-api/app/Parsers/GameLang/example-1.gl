@@ -9,6 +9,8 @@ PERSONAJE bot PARAMETROS juego
 
     SI velocidad < 0 ENTONCES
         CONSOLA "Velocidad negativa. " velocidad
+    SINO
+        CONSOLA "Insisto! La velocidad es positiva. " velocidad
     FIN
 
     CONSOLA "Llegamos al final. " altura

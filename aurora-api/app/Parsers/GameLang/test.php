@@ -176,7 +176,8 @@ class GameLangSpecificListener extends GameLangBaseListener
         return $this->code;
     }
 
-    public function lastIntermediateCodeLine() : int {
+    public function lastIntermediateCodeLine(): int
+    {
         return count($this->code) - 1;
     }
 
@@ -262,7 +263,8 @@ class GameLangSpecificListener extends GameLangBaseListener
         return $this->lastIntermediateCodeLine();
     }
 
-    private function updDat(int $ic_line, $data): void {
+    private function updDat(int $ic_line, $data): void
+    {
         $this->code[$ic_line][3] = $data;
     }
 
@@ -270,7 +272,8 @@ class GameLangSpecificListener extends GameLangBaseListener
      * Returns the identifier of the current statement. This identifier is used to store
      * data for intermediate code generation algorithm.
      */
-    private function getStatementId($context): int {
+    private function getStatementId($context): int
+    {
         $from_line = $context->getStart()->getLine();
         $to_line = $context->getStop()->getLine();
         $from_char = $context->getStart()->getCharPositionInLine();
@@ -278,17 +281,20 @@ class GameLangSpecificListener extends GameLangBaseListener
         return $from_line * 1000 + $from_char * 100 + $to_line * 10 + $to_char;
     }
 
-    private function registerStatement($context): void {
+    private function registerStatement($context): void
+    {
         $statement_id = $this->getStatementId($context);
         $this->statement_register[$statement_id] = [];
     }
 
-    private function setStatementData($context, $key, $data): void {
+    private function setStatementData($context, $key, $data): void
+    {
         $statement_id = $this->getStatementId($context);
         $this->statement_register[$statement_id][$key] = $data;
     }
 
-    private function getStatementData($context, $key) {
+    private function getStatementData($context, $key)
+    {
         $statement_id = $this->getStatementId($context);
         return $this->statement_register[$statement_id][$key];
     }
@@ -449,7 +455,8 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->registerStatement($context);
     }
 
-    public function enterThenStatement(Context\ThenStatementContext $context) : void {
+    public function enterThenStatement(Context\ThenStatementContext $context): void
+    {
         $line = $context->getStart()->getLine();
         // This is the beginning of the then statement, so at this point, the logicExpression
         // has been evaluated and its result is in the top of the stack machine.
@@ -463,23 +470,28 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->setStatementData($context->getParent(), "iif", $ic_line);
     }
 
-    public function exitThenStatement(Context\ThenStatementContext $context) : void {
+    public function exitThenStatement(Context\ThenStatementContext $context): void
+    {
         // This is the end of the then statements block. Here we need to jump to the end of the if
         // statement, just in case the current if statement has an else statement.
         $ic_line = $this->insJMP($context->getStart()->getLine(), self::UNKOWN_IC_LINE);
         $this->setStatementData($context->getParent(), "then", $ic_line);
     }
 
-    public function enterElseStatement(Context\ElseStatementContext $context) : void {
+    public function enterElseStatement(Context\ElseStatementContext $context): void
+    {
+        $iif_ic_line = $this->getStatementData($context->getParent(), "iif");
+        $this->updDat($iif_ic_line, $this->lastIntermediateCodeLine());
     }
 
     public function exitIfStatement(Context\IfStatementContext $context): void
     {
-        // at this point, we need to update the index of the end of the if statement
-        // with the current index of the code
-        $iif_ic_line = $this->getStatementData($context, "iif");
+        if (!$context->thenStatement()) {
+            // we need to update the jump of the iif with the current index of the code
+            $iif_ic_line = $this->getStatementData($context, "iif");
+            $this->updDat($iif_ic_line, $this->lastIntermediateCodeLine());
+        }
         $then_ic_line = $this->getStatementData($context, "then");
-        $this->updDat($iif_ic_line, $this->lastIntermediateCodeLine());
         $this->updDat($then_ic_line, $this->lastIntermediateCodeLine());
     }
 
