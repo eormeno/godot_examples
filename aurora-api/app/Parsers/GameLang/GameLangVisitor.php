@@ -95,6 +95,24 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitIfStatement(Context\IfStatementContext $context);
 
 	/**
+	 * Visit a parse tree produced by {@see GameLangParser::thenStatement()}.
+	 *
+	 * @param Context\ThenStatementContext $context The parse tree.
+	 *
+	 * @return mixed The visitor result.
+	 */
+	public function visitThenStatement(Context\ThenStatementContext $context);
+
+	/**
+	 * Visit a parse tree produced by {@see GameLangParser::elseStatement()}.
+	 *
+	 * @param Context\ElseStatementContext $context The parse tree.
+	 *
+	 * @return mixed The visitor result.
+	 */
+	public function visitElseStatement(Context\ElseStatementContext $context);
+
+	/**
 	 * Visit a parse tree produced by {@see GameLangParser::assignment()}.
 	 *
 	 * @param Context\AssignmentContext $context The parse tree.

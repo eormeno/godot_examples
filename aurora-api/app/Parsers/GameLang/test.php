@@ -125,6 +125,7 @@ enum Operation implements \JsonSerializable
     case inp; // input
     case ifi; // if instruction
     case cat; // concatenate
+    case jmp; // jump
 
     public function jsonSerialize()
     {
@@ -151,24 +152,30 @@ enum Operation implements \JsonSerializable
             self::inp => 'inp',
             self::ifi => 'ifi',
             self::cat => 'cat',
+            self::jmp => 'jmp',
         };
     }
 }
 
 class GameLangSpecificListener extends GameLangBaseListener
 {
+
+    private const UNKOWN = -1;
+
     private $code = [];
+
+    private $ifStack = [];
 
     public function getCode()
     {
         return $this->code;
     }
 
-    public function lastIndex() {
+    public function lastIndex() : int {
         return count($this->code) - 1;
     }
 
-    private function insReg(int $line, int $reg, $data): void
+    private function insReg(int $line, int $reg, $data): int
     {
         $this->code[] = [
             $line,
@@ -176,6 +183,12 @@ class GameLangSpecificListener extends GameLangBaseListener
             $reg,
             $data
         ];
+        return $this->lastIndex();
+    }
+
+    private function updReg(int $index, $data): void
+    {
+        $this->code[$index][3] = $data;
     }
 
     private function insMem(int $line, int $reg, string $identificator): void
@@ -226,6 +239,17 @@ class GameLangSpecificListener extends GameLangBaseListener
             $reg,
             null
         ];
+    }
+
+    private function insJmp(int $line, int $reg, int $data): int
+    {
+        $this->code[] = [
+            $line,
+            Operation::jmp,
+            $reg,
+            $data
+        ];
+        return $this->lastIndex();
     }
 
     public function exitAssignment(Context\AssignmentContext $context): void
@@ -316,6 +340,7 @@ class GameLangSpecificListener extends GameLangBaseListener
     public function exitLogicExpression(Context\LogicExpressionContext $context): void
     {
         $line = $context->getStart()->getLine();
+
         $op =
             $context->LOR() ??
             $context->AND() ??
@@ -376,20 +401,41 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->insPsh($line, 3);
     }
 
-    public function enterIfStatement(Context\IfStatementContext $context): void
-    {
+    public function enterThenStatement(Context\ThenStatementContext $context) : void {
         $line = $context->getStart()->getLine();
-        $this->insReg($line, 0, False); // reg[0] = False
-        $this->insPsh($line, 0); // push reg[0] to the stack
+        $this->insPop($line, 0); // pop the logicExpression result and store it in reg[0]
+        // at this point, reg[0] has the result of the logicExpression
+        // if reg[0] is false, we need to jump to the end of the if statement or the else statement
+        $idx = $this->insReg($line, 1, self::UNKOWN);
+        // push the index of the end of the if statement to the ifStack
+        array_push($this->ifStack, $idx);
+        $this->insOp($line, Operation::ifi, 1); // check if reg[0] is true, if not, jump to reg[1]
+    }
+
+    public function exitThenStatement(Context\ThenStatementContext $context) : void {
+        $idx = $this->insJmp($context->getStart()->getLine(), 2, self::UNKOWN);
+        array_push($this->ifStack, $idx);
+    }
+
+    public function enterElseStatement(Context\ElseStatementContext $context) : void {
+        // updates reg[1] with the current index of the code
+        // see the index at the top of the ifStack
+        $idx = array_pop($this->ifStack);
+        array_push($this->ifStack, $idx);
+        $this->updReg($idx, $this->lastIndex());
     }
 
     public function exitIfStatement(Context\IfStatementContext $context): void
     {
-        $line = $context->getStart()->getLine();
-        $last = $this->lastIndex();
-        $this->insPop($line, 0); // pop the logicExpression result and store it in reg[0]
-        $this->insReg($line, 1, $last); // reg[1] = last index (the end of the current if statement)
-        $this->insOp($line, Operation::ifi, 1); // check if reg[0] is true, if not, jump to reg[1]
+        if ($context->elseStatement()) {
+            return;
+        }
+        // at this point, we need to update the index of the end of the if statement
+        // with the current index of the code
+        $idx = array_pop($this->ifStack);
+        $this->updReg($idx, $this->lastIndex());
+        $idx = array_pop($this->ifStack);
+        $this->updReg($idx, $this->lastIndex());
     }
 
     public function exitConsoleStatement(Context\ConsoleStatementContext $context): void
@@ -556,10 +602,12 @@ function runCode(array $code)
                 // dd($regs[0], $regs[1], $i, count($code));
                 $condition = $regs[0];
                 if (!$condition) {
-                    dd($i, $regs[1]);
+                    // dd($i, $regs[1]);
                     $i = $regs[1];
-
                 }
+                break;
+            case Operation::jmp:
+                $i = $data;
                 break;
         }
     }

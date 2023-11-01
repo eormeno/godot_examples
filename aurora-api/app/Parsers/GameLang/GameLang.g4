@@ -1,12 +1,16 @@
 grammar GameLang;
 
-program:    character+;
+program
+        : character+ EOF;
 
-character:  'PERSONAJE' ID (parameters)? statement* 'FIN';
+character
+        : 'PERSONAJE' ID (parameters)? statement* 'FIN';
 
-parameters: 'PARAMETROS' (ID (',' ID)*)?;
+parameters
+        : 'PARAMETROS' (ID (',' ID)*)?;
 
-timeUnit:   ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
+timeUnit
+        : ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
 
 statement
 		: whileStatement
@@ -30,7 +34,13 @@ whileStatement
         : 'MIENTRAS' logicExpression statement* 'FIN';
 
 ifStatement
-        : 'SI' logicExpression statement* ('SINO' statement*)? 'FIN';
+        : 'SI' logicExpression thenStatement (elseStatement)? 'FIN';
+
+thenStatement
+        : 'ENTONCES' statement*;
+
+elseStatement
+        : 'SINO' statement*;
 
 assignment
         : (ID | attributeCall) EQUAL (expression | logicExpression);

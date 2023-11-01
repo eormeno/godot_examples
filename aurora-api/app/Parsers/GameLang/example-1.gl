@@ -1,8 +1,13 @@
 PERSONAJE bot PARAMETROS juego
-	velocidad = (((3 + 2) * 4.2 * (2 - -3.5)) / 4)
+    altura = 100.00
+	velocidad = 1
     velocidad = velocidad + 1
 
-    SI velocidad < 0
-        CONSOLA "La velocidad es positiva."
+    SI velocidad > 0 ENTONCES
+        CONSOLA "Velocidad positiva. " velocidad
+    SINO
+        CONSOLA "Velocidad negativa. " velocidad
     FIN
+
+    CONSOLA "Llegamos al final. " altura
 FIN
