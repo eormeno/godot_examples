@@ -7,5 +7,9 @@ PERSONAJE bot PARAMETROS juego
         CONSOLA "Velocidad positiva. " velocidad
     FIN
 
+    SI velocidad < 0 ENTONCES
+        CONSOLA "Velocidad negativa. " velocidad
+    FIN
+
     CONSOLA "Llegamos al final. " altura
 FIN

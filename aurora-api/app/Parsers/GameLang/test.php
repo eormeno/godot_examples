@@ -169,12 +169,14 @@ class GameLangSpecificListener extends GameLangBaseListener
 
     private $jumpStack = [];
 
+    private $statement_register = [];
+
     public function getCode()
     {
         return $this->code;
     }
 
-    public function lastIndex() : int {
+    public function lastIntermediateCodeLine() : int {
         return count($this->code) - 1;
     }
 
@@ -238,7 +240,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         ];
     }
 
-    private function pushJMP(int $line, int $jump_to): void
+    private function insJMP(int $line, int $jump_to): int
     {
         $this->code[] = [
             $line,
@@ -246,10 +248,10 @@ class GameLangSpecificListener extends GameLangBaseListener
             null,
             $jump_to
         ];
-        array_push($this->jumpStack, $this->lastIndex());
+        return $this->lastIntermediateCodeLine();
     }
 
-    private function pushIIF(int $line, int $jump_to): void
+    private function insIIF(int $line, int $jump_to): int
     {
         $this->code[] = [
             $line,
@@ -257,12 +259,38 @@ class GameLangSpecificListener extends GameLangBaseListener
             null,
             $jump_to
         ];
-        array_push($this->jumpStack, $this->lastIndex());
+        return $this->lastIntermediateCodeLine();
     }
 
-    private function updaIIf(int $jump_to): void {
-        $idx = array_pop($this->jumpStack);
-        $this->code[$idx][3] = $jump_to;
+    private function updDat(int $ic_line, $data): void {
+        $this->code[$ic_line][3] = $data;
+    }
+
+    /**
+     * Returns the identifier of the current statement. This identifier is used to store
+     * data for intermediate code generation algorithm.
+     */
+    private function getStatementId($context): int {
+        $from_line = $context->getStart()->getLine();
+        $to_line = $context->getStop()->getLine();
+        $from_char = $context->getStart()->getCharPositionInLine();
+        $to_char = $context->getStop()->getCharPositionInLine();
+        return $from_line * 1000 + $from_char * 100 + $to_line * 10 + $to_char;
+    }
+
+    private function registerStatement($context): void {
+        $statement_id = $this->getStatementId($context);
+        $this->statement_register[$statement_id] = [];
+    }
+
+    private function setStatementData($context, $key, $data): void {
+        $statement_id = $this->getStatementId($context);
+        $this->statement_register[$statement_id][$key] = $data;
+    }
+
+    private function getStatementData($context, $key) {
+        $statement_id = $this->getStatementId($context);
+        return $this->statement_register[$statement_id][$key];
     }
 
     public function exitAssignment(Context\AssignmentContext $context): void
@@ -414,6 +442,13 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->insPsh($line, 3);
     }
 
+    public function enterIfStatement(Context\IfStatementContext $context): void
+    {
+        // I need to register the if statement, so I can update the jumps when I know the
+        // end of the if statement, else statement or both.
+        $this->registerStatement($context);
+    }
+
     public function enterThenStatement(Context\ThenStatementContext $context) : void {
         $line = $context->getStart()->getLine();
         // This is the beginning of the then statement, so at this point, the logicExpression
@@ -421,15 +456,18 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->insPop($line, 0); // pop the logicExpression result and store it in reg[0]
         // Now, reg[0] will have the result of the logicExpression.
         // If reg[0] is false, we need to jump to the end of the if statement or the else statement.
-        // But, by the moment, both are UNKNOWN, so we need to stack the iif operation for its
+        // But, by the moment, both are UNKNOWN, so we need to register the iif operation for its
         // latter updating, when we know the end of the current if statement or the beginning of
         // its else statement (if it has one).
-        $this->pushIIF($line, self::UNKOWN_IC_LINE);
+        $ic_line = $this->insIIF($line, self::UNKOWN_IC_LINE);
+        $this->setStatementData($context->getParent(), "iif", $ic_line);
     }
 
     public function exitThenStatement(Context\ThenStatementContext $context) : void {
         // This is the end of the then statements block. Here we need to jump to the end of the if
         // statement, just in case the current if statement has an else statement.
+        $ic_line = $this->insJMP($context->getStart()->getLine(), self::UNKOWN_IC_LINE);
+        $this->setStatementData($context->getParent(), "then", $ic_line);
     }
 
     public function enterElseStatement(Context\ElseStatementContext $context) : void {
@@ -439,7 +477,10 @@ class GameLangSpecificListener extends GameLangBaseListener
     {
         // at this point, we need to update the index of the end of the if statement
         // with the current index of the code
-        $this->updaIIf($this->lastIndex());
+        $iif_ic_line = $this->getStatementData($context, "iif");
+        $then_ic_line = $this->getStatementData($context, "then");
+        $this->updDat($iif_ic_line, $this->lastIntermediateCodeLine());
+        $this->updDat($then_ic_line, $this->lastIntermediateCodeLine());
     }
 
     public function exitConsoleStatement(Context\ConsoleStatementContext $context): void
