@@ -497,6 +497,7 @@ class GameLangSpecificListener extends GameLangBaseListener
     {
         // I need to register the while statement, so I can update the jumps when I know its end.
         $this->registerStatement($context);
+        $this->setStatementData($context, "begin", $this->lastIntermediateCodeLine());
     }
 
     public function enterDoStatement(Context\DoStatementContext $context): void
@@ -518,9 +519,10 @@ class GameLangSpecificListener extends GameLangBaseListener
         $line = $context->getStart()->getLine();
         // This is the end of the do statements block. Here we need to jump to the beginning of the
         // while statement.
-        $ic_line = $this->getStatementData($context->getParent(), "iif");
-        $this->insJMP($line, $ic_line);
-        $this->updDat($ic_line, $this->lastIntermediateCodeLine());
+        $ic_iif = $this->getStatementData($context->getParent(), "iif");
+        $ic_begin = $this->getStatementData($context->getParent(), "begin");
+        $this->insJMP($line, $ic_begin);
+        $this->updDat($ic_iif, $this->lastIntermediateCodeLine());
     }
 
     public function exitConsoleStatement(Context\ConsoleStatementContext $context): void
