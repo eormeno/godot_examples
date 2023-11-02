@@ -80,6 +80,13 @@ func _on_command_execution_result(message: String, status: int = SUCCESS):
 	history.append_text(prompt.text)
 	history.append_text(last_command_entered)
 	history.append_text("\n")
+	print(message, status)
+	input.clear()
+	input.editable = true
+	timeout_running = false
+	timeout_counter = 0
+	
+func print(message: String, status: int = SUCCESS):
 	if not message.is_empty():
 		history.push_bgcolor(bg_color(status))
 		history.push_color(fg_color(status))
@@ -87,10 +94,6 @@ func _on_command_execution_result(message: String, status: int = SUCCESS):
 		history.pop()
 		history.pop()
 		if !message.ends_with("\n"): history.append_text('\n')
-	input.clear()
-	input.editable = true
-	timeout_running = false
-	timeout_counter = 0
 
 func bg_color(status : int) -> Color:
 	match status:

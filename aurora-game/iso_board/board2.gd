@@ -114,7 +114,7 @@ func cmd_run(arg : PackedStringArray):
 	if response.has("errors"):
 		ret.message = response.errors[0]
 		return ret
-	ret.message = JSON.stringify(response.compiled, " ")
+	run_code(response.compiled)
 	ret.status = Terminal.SUCCESS
 	return ret
 
@@ -173,8 +173,99 @@ func _on_without_script_state_entered():
 	tool.save.can = false
 	_update_ui_states()
 
-
 func _on_editing_script_state_entered():
 	tool.run.can = true
 	tool.save.can = true
 	_update_ui_states()
+	
+func run_code(code: Array):
+	var stack = []
+	var regs = [null, null, null, null]
+	var mem = {}
+
+	for i in range(code.size()):
+		var cl = code[i]
+		var _line : int = int(cl[0])
+		var op : String = cl[1].to_upper()
+		var reg : int = int(cl[2])
+		var data = cl[3]
+
+		match op:
+			"REG":
+				regs[reg] = data
+			"PSH":
+				stack.push_back(regs[reg])
+			"POP":
+				regs[reg] = stack.pop_back()
+			"ADD":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left + right
+			"SUB":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left - right
+			"MUL":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left * right
+			"DIV":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left / right
+			"MEM":
+				var result = regs[reg]
+				mem[data] = result
+			"GET":
+#				if not mem.has(data):
+#					raise Exception("Undefined variable " + str(data) + " at line " + str(line_number))
+				var value = mem[data]
+				regs[reg] = value
+			"EQL":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left == right
+			"NEQ":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left != right
+			"GRT":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left > right
+			"LST":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left < right
+			"GTE":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left >= right
+			"LTE":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left <= right
+			"LOR":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left or right
+			"AND":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = left and right
+			"NOT":
+				var left = regs[1]
+				regs[reg] = not left
+			"CAT":
+				var left = regs[1]
+				var right = regs[2]
+				regs[reg] = str(left) + str(right)
+			"OUT":
+				var _str = str(regs[reg])
+				terminal.print(_str)
+			"IFI":
+				var condition = regs[0]
+				if not condition:
+					i = data
+			"JMP":
+				i = data
