@@ -11,23 +11,52 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ResourceFactory extends Factory
 {
+    const EXAMPLE_1 = "
+    PERSONAJE bot PARAMETROS juego
+        altura = 100.00
+	    velocidad = 1
+        velocidad = velocidad + 1
+
+        SI velocidad > 0 ENTONCES
+            CONSOLA \"Velocidad positiva. \" velocidad
+        FIN
+
+        SI velocidad < 0 ENTONCES
+            CONSOLA \"Velocidad negativa. \" velocidad
+        SINO
+            CONSOLA \"Insisto! La velocidad es positiva. \" velocidad
+        FIN
+
+        i = 0
+        MIENTRAS i < 5 HAZ
+            CONSOLA \"Iteracion \" i
+            i = i + 1
+        FIN
+
+        CONSOLA \"Llegamos al final. \" altura
+    FIN";
+    const EXAMPLE_2 = "
+    PERSONAJE bot PARAMETROS juego
+        CONSOLA \"Hola mundo\"
+    FIN";
     const TEMPLATE_ALT = [
         "type" => "folder",
-        "tutorial" => [ "type" => "folder",
-            "mover-a-luz-roja" => [
+        "tutorial" => [
+            "type" => "folder",
+            "hola-mundo" => [
                 "type" => "file",
                 "extension" => "script",
                 "mime_type" => "text/plain",
-                "content" => "move to \"red\"",
-                "comment" => "Mueve el bot a la próxima luz roja",
+                "content" => self::EXAMPLE_2,
+                "comment" => "Hace que el bot diga \"Hola mundo\"",
                 "minimum_player_level" => 1,
             ],
-            "recorrer-luces-rojas" => [
+            "estructuras-control" => [
                 "type" => "file",
                 "extension" => "script",
                 "mime_type" => "text/plain",
-                "content" => "move to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\nmove to \"red\"\n",
-                "comment" => "Hace que el bot recorra todas las luces rojas",
+                "content" => self::EXAMPLE_1,
+                "comment" => "Muestra varios ejemplos de uso de la consola y de las estructuras de control",
                 "minimum_player_level" => 2,
             ],
         ]
@@ -80,7 +109,7 @@ class ResourceFactory extends Factory
         ]);
     }
 
-    public function file(Array $file): static
+    public function file(array $file): static
     {
         $content = $file['content'];
         $comment = $file['comment'];
