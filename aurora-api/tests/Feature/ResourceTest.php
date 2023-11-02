@@ -61,7 +61,7 @@ class ResourceTest extends TestCase
             'Accept' => 'application/json'
         ];
         $resourcesResponse = $this->withHeaders($headers)->get('/api/resources/3/compiled');
-        echo(json_encode($resourcesResponse['compiled'], JSON_PRETTY_PRINT));
+        // echo(json_encode($resourcesResponse['compiled'], JSON_PRETTY_PRINT));
         $resourcesResponse->assertStatus(200)->assertJson(['compiled' => true]);
     }
 
