@@ -88,7 +88,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->code[] = [
             $line,
             Operation::jmp,
-            null,
+            -1,
             $jump_to
         ];
         return $this->lastIntermediateCodeLine();
@@ -99,7 +99,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->code[] = [
             $line,
             Operation::ifi,
-            null,
+            -1,
             $jump_to
         ];
         return $this->lastIntermediateCodeLine();

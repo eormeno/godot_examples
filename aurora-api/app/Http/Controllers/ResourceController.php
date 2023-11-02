@@ -82,16 +82,12 @@ class ResourceController extends Controller
         $request_id = request()->header('Request-ID');
         if ($resource->type !== 'file' || $resource->extension !== 'script') {
             return response([
-                'errors' => ["El archivo $resource->name no es un script"]
-            ], 422)->withHeaders([
-                        'Request-ID' => $request_id,
-                    ]);
+                'errors' => [["line" => 0, "char" => 0, "message" => "El archivo $resource->name no es un script"]]
+            ], 422)->withHeaders(['Request-ID' => $request_id]);
         }
         $script = $resource->content;
-        $code = $this->compileScript($script);
-        return response()->json([
-            'compiled' => $code
-        ])->withHeaders(['Request-ID' => $request_id,]);
+        $res = $this->compileScript($script);
+        return response()->json($res)->withHeaders(['Request-ID' => $request_id]);
     }
 
     private function compileScript(string $script)
@@ -104,9 +100,13 @@ class ResourceController extends Controller
         $errorListener = new GameLangErrorListener();
         $parser->addErrorListener($errorListener);
         $tree = $parser->program();
+        $errors = $errorListener->getErrors();
+        if (count($errors) > 0) {
+            return ["errors" => $errors];
+        }
         $listener = new GameLangSpecificListener();
         ParseTreeWalker::default()->walk($listener, $tree);
-        return $listener->getCode();
+        return ["compiled" => $listener->getCode()];
     }
 
     /**

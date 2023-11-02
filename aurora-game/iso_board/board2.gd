@@ -112,7 +112,11 @@ func cmd_run(arg : PackedStringArray):
 		return ret
 	var response = await connection.get_compiled_script(current_script_id)
 	if response.has("errors"):
-		ret.message = response.errors[0]
+		
+		var errs = ""
+		for e in response.errors:
+			errs += "Error de sintaxis en línea " + str(e.line) + "\n"
+		ret.message = errs
 		return ret
 	run_code(response.compiled)
 	ret.status = Terminal.SUCCESS
@@ -182,14 +186,13 @@ func run_code(code: Array):
 	var stack = []
 	var regs = [null, null, null, null]
 	var mem = {}
-
-	for i in range(code.size()):
+	var i = 0
+	while i < code.size():
 		var cl = code[i]
-		var _line : int = int(cl[0])
+		var line : int = int(cl[0])
 		var op : String = cl[1].to_upper()
 		var reg : int = int(cl[2])
 		var data = cl[3]
-
 		match op:
 			"REG":
 				regs[reg] = data
@@ -217,8 +220,9 @@ func run_code(code: Array):
 				var result = regs[reg]
 				mem[data] = result
 			"GET":
-#				if not mem.has(data):
-#					raise Exception("Undefined variable " + str(data) + " at line " + str(line_number))
+				if not mem.has(data):
+					push_error("Undefined variable " + str(data) + " at line " + str(line))
+					break
 				var value = mem[data]
 				regs[reg] = value
 			"EQL":
@@ -262,10 +266,11 @@ func run_code(code: Array):
 				regs[reg] = str(left) + str(right)
 			"OUT":
 				var _str = str(regs[reg])
-				terminal.print(_str)
+				terminal.out(_str)
 			"IFI":
 				var condition = regs[0]
 				if not condition:
 					i = data
 			"JMP":
 				i = data
+		i = i + 1
