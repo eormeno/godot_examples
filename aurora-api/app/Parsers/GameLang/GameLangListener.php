@@ -93,6 +93,16 @@ interface GameLangListener extends ParseTreeListener {
 	 */
 	public function exitWhileStatement(Context\WhileStatementContext $context): void;
 	/**
+	 * Enter a parse tree produced by {@see GameLangParser::doStatement()}.
+	 * @param $context The parse tree.
+	 */
+	public function enterDoStatement(Context\DoStatementContext $context): void;
+	/**
+	 * Exit a parse tree produced by {@see GameLangParser::doStatement()}.
+	 * @param $context The parse tree.
+	 */
+	public function exitDoStatement(Context\DoStatementContext $context): void;
+	/**
 	 * Enter a parse tree produced by {@see GameLangParser::ifStatement()}.
 	 * @param $context The parse tree.
 	 */

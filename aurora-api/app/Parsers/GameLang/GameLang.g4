@@ -31,7 +31,10 @@ consoleStatement
 		: 'CONSOLA' (printable (printable)*)?;
 
 whileStatement
-        : 'MIENTRAS' logicExpression statement* 'FIN';
+        : 'MIENTRAS' logicExpression doStatement 'FIN';
+
+doStatement
+        : 'HAZ' statement*;
 
 ifStatement
         : 'SI' logicExpression thenStatement (elseStatement)? 'FIN';

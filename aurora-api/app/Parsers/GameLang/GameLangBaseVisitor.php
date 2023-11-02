@@ -108,6 +108,17 @@ class GameLangBaseVisitor extends AbstractParseTreeVisitor implements GameLangVi
 	 * The default implementation returns the result of calling
 	 * {@see self::visitChildren()} on `context`.
 	 */
+	public function visitDoStatement(Context\DoStatementContext $context)
+	{
+	    return $this->visitChildren($context);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation returns the result of calling
+	 * {@see self::visitChildren()} on `context`.
+	 */
 	public function visitIfStatement(Context\IfStatementContext $context)
 	{
 	    return $this->visitChildren($context);

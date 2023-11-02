@@ -167,8 +167,6 @@ class GameLangSpecificListener extends GameLangBaseListener
 
     private $code = [];
 
-    private $jumpStack = [];
-
     private $statement_register = [];
 
     public function getCode()
@@ -493,6 +491,36 @@ class GameLangSpecificListener extends GameLangBaseListener
         }
         $then_ic_line = $this->getStatementData($context, "then");
         $this->updDat($then_ic_line, $this->lastIntermediateCodeLine());
+    }
+
+    public function enterWhileStatement(Context\WhileStatementContext $context): void
+    {
+        // I need to register the while statement, so I can update the jumps when I know its end.
+        $this->registerStatement($context);
+    }
+
+    public function enterDoStatement(Context\DoStatementContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        // This is the beginning of the do statement, so at this point, the logicExpression
+        // has been evaluated and its result is in the top of the stack machine.
+        $this->insPop($line, 0); // pop the logicExpression result and store it in reg[0]
+        // Now, reg[0] will have the result of the logicExpression.
+        // If reg[0] is false, we need to jump to the end of the while statement.
+        // But, by the moment, it is UNKNOWN, so we need to register the iif operation for its
+        // latter updating, when we know the end of the current while statement.
+        $ic_line = $this->insIIF($line, self::UNKOWN_IC_LINE);
+        $this->setStatementData($context->getParent(), "iif", $ic_line);
+    }
+
+    public function exitDoStatement(Context\DoStatementContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        // This is the end of the do statements block. Here we need to jump to the beginning of the
+        // while statement.
+        $ic_line = $this->getStatementData($context->getParent(), "iif");
+        $this->insJMP($line, $ic_line);
+        $this->updDat($ic_line, $this->lastIntermediateCodeLine());
     }
 
     public function exitConsoleStatement(Context\ConsoleStatementContext $context): void
