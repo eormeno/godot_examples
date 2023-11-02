@@ -14,7 +14,7 @@ PERSONAJE bot PARAMETROS juego
     FIN
 
     i = 0
-    MIENTRAS i < 10 HAZ
+    MIENTRAS i < 5 HAZ
         CONSOLA "Iteracion " i
         i = i + 1
     FIN
