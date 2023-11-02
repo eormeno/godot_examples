@@ -1,5 +1,0 @@
-mover a "rojo"
-tomar "tarjeta"
-repetir 10 veces
-    mover a "verde"
-fin
