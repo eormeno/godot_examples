@@ -120,7 +120,7 @@ func cmd_run(arg : PackedStringArray):
 		return ret
 	compiled_code = response.compiled
 #	run_code_old(response.compiled)
-	stop = false
+	_start_running(compiled_code)
 	ret.status = Terminal.SUCCESS
 	return ret
 
@@ -187,27 +187,34 @@ func _on_editing_script_state_entered():
 var compiled_code:Array = []
 var stop:bool = true
 var _i = 0
-var _running_mi = false
-var _acum_delta = 0
 
 var memory : Dictionary = {
 	stack = [],
 	regs = [null, null, null, null],
-	vars = {}
+	vars = {},
+	elapsed = 0.0,
+	previous = 0.0
 }
+
+func _start_running(code: Array):
+	compiled_code = code
+	memory.stack = []
+	memory.regs = [null, null, null, null]
+	memory.vars = {}
+	memory.elapsed = 0.0
+	memory.previous = 0.0
+	_i = 0
+	stop = false
 
 func _process(delta):
 	if stop: return
-	_acum_delta += delta
-	if _running_mi : return
-	memory.vars.delta = _acum_delta
+	memory.elapsed += delta
 	_i = run_code(compiled_code, _i, memory)
+	_i += 1
 	if _i >= compiled_code.size(): stop = true
-	_acum_delta = 0
 
 func run_code(code:Array, i:int, mem:Dictionary):
 	if i >= code.size(): return
-	_running_mi = true
 	var cl = code[i]
 	var line : int = int(cl[0])
 	var op : String = cl[1].to_upper()
@@ -246,6 +253,11 @@ func run_code(code:Array, i:int, mem:Dictionary):
 			else:
 				var value = mem.vars[data]
 				mem.regs[reg] = value
+		"DELTA":
+			if mem.previous == 0.0: mem.previous = mem.elapsed
+			var delta = mem.elapsed - mem.previous
+			mem.regs[reg] = delta
+			mem.previous = mem.elapsed
 		"EQL":
 			var left = mem.regs[1]
 			var right = mem.regs[2]
@@ -294,8 +306,6 @@ func run_code(code:Array, i:int, mem:Dictionary):
 				i = data
 		"JMP":
 			i = data
-	i += 1
-	_running_mi = false
 	return i
 
 func run_code_old(code: Array):

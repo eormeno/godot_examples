@@ -10,7 +10,7 @@ use Antlr\Antlr4\Runtime\Tree\ParseTreeWalker;
 use App\Parsers\GameLang\GameLangErrorListener;
 use App\Parsers\GameLang\GameLangSpecificListener;
 
-$input = InputStream::fromPath("example-3.gl");
+$input = InputStream::fromPath("example-35.gl");
 $lexer = new GameLangLexer($input);
 $tokens = new CommonTokenStream($lexer);
 $parser = new GameLangParser($tokens);

@@ -53,6 +53,16 @@ class GameLangSpecificListener extends GameLangBaseListener
         ];
     }
 
+    private function insDelta(int $line, int $reg): void
+    {
+        $this->code[] = [
+            $line,
+            Operation::delta,
+            $reg,
+            null
+        ];
+    }
+
     private function insPsh(int $line, int $reg): void
     {
         $this->code[] = [
@@ -165,6 +175,9 @@ class GameLangSpecificListener extends GameLangBaseListener
             // remove the quotes
             $string = substr($string, 1, -1);
             $this->insReg($line, 0, $string);
+            $this->insPsh($line, 0);
+        } elseif($context->DELTA()) {
+            $this->insDelta($line, 0);
             $this->insPsh($line, 0);
         }
     }

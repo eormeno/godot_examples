@@ -140,6 +140,9 @@ class GameLangVM {
                 case Operation::jmp:
                     $i = $data;
                     break;
+                case Operation::delta:
+                    $regs[$reg] = 0.01; // simulates a small delta time
+                    break;
             }
         }
         // echo json_encode($mem, JSON_PRETTY_PRINT) . "\n";

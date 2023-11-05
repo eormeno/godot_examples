@@ -27,6 +27,7 @@ enum Operation implements \JsonSerializable
     case ifi; // if instruction
     case cat; // concatenate
     case jmp; // jump
+    case delta; // delta
 
     public function jsonSerialize(){
         return $this->name;

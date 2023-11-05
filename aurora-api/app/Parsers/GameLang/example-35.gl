@@ -1,7 +1,7 @@
 PERSONAJE bot PARAMETROS mapa
     t = 0
     MIENTRAS t < 3 HAZ
-        DIGA "Hola, soy un robot de mantenimiento"
-        t = t + delta
+        t = t + DELTA
+        CONSOLA "t = " t
     FIN
 FIN

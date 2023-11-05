@@ -83,6 +83,7 @@ expression
 		|	ID
 		|	'NULO'
 		|	'NULA'
+        |   DELTA
 		|	attributeCall
 		|	methodCall
 		|	LPAREN expression RPAREN
@@ -111,6 +112,7 @@ logicExpression
 ID:         [a-z_][a-z0-9_]*;
 NUMBER:     ('0' .. '9') + ('.' ('0' .. '9') +)? ;
 STRING:     '"' ~'"'* '"';
+DELTA:      'DELTA';
 NL:         'NL';
 TB:         'TB';
 PLUS:       '+';
