@@ -118,7 +118,9 @@ func cmd_run(arg : PackedStringArray):
 			errs += "Error de sintaxis en línea " + str(e.line) + "\n"
 		ret.message = errs
 		return ret
-	run_code(response.compiled)
+	compiled_code = response.compiled
+#	run_code_old(response.compiled)
+	stop = false
 	ret.status = Terminal.SUCCESS
 	return ret
 
@@ -181,8 +183,122 @@ func _on_editing_script_state_entered():
 	tool.run.can = true
 	tool.save.can = true
 	_update_ui_states()
-	
-func run_code(code: Array):
+
+var compiled_code:Array = []
+var stop:bool = true
+var _i = 0
+var _running_mi = false
+var _acum_delta = 0
+
+var memory : Dictionary = {
+	stack = [],
+	regs = [null, null, null, null],
+	vars = {}
+}
+
+func _process(delta):
+	if stop: return
+	_acum_delta += delta
+	if _running_mi : return
+	memory.vars.delta = _acum_delta
+	_i = run_code(compiled_code, _i, memory)
+	if _i >= compiled_code.size(): stop = true
+	_acum_delta = 0
+
+func run_code(code:Array, i:int, mem:Dictionary):
+	if i >= code.size(): return
+	_running_mi = true
+	var cl = code[i]
+	var line : int = int(cl[0])
+	var op : String = cl[1].to_upper()
+	var reg : int = int(cl[2])
+	var data = cl[3]
+	match op:
+		"REG":
+			mem.regs[reg] = data
+		"PSH":
+			mem.stack.push_back(mem.regs[reg])
+		"POP":
+			mem.regs[reg] = mem.stack.pop_back()
+		"ADD":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left + right
+		"SUB":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left - right
+		"MUL":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left * right
+		"DIV":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left / right
+		"MEM":
+			var result = mem.regs[reg]
+			mem.vars[data] = result
+		"GET":
+			if not mem.vars.has(data):
+				terminal.out("En línea " + str(line) + ", la variable '" + str(data) + "' no está definida.", Terminal.ERROR)
+				i = code.size() - 1
+			else:
+				var value = mem.vars[data]
+				mem.regs[reg] = value
+		"EQL":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left == right
+		"NEQ":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left != right
+		"GRT":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left > right
+		"LST":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left < right
+		"GTE":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left >= right
+		"LTE":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left <= right
+		"LOR":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left or right
+		"AND":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = left and right
+		"NOT":
+			var left = mem.regs[1]
+			mem.regs[reg] = not left
+		"CAT":
+			var left = mem.regs[1]
+			var right = mem.regs[2]
+			mem.regs[reg] = str(left) + str(right)
+		"OUT":
+			var _str = str(mem.regs[reg])
+			terminal.out(_str)
+		"IFI":
+			var condition = mem.regs[0]
+			if not condition:
+				i = data
+		"JMP":
+			i = data
+	i += 1
+	_running_mi = false
+	return i
+
+func run_code_old(code: Array):
 	var stack = []
 	var regs = [null, null, null, null]
 	var mem = {}

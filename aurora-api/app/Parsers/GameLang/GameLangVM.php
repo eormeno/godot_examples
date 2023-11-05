@@ -3,6 +3,7 @@
 namespace App\Parsers\GameLang;
 
 class GameLangVM {
+    private $global_memory = [];
     private $code = [];
 
     public function __construct(array $code)

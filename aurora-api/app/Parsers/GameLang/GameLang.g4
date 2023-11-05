@@ -10,7 +10,7 @@ parameters
         : 'PARAMETROS' (ID (',' ID)*)?;
 
 timeUnit
-        : ('SEGUNDOS' | 'MILISEGUNDOS' | 'MINUTOS');
+        : ('SEG' | 'MIL' | 'MIN');
 
 statement
 		: whileStatement
@@ -19,7 +19,10 @@ statement
 		| methodCall
 		| afterTimer
 		| everyTimer
-		| consoleStatement;
+		| consoleStatement
+        | moveStatement
+        | positionStatement
+        | sayStatement;
 
 printable
         : STRING
@@ -29,6 +32,15 @@ printable
 
 consoleStatement
 		: 'CONSOLA' (printable (printable)*)?;
+
+moveStatement
+        : 'MOVER' expression;
+
+positionStatement
+        : 'POSICION' expression;
+
+sayStatement
+        : ('DECIR'|'DIGA') printable;
 
 whileStatement
         : 'MIENTRAS' logicExpression doStatement 'FIN';

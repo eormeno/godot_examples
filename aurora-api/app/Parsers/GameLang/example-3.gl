@@ -1,0 +1,4 @@
+PERSONAJE bot PARAMETROS mapa
+    DECIR "Hola, soy un robot de mantenimiento"
+    DECIR "Mi nombre es Aurora"
+FIN
