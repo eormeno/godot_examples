@@ -1,7 +1,11 @@
-PERSONAJE bot PARAMETROS mapa
+PERSONAJE bot PARAM mapa
     t = 0
-    MIENTRAS t < 3 HAZ
-        t = t + DELTA
+    MIENTRAS t <= 2 HAZ
         CONSOLA "t = " t
+        t = t + DELTA
     FIN
+
+    FUNC mover PARAM x, y
+        CONSOLA "mover a "
+    RET NULO
 FIN

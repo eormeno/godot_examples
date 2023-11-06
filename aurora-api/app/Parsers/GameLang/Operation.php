@@ -28,6 +28,7 @@ enum Operation implements \JsonSerializable
     case cat; // concatenate
     case jmp; // jump
     case delta; // delta
+    case fun; // function
 
     public function jsonSerialize(){
         return $this->name;

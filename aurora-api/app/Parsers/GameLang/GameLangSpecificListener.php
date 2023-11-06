@@ -23,6 +23,9 @@ class GameLangSpecificListener extends GameLangBaseListener
         return count($this->code) - 1;
     }
 
+    /**
+     * Stores the given data in the specified register number (0..3)
+     */
     private function insReg(int $line, int $reg, $data): void
     {
         $this->code[] = [
@@ -33,6 +36,9 @@ class GameLangSpecificListener extends GameLangBaseListener
         ];
     }
 
+    /**
+     * Stores the value of the register in the memory with the given identificator.
+     */
     private function insMem(int $line, int $reg, string $identificator): void
     {
         $this->code[] = [
@@ -43,6 +49,9 @@ class GameLangSpecificListener extends GameLangBaseListener
         ];
     }
 
+    /**
+     * Gets the value of the memory with the given identificator and stores it in the register.
+     */
     private function insGet(int $line, int $reg, string $identificator): void
     {
         $this->code[] = [
@@ -63,6 +72,9 @@ class GameLangSpecificListener extends GameLangBaseListener
         ];
     }
 
+    /**
+     * Pushes the value of the register to the top of the stack machine.
+     */
     private function insPsh(int $line, int $reg): void
     {
         $this->code[] = [
@@ -73,6 +85,9 @@ class GameLangSpecificListener extends GameLangBaseListener
         ];
     }
 
+    /**
+     * Pops the value of the top of the stack machine and stores it in the register.
+     */
     private function insPop(int $line, int $reg): void
     {
         $this->code[] = [
@@ -118,6 +133,16 @@ class GameLangSpecificListener extends GameLangBaseListener
     private function updDat(int $ic_line, $data): void
     {
         $this->code[$ic_line][3] = $data;
+    }
+
+    private function insFun(int $ic_line, string $name): void
+    {
+        $this->code[] = [
+            $ic_line,
+            Operation::fun,
+            -1,
+            $name
+        ];
     }
 
     /**
@@ -176,8 +201,11 @@ class GameLangSpecificListener extends GameLangBaseListener
             $string = substr($string, 1, -1);
             $this->insReg($line, 0, $string);
             $this->insPsh($line, 0);
-        } elseif($context->DELTA()) {
+        } elseif ($context->DELTA()) {
             $this->insDelta($line, 0);
+            $this->insPsh($line, 0);
+        } elseif ($context->NULL()) {
+            $this->insReg($line, 0, null);
             $this->insPsh($line, 0);
         }
     }

@@ -4,10 +4,10 @@ program
         : character+ EOF;
 
 character
-        : 'PERSONAJE' ID (parameters)? statement* 'FIN';
+        : 'PERSONAJE' ID (parameters)? (statement | functionDef)* 'FIN';
 
 parameters
-        : 'PARAMETROS' (ID (',' ID)*)?;
+        : 'PARAM' (ID (',' ID)*)?;
 
 timeUnit
         : ('SEG' | 'MIL' | 'MIN');
@@ -73,7 +73,8 @@ methodCall
         : ((ID '.')? ID LPAREN (expression (',' expression)*)? RPAREN);
 
 functionDef
-        : 'FUNCION' ID '(' (ID (',' ID)*)? ')' statement* 'RETORNAR' (ID)?;
+//        : 'FUNCION' ID '(' (ID (',' ID)*)? ')' statement* 'RETORNAR' (ID)?;
+        : 'FUNC' ID parameters? statement* 'RET' expression;
 
 num
         : (MINUS) ? NUMBER;
@@ -81,8 +82,7 @@ num
 expression
 		:	STRING
 		|	ID
-		|	'NULO'
-		|	'NULA'
+		|	NULL
         |   DELTA
 		|	attributeCall
 		|	methodCall
@@ -113,6 +113,7 @@ ID:         [a-z_][a-z0-9_]*;
 NUMBER:     ('0' .. '9') + ('.' ('0' .. '9') +)? ;
 STRING:     '"' ~'"'* '"';
 DELTA:      'DELTA';
+NULL:       'NULO';
 NL:         'NL';
 TB:         'TB';
 PLUS:       '+';
