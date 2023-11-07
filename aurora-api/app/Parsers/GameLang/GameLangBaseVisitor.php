@@ -97,39 +97,6 @@ class GameLangBaseVisitor extends AbstractParseTreeVisitor implements GameLangVi
 	 * The default implementation returns the result of calling
 	 * {@see self::visitChildren()} on `context`.
 	 */
-	public function visitMoveStatement(Context\MoveStatementContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
-	public function visitPositionStatement(Context\PositionStatementContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
-	public function visitSayStatement(Context\SayStatementContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
 	public function visitWhileStatement(Context\WhileStatementContext $context)
 	{
 	    return $this->visitChildren($context);
@@ -196,17 +163,6 @@ class GameLangBaseVisitor extends AbstractParseTreeVisitor implements GameLangVi
 	 * The default implementation returns the result of calling
 	 * {@see self::visitChildren()} on `context`.
 	 */
-	public function visitAttributeCall(Context\AttributeCallContext $context)
-	{
-	    return $this->visitChildren($context);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation returns the result of calling
-	 * {@see self::visitChildren()} on `context`.
-	 */
 	public function visitAfterTimer(Context\AfterTimerContext $context)
 	{
 	    return $this->visitChildren($context);
@@ -229,7 +185,18 @@ class GameLangBaseVisitor extends AbstractParseTreeVisitor implements GameLangVi
 	 * The default implementation returns the result of calling
 	 * {@see self::visitChildren()} on `context`.
 	 */
-	public function visitMethodCall(Context\MethodCallContext $context)
+	public function visitFunctionCall(Context\FunctionCallContext $context)
+	{
+	    return $this->visitChildren($context);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation returns the result of calling
+	 * {@see self::visitChildren()} on `context`.
+	 */
+	public function visitLineFunctionCall(Context\LineFunctionCallContext $context)
 	{
 	    return $this->visitChildren($context);
 	}

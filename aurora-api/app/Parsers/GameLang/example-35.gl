@@ -1,11 +1,21 @@
 PERSONAJE bot PARAM mapa
-    t = 0
-    MIENTRAS t <= 2 HAZ
-        CONSOLA "t = " t
-        t = t + DELTA
-    FIN
+    lugar = "rojo"
+    DO esperar 20, lugar, 1
 
     FUNC mover PARAM x, y
         CONSOLA "mover a "
+    RET NULO
+
+    CONSOLA "algo hace"
+
+    FUNC otra
+        CONSOLA "otra"
+    RET NULO
+    FUNC esperar PARAM t
+        t = 0
+        MIENTRAS t <= 2 HAZ
+            CONSOLA "t = " t
+            t = t + DELTA
+        FIN
     RET NULO
 FIN

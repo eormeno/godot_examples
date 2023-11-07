@@ -2,14 +2,16 @@
 
 namespace App\Parsers\GameLang;
 
-class MemoryBlock {
+class MemoryBlock
+{
     private $stack = [];
     private $registers = [];
     private $heap = [];
 
     public function setReg(int $reg, $data): void
     {
-        $this->registers[$reg] = $data;;
+        $this->registers[$reg] = $data;
+        ;
     }
 
     public function getReg(int $reg)
@@ -43,7 +45,8 @@ class MemoryBlock {
     }
 }
 
-class GameLangVM {
+class GameLangVM
+{
     private $call_stack = [];
     private $code = [];
 
@@ -51,6 +54,49 @@ class GameLangVM {
     {
         $this->code = $code;
     }
+
+    function createHtmlTableFromCodeArray()
+    {
+        if (empty($this->code)) {
+            return ''; // Return an empty string if the input array is empty
+        }
+        // Add CSS styles to the table
+        $tableStyle = 'border-collapse: collapse; width: 40%;';
+        $cellStyle = 'font-family: monospace; font-size:1.1em; border: 1px solid #999; padding: 6px; text-align: left;';
+
+        $html = '<table style="' . $tableStyle . '">';
+        $html .= '<tr>';
+        $html .= '<th style="' . $cellStyle . '">#</th>';
+        $html .= '<th style="' . $cellStyle . '">line</th>';
+        $html .= '<th style="' . $cellStyle . '">mnemonic</th>';
+        $html .= '<th style="' . $cellStyle . '">register</th>';
+        $html .= '<th style="' . $cellStyle . '">data</th>';
+        $html .= '</tr>';
+
+        $i = 0;
+
+        // Iterate over the data and create table rows
+        foreach ($this->code as $row) {
+            $html .= '<tr>';
+            $html .= '<td style="' . $cellStyle . '">' . $i . '</td>';
+            $html .= '<td style="' . $cellStyle . '">' . $row[0] . '</td>';
+            $html .= '<td style="' . $cellStyle . '">' . strtoupper(($row[1]->jsonSerialize() ?? '')) . '</td>';
+            $html .= '<td style="' . $cellStyle . '">' . ($row[2] ?? '') . '</td>';
+            $html .= '<td style="' . $cellStyle . '">' . ($row[3] ?? '') . '</td>';
+            $html .= '</tr>';
+            $i++;
+        }
+
+        return $html;
+    }
+
+    public function saveHtmlFile(string $file)
+    {
+        $html = $this->createHtmlTableFromCodeArray();
+        file_put_contents($file, $html);
+    }
+
+
 
     private function pushCallStack()
     {
@@ -67,7 +113,8 @@ class GameLangVM {
         return $this->call_stack[count($this->call_stack) - 1];
     }
 
-    public function run() {
+    public function run()
+    {
         try {
             $this->runCode($this->code);
         } catch (\Exception $e) {

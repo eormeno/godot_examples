@@ -23,12 +23,15 @@ enum Operation implements \JsonSerializable
     case mem; // store in memory
     case get; // get from memory
     case out; // output
-    case inp; // input
     case ifi; // if instruction
     case cat; // concatenate
     case jmp; // jump
     case delta; // delta
-    case fun; // function
+    case fdf; // function definition
+    case idf; // identifier definition
+    case lcall; // line call
+    case call; // call
+    case end; // end
 
     public function jsonSerialize(){
         return $this->name;

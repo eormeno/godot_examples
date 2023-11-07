@@ -16,13 +16,10 @@ statement
 		: whileStatement
 		| ifStatement
 		| assignment
-		| methodCall
+		| lineFunctionCall
 		| afterTimer
 		| everyTimer
-		| consoleStatement
-        | moveStatement
-        | positionStatement
-        | sayStatement;
+		| consoleStatement;
 
 printable
         : STRING
@@ -32,15 +29,6 @@ printable
 
 consoleStatement
 		: 'CONSOLA' (printable (printable)*)?;
-
-moveStatement
-        : 'MOVER' expression;
-
-positionStatement
-        : 'POSICION' expression;
-
-sayStatement
-        : ('DECIR'|'DIGA') printable;
 
 whileStatement
         : 'MIENTRAS' logicExpression doStatement 'FIN';
@@ -58,10 +46,7 @@ elseStatement
         : 'SINO' statement*;
 
 assignment
-        : (ID | attributeCall) EQUAL (expression | logicExpression);
-
-attributeCall
-        : ID '.' ID;
+        : ID EQUAL (expression | logicExpression);
 
 afterTimer
         : 'LUEGO' ('DE')? expression timeUnit statement* 'FIN';
@@ -69,11 +54,13 @@ afterTimer
 everyTimer
         : 'CADA' expression timeUnit statement* 'FIN';
 
-methodCall
-        : ((ID '.')? ID LPAREN (expression (',' expression)*)? RPAREN);
+functionCall
+        : ID LPAREN (expression (',' expression)*)? RPAREN;
+
+lineFunctionCall
+        : 'DO' ID (expression (',' expression)*)?;
 
 functionDef
-//        : 'FUNCION' ID '(' (ID (',' ID)*)? ')' statement* 'RETORNAR' (ID)?;
         : 'FUNC' ID parameters? statement* 'RET' expression;
 
 num
@@ -84,8 +71,7 @@ expression
 		|	ID
 		|	NULL
         |   DELTA
-		|	attributeCall
-		|	methodCall
+		|	functionCall
 		|	LPAREN expression RPAREN
 		|	expression MULTIPLY expression
 		|	expression DIVIDE expression

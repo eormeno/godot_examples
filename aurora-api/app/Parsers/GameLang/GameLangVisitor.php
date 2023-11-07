@@ -77,33 +77,6 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitConsoleStatement(Context\ConsoleStatementContext $context);
 
 	/**
-	 * Visit a parse tree produced by {@see GameLangParser::moveStatement()}.
-	 *
-	 * @param Context\MoveStatementContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitMoveStatement(Context\MoveStatementContext $context);
-
-	/**
-	 * Visit a parse tree produced by {@see GameLangParser::positionStatement()}.
-	 *
-	 * @param Context\PositionStatementContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitPositionStatement(Context\PositionStatementContext $context);
-
-	/**
-	 * Visit a parse tree produced by {@see GameLangParser::sayStatement()}.
-	 *
-	 * @param Context\SayStatementContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitSayStatement(Context\SayStatementContext $context);
-
-	/**
 	 * Visit a parse tree produced by {@see GameLangParser::whileStatement()}.
 	 *
 	 * @param Context\WhileStatementContext $context The parse tree.
@@ -158,15 +131,6 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitAssignment(Context\AssignmentContext $context);
 
 	/**
-	 * Visit a parse tree produced by {@see GameLangParser::attributeCall()}.
-	 *
-	 * @param Context\AttributeCallContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitAttributeCall(Context\AttributeCallContext $context);
-
-	/**
 	 * Visit a parse tree produced by {@see GameLangParser::afterTimer()}.
 	 *
 	 * @param Context\AfterTimerContext $context The parse tree.
@@ -185,13 +149,22 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitEveryTimer(Context\EveryTimerContext $context);
 
 	/**
-	 * Visit a parse tree produced by {@see GameLangParser::methodCall()}.
+	 * Visit a parse tree produced by {@see GameLangParser::functionCall()}.
 	 *
-	 * @param Context\MethodCallContext $context The parse tree.
+	 * @param Context\FunctionCallContext $context The parse tree.
 	 *
 	 * @return mixed The visitor result.
 	 */
-	public function visitMethodCall(Context\MethodCallContext $context);
+	public function visitFunctionCall(Context\FunctionCallContext $context);
+
+	/**
+	 * Visit a parse tree produced by {@see GameLangParser::lineFunctionCall()}.
+	 *
+	 * @param Context\LineFunctionCallContext $context The parse tree.
+	 *
+	 * @return mixed The visitor result.
+	 */
+	public function visitLineFunctionCall(Context\LineFunctionCallContext $context);
 
 	/**
 	 * Visit a parse tree produced by {@see GameLangParser::functionDef()}.

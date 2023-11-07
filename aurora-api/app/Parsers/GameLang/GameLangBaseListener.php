@@ -113,45 +113,6 @@ class GameLangBaseListener implements GameLangListener
 	 *
 	 * The default implementation does nothing.
 	 */
-	public function enterMoveStatement(Context\MoveStatementContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitMoveStatement(Context\MoveStatementContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function enterPositionStatement(Context\PositionStatementContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitPositionStatement(Context\PositionStatementContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function enterSayStatement(Context\SayStatementContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitSayStatement(Context\SayStatementContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
 	public function enterWhileStatement(Context\WhileStatementContext $context): void {}
 
 	/**
@@ -230,19 +191,6 @@ class GameLangBaseListener implements GameLangListener
 	 *
 	 * The default implementation does nothing.
 	 */
-	public function enterAttributeCall(Context\AttributeCallContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitAttributeCall(Context\AttributeCallContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
 	public function enterAfterTimer(Context\AfterTimerContext $context): void {}
 
 	/**
@@ -269,14 +217,27 @@ class GameLangBaseListener implements GameLangListener
 	 *
 	 * The default implementation does nothing.
 	 */
-	public function enterMethodCall(Context\MethodCallContext $context): void {}
+	public function enterFunctionCall(Context\FunctionCallContext $context): void {}
 
 	/**
 	 * {@inheritdoc}
 	 *
 	 * The default implementation does nothing.
 	 */
-	public function exitMethodCall(Context\MethodCallContext $context): void {}
+	public function exitFunctionCall(Context\FunctionCallContext $context): void {}
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function enterLineFunctionCall(Context\LineFunctionCallContext $context): void {}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function exitLineFunctionCall(Context\LineFunctionCallContext $context): void {}
 	/**
 	 * {@inheritdoc}
 	 *
