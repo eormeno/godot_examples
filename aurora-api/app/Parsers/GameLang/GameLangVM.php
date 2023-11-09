@@ -1,17 +1,35 @@
 <?php
 
 namespace App\Parsers\GameLang;
+use JsonSerializable;
 
-class MemoryBlock
+class MemoryBlock implements JsonSerializable
 {
+    private static $next_id = 0;
+    private $id = 0;
     private $stack = [];
     private $registers = Array(4);
     private $heap = [];
+
+    public function __construct()
+    {
+        $this->id = self::$next_id++;
+        $this->registers[0] = 0;
+        $this->registers[1] = 0;
+        $this->registers[2] = 0;
+        $this->registers[3] = 0;
+        $this->heap = [];
+        $this->stack = [];
+    }
 
     public function setReg(int $reg, $data, int $icl = 0): void
     {
         if ($icl != 0) {
             echo "$icl setReg($reg, $data)\n";
+        }
+        // if the data is numeric, convert it to float and round it to 2 decimal places
+        if (is_numeric($data)) {
+            $data = round(floatval($data), 6);
         }
         $this->registers[$reg] = $data;
     }
@@ -47,6 +65,16 @@ class MemoryBlock
     public function pop(int $reg): void
     {
         $this->setReg($reg, array_pop($this->stack));
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'stack' => $this->stack,
+            'registers' => $this->registers,
+            'heap' => $this->heap,
+        ];
     }
 }
 
@@ -108,6 +136,8 @@ class GameLangVM
 
     private function popCallStack()
     {
+//        $json = json_encode($this->getBlock(), JSON_PRETTY_PRINT);
+//        echo "popCallStack:\n$json\n";
         array_pop($this->call_stack);
     }
 
@@ -314,10 +344,13 @@ class GameLangVM
                     }
                     $i = $jump_to - 1; // -1 because the loop will increment it
                     break;
-                case Operation::lcall:
+                case Operation::pshcs:
                     $this->pushCallStack();
-                    // the return address is the next instruction
-                    //$this->getBlock()->setHeap('return', $i + 1);
+                    break;
+                case Operation::popcs:
+                    $this->popCallStack();
+                    break;
+                case Operation::lcall:
                     $i = $data - 1; // -1 because the loop will increment it
                     break;
                 case Operation::delta:

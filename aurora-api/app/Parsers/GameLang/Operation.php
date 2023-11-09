@@ -27,6 +27,8 @@ enum Operation implements \JsonSerializable
     case cat; // concatenate
     case jmp; // jump
     case delta; // delta
+    case pshcs; // push call stack
+    case popcs; // pop call stack
     case lcall; // line call
     case call; // call
     case end; // end

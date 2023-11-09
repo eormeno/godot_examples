@@ -185,10 +185,10 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->code[$ic_line][3] = $data;
     }
 
-    private function insLCALL(int $ic_line, string $name): int
+    private function insLCALL(int $line, string $name): int
     {
         $this->code[] = [
-            $ic_line,
+            $line,
             Operation::lcall,
             -1,
             $name
@@ -196,7 +196,33 @@ class GameLangSpecificListener extends GameLangBaseListener
         return $this->lastIntermediateCodeLine();
     }
 
-    private function insEND(int $ic_line): void {
+    /**
+     * Creates and stacks a new call stack frame, and makes it the current call stack frame.
+     */
+    private function insPSHCS(int $line): void
+    {
+        $this->code[] = [
+            $line,
+            Operation::pshcs,
+            -1,
+            null
+        ];
+    }
+
+    /**
+     * Removes and unstack the current call stack frame.
+     */
+    private function insPOPCS(int $line): void {
+        $this->code[] = [
+            $line,
+            Operation::popcs,
+            -1,
+            null
+        ];
+    }
+
+    private function insEND(int $ic_line): void
+    {
         $this->code[] = [
             $ic_line,
             Operation::end,
@@ -442,7 +468,7 @@ class GameLangSpecificListener extends GameLangBaseListener
     {
         // I need to register the while statement, so I can update the jumps when I know its end.
         $this->registerStatement($context);
-        $this->setStatementData($context, "begin", $this->lastIntermediateCodeLine());
+        $this->setStatementData($context, "begin", $this->lastIntermediateCodeLine()+1);
     }
 
     public function enterDoStatement(Context\DoStatementContext $context): void
@@ -516,7 +542,8 @@ class GameLangSpecificListener extends GameLangBaseListener
 
     public function exitFunctionDef(Context\FunctionDefContext $context): void
     {
-        $line = $context->getStart()->getLine();
+        $line = $context->getStop()->getLine();
+        $this->insPOPCS($line);
         $this->insGet($line, 0, "return");
         $this->insJMP($line, 0, self::NO_ICL);
         // I update the jump to the end of the function definition
@@ -536,13 +563,14 @@ class GameLangSpecificListener extends GameLangBaseListener
     public function exitLineFunctionCall(Context\LineFunctionCallContext $context): void
     {
         $line = $context->getStart()->getLine();
-        // creates an internal variable to store the return point of the function call
-        $this->insReg($line, 0,  $this->lastIntermediateCodeLine() + 3);
-        $this->insMem($line, 0, "return");
 
         $calledFunctionName = $context->ID()->getText();
-        $to_change_ic_line = $this->insLCALL($line, $calledFunctionName);
+        // creates an internal variable to store the return next ICL of the function call
+        $this->insReg($line, 0, $this->lastIntermediateCodeLine() + 5);
+        $this->insMem($line, 0, "return");
+        $this->insPSHCS($line);
 
+        $to_change_ic_line = $this->insLCALL($line, $calledFunctionName);
         // register the ICL where the function is called, so I can update the jump when I know
         // the beginning of the function definition.
         $this->registerFunctionCallICL($calledFunctionName, $to_change_ic_line);

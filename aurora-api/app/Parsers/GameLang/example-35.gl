@@ -1,18 +1,15 @@
 PERSONAJE bot PARAM mapa
     DO esperar
-
     CONSOLA "primera vez"
-
     DO esperar
-
     CONSOLA "segunda vez"
 
     FUNC esperar
-        demora = 1
-        t = 0
-        MIENTRAS t <= 0.5 HAZ
-            t = t + DELTA
+        demora = 0.6
+        t = 0.0
+        MIENTRAS t <= demora HAZ
             CONSOLA "t: " t
+            t = t + DELTA
         FIN
     RET NULO
     CONSOLA "fin"
