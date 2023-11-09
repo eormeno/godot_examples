@@ -28,5 +28,4 @@ $listener = new GameLangSpecificListener();
 ParseTreeWalker::default()->walk($listener, $tree);
 $vm = new GameLangVM($listener->getCode());
 $vm->saveHtmlFile('example-35.html');
-
-//$vm->run();
+$vm->run();

@@ -1,6 +1,5 @@
 PERSONAJE bot PARAM mapa
-    lugar = "rojo"
-    DO esperar 20, lugar, 1
+    DO esperar
 
     FUNC mover PARAM x, y
         CONSOLA "mover a "
@@ -8,12 +7,24 @@ PERSONAJE bot PARAM mapa
 
     CONSOLA "algo hace"
 
-    FUNC otra
-        CONSOLA "otra"
+    FUNC esperar
+        CONSOLA "esperar"
+        j = 11
+        SI j < 10 ENTONCES
+            CONSOLA "j vale " j
+            j = j + 1
+            j = j + 2
+        SINO
+            j = j - 5
+            CONSOLA "else j = " j
+        FIN
+        CONSOLA "Ahora j vale " j
     RET NULO
-    FUNC esperar PARAM t
+
+    FUNC esperare
+        demora = 1
         t = 0
-        MIENTRAS t <= 2 HAZ
+        MIENTRAS t <= 1 HAZ
             CONSOLA "t = " t
             t = t + DELTA
         FIN

@@ -8,10 +8,12 @@ class GameLangSpecificListener extends GameLangBaseListener
      * Represents an unknown intermediate code line.
      */
     private const UNKOWN_IC_LINE = -1;
+    private const NO_ICL = -1;
+    private const NO_REG = -1;
 
     private $code = [];
 
-    private $function_register = [];
+    private $function_data = [];
 
     private $statement_register = [];
 
@@ -23,6 +25,40 @@ class GameLangSpecificListener extends GameLangBaseListener
     public function lastIntermediateCodeLine(): int
     {
         return count($this->code) - 1;
+    }
+
+    /**
+     * Registers the intermediate code line (ICL) where the function definition starts.
+     */
+    private function registerFunctionStartICL($name, $ic_line): void
+    {
+        $this->function_data[$name]['icl_start'] = $ic_line;
+    }
+
+    private function registerFunctionCallICL($name, $ic_line): void
+    {
+        $this->function_data[$name]['icl_calls'][] = $ic_line;
+    }
+
+    private function updateFunctionCallsICL(): void
+    {
+        // for each key in the array
+        foreach ($this->function_data as $name => $data) {
+            // if the data does not have the ICL where the function definition starts, means that
+            // the function is not defined, so I need to throw an exception.
+            if (!isset($data['icl_start'])) {
+                throw new \Exception("Function $name is not defined.");
+            }
+            // in other hand, if the function is not called, I don't need to update the ICLs
+            if (!isset($data['icl_calls'])) {
+                continue;
+            }
+            // for each ICL where the function is called
+            foreach ($data['icl_calls'] as $icl_call) {
+                // update the ICL with the ICL where the function definition starts
+                $this->updDat($icl_call, $data['icl_start']);
+            }
+        }
     }
 
     /**
@@ -111,12 +147,23 @@ class GameLangSpecificListener extends GameLangBaseListener
         ];
     }
 
-    private function insJMP(int $line, int $jump_to): int
+    /**
+     * Inserts a jump to the given intermediate code line. If the given intermediate code line
+     * is unknown, it inserts a jump to an unknown intermediate code line.
+     * A reg value of -1 means that the jump is defined in the data field of the intermediate
+     * code line. If the reg value is not -1, it means that the jump is defined in the specified
+     * register.
+     *
+     * @param int $line
+     * @param int $reg
+     * @param int $jump_to
+     */
+    private function insJMP(int $line, int $reg, int $jump_to): int
     {
         $this->code[] = [
             $line,
             Operation::jmp,
-            -1,
+            $reg,
             $jump_to
         ];
         return $this->lastIntermediateCodeLine();
@@ -136,16 +183,6 @@ class GameLangSpecificListener extends GameLangBaseListener
     private function updDat(int $ic_line, $data): void
     {
         $this->code[$ic_line][3] = $data;
-    }
-
-    private function insFdf(int $ic_line, string $name ): void
-    {
-        $this->code[] = [
-            0,
-            Operation::fdf,
-            $ic_line,
-            $name
-        ];
     }
 
     private function insLCALL(int $ic_line, string $name): int
@@ -380,25 +417,25 @@ class GameLangSpecificListener extends GameLangBaseListener
     {
         // This is the end of the then statements block. Here we need to jump to the end of the if
         // statement, just in case the current if statement has an else statement.
-        $ic_line = $this->insJMP($context->getStart()->getLine(), self::UNKOWN_IC_LINE);
+        $ic_line = $this->insJMP($context->getStart()->getLine(), self::NO_REG, self::UNKOWN_IC_LINE);
         $this->setStatementData($context->getParent(), "then", $ic_line);
     }
 
     public function enterElseStatement(Context\ElseStatementContext $context): void
     {
         $iif_ic_line = $this->getStatementData($context->getParent(), "iif");
-        $this->updDat($iif_ic_line, $this->lastIntermediateCodeLine());
+        $this->updDat($iif_ic_line, $this->lastIntermediateCodeLine() + 1);
     }
 
     public function exitIfStatement(Context\IfStatementContext $context): void
     {
-        if (!$context->thenStatement()) {
+        if (!$context->elseStatement()) {
             // we need to update the jump of the iif with the current index of the code
             $iif_ic_line = $this->getStatementData($context, "iif");
             $this->updDat($iif_ic_line, $this->lastIntermediateCodeLine());
         }
         $then_ic_line = $this->getStatementData($context, "then");
-        $this->updDat($then_ic_line, $this->lastIntermediateCodeLine());
+        $this->updDat($then_ic_line, $this->lastIntermediateCodeLine() + 1);
     }
 
     public function enterWhileStatement(Context\WhileStatementContext $context): void
@@ -429,7 +466,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         // while statement.
         $ic_iif = $this->getStatementData($context->getParent(), "iif");
         $ic_begin = $this->getStatementData($context->getParent(), "begin");
-        $this->insJMP($line, $ic_begin);
+        $this->insJMP($line, self::NO_REG, $ic_begin);
         $this->updDat($ic_iif, $this->lastIntermediateCodeLine());
     }
 
@@ -467,21 +504,21 @@ class GameLangSpecificListener extends GameLangBaseListener
     public function enterFunctionDef(Context\FunctionDefContext $context): void
     {
         $line = $context->getStart()->getLine();
-        $identificator = $context->ID()->getText();
-
+        $functionName = $context->ID()->getText();
 
         // I register the function definition, so I can update the jump when I know its end.
         $this->registerStatement($context);
         // I insert a jump to the end to make sure that the function definition is not executed
-        $ic_line = $this->insJMP($line, self::UNKOWN_IC_LINE);
+        $ic_line = $this->insJMP($line, self::NO_REG, self::UNKOWN_IC_LINE);
         $this->setStatementData($context, "jump_to_end", $ic_line);
-        // Associates the function name with the current intermediate code line
-        $this->function_register[$identificator] = $this->lastIntermediateCodeLine() + 1;
+        $this->registerFunctionStartICL($functionName, $ic_line + 1);
     }
 
     public function exitFunctionDef(Context\FunctionDefContext $context): void
     {
         $line = $context->getStart()->getLine();
+        $this->insGet($line, 0, "return");
+        $this->insJMP($line, 0, self::NO_ICL);
         // I update the jump to the end of the function definition
         $ic_line = $this->getStatementData($context, "jump_to_end");
         $this->updDat($ic_line, $this->lastIntermediateCodeLine() + 1);
@@ -489,28 +526,30 @@ class GameLangSpecificListener extends GameLangBaseListener
 
     public function enterLineFunctionCall(Context\LineFunctionCallContext $context): void
     {
-        $this->registerStatement($context);
-        $line = $context->getStart()->getLine();
-        $ic_line = $this->insReg($line, 0, self::UNKOWN_IC_LINE);
-        $this->setStatementData($context, "return_ic_line", $ic_line);
-        $this->insPsh($line, 0);
+        //$this->registerStatement($context);
+        //$line = $context->getStart()->getLine();
+        //$ic_line = $this->insReg($line, 0, self::UNKOWN_IC_LINE);
+        //$this->setStatementData($context, "return_ic_line", $ic_line);
+        //$this->insPsh($line, 0);
     }
 
     public function exitLineFunctionCall(Context\LineFunctionCallContext $context): void
     {
         $line = $context->getStart()->getLine();
-        $identificator = $context->ID()->getText();
-        $this->insLCALL($line, $identificator);
-        $ic_line = $this->getStatementData($context, "return_ic_line");
-        $this->updDat($ic_line, $this->lastIntermediateCodeLine() + 1);
+        $calledFunctionName = $context->ID()->getText();
+        $to_change_ic_line = $this->insLCALL($line, $calledFunctionName);
+        // register the ICL where the function is called, so I can update the jump when I know
+        // the beginning of the function definition.
+        $this->registerFunctionCallICL($calledFunctionName, $to_change_ic_line);
+
+        //$ic_line = $this->getStatementData($context, "return_ic_line");
+        //$this->updDat($ic_line, $this->lastIntermediateCodeLine() + 1);
     }
 
     public function exitProgram(Context\ProgramContext $context): void
     {
         $line = $context->getStop()->getLine();
         $this->insEND($line);
-        foreach ($this->function_register as $identificator => $ic_line) {
-            $this->insFdf($ic_line, $identificator);
-        }
+        $this->updateFunctionCallsICL();
     }
 }

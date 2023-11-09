@@ -5,17 +5,22 @@ namespace App\Parsers\GameLang;
 class MemoryBlock
 {
     private $stack = [];
-    private $registers = [];
+    private $registers = Array(4);
     private $heap = [];
 
-    public function setReg(int $reg, $data): void
+    public function setReg(int $reg, $data, int $icl = 0): void
     {
+        if ($icl != 0) {
+            echo "$icl setReg($reg, $data)\n";
+        }
         $this->registers[$reg] = $data;
-        ;
     }
 
-    public function getReg(int $reg)
+    public function getReg(int $reg, int $icl = 0)
     {
+        if ($icl != 0) {
+            echo "$icl getReg($reg)\n";
+        }
         return $this->registers[$reg];
     }
 
@@ -96,8 +101,6 @@ class GameLangVM
         file_put_contents($file, $html);
     }
 
-
-
     private function pushCallStack()
     {
         array_push($this->call_stack, new MemoryBlock());
@@ -128,7 +131,9 @@ class GameLangVM
         // $stack = [];
         // $regs = [3];
         // $mem = [];
-        for ($i = 0; $i < count($code); $i++) {
+        $i = 0;
+        while ($i < count($code)) {
+//        for ($i = 0; $i < count($code); $i++) {
             [$lineNumber, $op, $reg, $data] = $code[$i];
             switch ($op) {
                 case Operation::reg:
@@ -294,7 +299,7 @@ class GameLangVM
                     // $condition = $regs[0];
                     if (!$condition) {
                         // dd($i, $regs[1]);
-                        $i = $data;
+                        $i = $data - 1; // -1 because the loop will increment it
                     }
                     // $condition = $regs[0];
                     // if (!$condition) {
@@ -303,13 +308,27 @@ class GameLangVM
                     // }
                     break;
                 case Operation::jmp:
-                    $i = $data;
+                    $jump_to = $data;
+                    if ($reg != -1)  {
+                        $jump_to = $this->getBlock()->getReg($reg);
+                    }
+                    $i = $jump_to - 1; // -1 because the loop will increment it
+                    break;
+                case Operation::lcall:
+                    $this->pushCallStack();
+                    // the return address is the next instruction
+                    $this->getBlock()->setHeap('return', $i + 1);
+                    $i = $data - 1; // -1 because the loop will increment it
                     break;
                 case Operation::delta:
                     // $regs[$reg] = 0.01; // simulates a small delta time
-                    $this->getBlock()->setReg($reg, 0.01);
+                    $this->getBlock()->setReg($reg, 0.2);
                     break;
+                case Operation::end:
+                    $this->popCallStack();
+                    return;
             }
+            $i++;
         }
         // echo json_encode($mem, JSON_PRETTY_PRINT) . "\n";
     }
