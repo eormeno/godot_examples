@@ -317,7 +317,7 @@ class GameLangVM
                 case Operation::lcall:
                     $this->pushCallStack();
                     // the return address is the next instruction
-                    $this->getBlock()->setHeap('return', $i + 1);
+                    //$this->getBlock()->setHeap('return', $i + 1);
                     $i = $data - 1; // -1 because the loop will increment it
                     break;
                 case Operation::delta:

@@ -1,32 +1,19 @@
 PERSONAJE bot PARAM mapa
     DO esperar
 
-    FUNC mover PARAM x, y
-        CONSOLA "mover a "
-    RET NULO
+    CONSOLA "primera vez"
 
-    CONSOLA "algo hace"
+    DO esperar
+
+    CONSOLA "segunda vez"
 
     FUNC esperar
-        CONSOLA "esperar"
-        j = 11
-        SI j < 10 ENTONCES
-            CONSOLA "j vale " j
-            j = j + 1
-            j = j + 2
-        SINO
-            j = j - 5
-            CONSOLA "else j = " j
-        FIN
-        CONSOLA "Ahora j vale " j
-    RET NULO
-
-    FUNC esperare
         demora = 1
         t = 0
-        MIENTRAS t <= 1 HAZ
-            CONSOLA "t = " t
+        MIENTRAS t <= 0.5 HAZ
             t = t + DELTA
+            CONSOLA "t: " t
         FIN
     RET NULO
+    CONSOLA "fin"
 FIN

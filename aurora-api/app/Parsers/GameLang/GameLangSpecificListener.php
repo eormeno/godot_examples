@@ -467,7 +467,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         $ic_iif = $this->getStatementData($context->getParent(), "iif");
         $ic_begin = $this->getStatementData($context->getParent(), "begin");
         $this->insJMP($line, self::NO_REG, $ic_begin);
-        $this->updDat($ic_iif, $this->lastIntermediateCodeLine());
+        $this->updDat($ic_iif, $this->lastIntermediateCodeLine() + 1);
     }
 
     public function exitConsoleStatement(Context\ConsoleStatementContext $context): void
@@ -536,8 +536,13 @@ class GameLangSpecificListener extends GameLangBaseListener
     public function exitLineFunctionCall(Context\LineFunctionCallContext $context): void
     {
         $line = $context->getStart()->getLine();
+        // creates an internal variable to store the return point of the function call
+        $this->insReg($line, 0,  $this->lastIntermediateCodeLine() + 3);
+        $this->insMem($line, 0, "return");
+
         $calledFunctionName = $context->ID()->getText();
         $to_change_ic_line = $this->insLCALL($line, $calledFunctionName);
+
         // register the ICL where the function is called, so I can update the jump when I know
         // the beginning of the function definition.
         $this->registerFunctionCallICL($calledFunctionName, $to_change_ic_line);
