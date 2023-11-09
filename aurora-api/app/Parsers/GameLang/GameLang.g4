@@ -58,7 +58,7 @@ functionCall
         : ID LPAREN (expression (',' expression)*)? RPAREN;
 
 lineFunctionCall
-        : 'DO' ID (expression (',' expression)*)?;
+        : 'HAZ' ID (expression (',' expression)*)?;
 
 functionDef
         : 'FUNC' ID parameters? statement* 'RET' expression;
