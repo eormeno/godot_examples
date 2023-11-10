@@ -46,7 +46,7 @@ elseStatement
         : ELSE statement*;
 
 assignment
-        : ID EQUAL (expression | logicExpression | functionCall);
+        : ID EQUAL (expression | logicExpression);
 
 afterTimer
         : 'LUEGO' ('DE')? expression timeUnit statement* END;
@@ -71,6 +71,7 @@ expression
 		|	ID
 		|	NULL
         |   DELTA
+        |   functionCall
 		|	LPAREN expression RPAREN
 		|	expression MULTIPLY expression
 		|	expression DIVIDE expression

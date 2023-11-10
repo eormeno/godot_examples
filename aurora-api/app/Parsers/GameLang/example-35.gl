@@ -1,15 +1,18 @@
-PERSONAJE bot PARAM mapa
-    // HAZ esperar 0.6
+SPRITE bot PARAM mapa
+    DO esperar 0.6
 
-    resultado_pi = pi()
+    radio = 100
+    superficie = radio * radio * pi()
 
-    WRITE "pi: " resultado_pi
+    a = radio + 0
+
+    WRITE "la superficie de un círculo de radio " radio " es " superficie
 
     FUNC esperar PARAM tiempo
         demora = 0.6
         t = 0.0
         WHILE t <= demora DO
-            ESCRIBE "t: " t
+            WRITE "t: " t
             t = t + DELTA
         END
     RET NULL
@@ -17,4 +20,11 @@ PERSONAJE bot PARAM mapa
     FUNC pi
     RET 3.141592
 
+    FUNC abs PARAM x
+        x = 1
+        v = 3
+        IF x < 0 THEN
+            v = x * -1
+        END
+    RET v
 END
