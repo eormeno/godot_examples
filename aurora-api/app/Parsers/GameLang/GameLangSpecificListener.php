@@ -580,6 +580,22 @@ class GameLangSpecificListener extends GameLangBaseListener
         //$this->updDat($ic_line, $this->lastIntermediateCodeLine() + 1);
     }
 
+    public function exitFunctionCall(Context\FunctionCallContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+
+        $calledFunctionName = $context->ID()->getText();
+        // creates an internal variable to store the return next ICL of the function call
+        $this->insReg($line, 0, $this->lastIntermediateCodeLine() + 5);
+        $this->insMem($line, 0, "return");
+        $this->insPSHCS($line);
+
+        $to_change_ic_line = $this->insLCALL($line, $calledFunctionName);
+        // register the ICL where the function is called, so I can update the jump when I know
+        // the beginning of the function definition.
+        $this->registerFunctionCallICL($calledFunctionName, $to_change_ic_line);
+    }
+
     public function exitProgram(Context\ProgramContext $context): void
     {
         $line = $context->getStop()->getLine();

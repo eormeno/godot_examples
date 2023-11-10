@@ -7,7 +7,7 @@ class MemoryBlock implements JsonSerializable
 {
     private static $next_id = 0;
     private $id = 0;
-    private $stack = [];
+    private static $stack = [];
     private $registers = Array(4);
     private $heap = [];
 
@@ -19,7 +19,7 @@ class MemoryBlock implements JsonSerializable
         $this->registers[2] = 0;
         $this->registers[3] = 0;
         $this->heap = [];
-        $this->stack = [];
+        //$this->stack = [];
     }
 
     public function setReg(int $reg, $data, int $icl = 0): void
@@ -64,29 +64,29 @@ class MemoryBlock implements JsonSerializable
     public function push(int $reg, $data = null): void
     {
         if ($reg == GameLangSpecificListener::NO_REG) {
-            array_push($this->stack, $data);
+            array_push(self::$stack, $data);
             return;
         }
-        array_push($this->stack, $this->getReg($reg));
+        array_push(self::$stack, $this->getReg($reg));
     }
 
     public function pop(int $reg, string $identificator = null): void
     {
-        if (empty($this->stack)) {
+        if (empty(self::$stack)) {
             throw new \Exception("Stack is empty.");
         }
         if ($identificator != null) {
-            $this->setHeap($identificator, array_pop($this->stack));
+            $this->setHeap($identificator, array_pop(self::$stack));
             return;
         }
-        $this->setReg($reg, array_pop($this->stack));
+        $this->setReg($reg, array_pop(self::$stack));
     }
 
     public function jsonSerialize()
     {
         return [
             'id' => $this->id,
-            'stack' => $this->stack,
+            'stack' => self::$stack,
             'registers' => $this->registers,
             'heap' => $this->heap,
         ];
@@ -151,7 +151,7 @@ class GameLangVM
 
     private function popCallStack()
     {
-        echo json_encode($this->getBlock(), JSON_PRETTY_PRINT) . "\n";
+        //echo json_encode($this->getBlock(), JSON_PRETTY_PRINT) . "\n";
         array_pop($this->call_stack);
     }
 

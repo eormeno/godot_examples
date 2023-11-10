@@ -4,7 +4,7 @@ program
         : character+ EOF;
 
 character
-        : 'PERSONAJE' ID (parameters)? (statement | functionDef)* 'FIN';
+        : SPRITE ID (parameters)? (statement | functionDef)* END;
 
 parameters
         : 'PARAM' (ID (',' ID)*)?;
@@ -28,37 +28,37 @@ printable
         | ID;
 
 consoleStatement
-		: 'CONSOLA' (printable (printable)*)?;
+		: CONSOLE (printable (printable)*)?;
 
 whileStatement
-        : 'MIENTRAS' logicExpression doStatement 'FIN';
+        : WHILE logicExpression doStatement END;
 
 doStatement
-        : 'HAZ' statement*;
+        : DO statement*;
 
 ifStatement
-        : 'SI' logicExpression thenStatement (elseStatement)? 'FIN';
+        : IF logicExpression thenStatement (elseStatement)? END;
 
 thenStatement
-        : 'ENTONCES' statement*;
+        : THEN statement*;
 
 elseStatement
-        : 'SINO' statement*;
+        : ELSE statement*;
 
 assignment
-        : ID EQUAL (expression | logicExpression);
+        : ID EQUAL (expression | logicExpression | functionCall);
 
 afterTimer
-        : 'LUEGO' ('DE')? expression timeUnit statement* 'FIN';
+        : 'LUEGO' ('DE')? expression timeUnit statement* END;
 
 everyTimer
-        : 'CADA' expression timeUnit statement* 'FIN';
+        : 'CADA' expression timeUnit statement* END;
 
 functionCall
         : ID LPAREN (expression (',' expression)*)? RPAREN;
 
 lineFunctionCall
-        : 'HAZ' ID (expression (',' expression)*)?;
+        : DO ID (expression (',' expression)*)?;
 
 functionDef
         : 'FUNC' ID parameters? statement* 'RET' expression;
@@ -71,7 +71,6 @@ expression
 		|	ID
 		|	NULL
         |   DELTA
-		|	functionCall
 		|	LPAREN expression RPAREN
 		|	expression MULTIPLY expression
 		|	expression DIVIDE expression
@@ -99,7 +98,15 @@ ID:         [a-z_][a-z0-9_]*;
 NUMBER:     ('0' .. '9') + ('.' ('0' .. '9') +)? ;
 STRING:     '"' ~'"'* '"';
 DELTA:      'DELTA';
-NULL:       'NULO';
+NULL:       ('NULL'|'NULO');
+DO:         ('DO'|'HAZ');
+IF:         ('IF'|'SI');
+THEN:       ('THEN'|'ENTONCES');
+ELSE:       ('ELSE'|'SINO');
+WHILE:      ('WHILE'|'MIENTRAS');
+CONSOLE:    ('CONSOLE'|'CONSOLA'|'ESCRIBE'|'WRITE');
+SPRITE:     ('SPRITE'|'PERSONAJE'|'OBJETO'|'OBJECT');
+END:        ('END'|'FIN');
 NL:         'NL';
 TB:         'TB';
 PLUS:       '+';

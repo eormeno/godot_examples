@@ -1,12 +1,20 @@
 PERSONAJE bot PARAM mapa
-    HAZ esperar 0.6
+    // HAZ esperar 0.6
+
+    resultado_pi = pi()
+
+    WRITE "pi: " resultado_pi
 
     FUNC esperar PARAM tiempo
         demora = 0.6
         t = 0.0
-        MIENTRAS t <= demora HAZ
-            CONSOLA "t: " t
+        WHILE t <= demora DO
+            ESCRIBE "t: " t
             t = t + DELTA
-        FIN
-    RET t
-FIN
+        END
+    RET NULL
+
+    FUNC pi
+    RET 3.141592
+
+END
