@@ -1,12 +1,9 @@
-SPRITE bot PARAM mapa
-    DO esperar 0.6
+OBJETO bot PARAM mapa
 
     radio = 100
     superficie = radio * radio * pi()
 
-    a = radio + 0
-
-    WRITE "la superficie de un círculo de radio " radio " es " superficie
+    ESCRIBE "la superficie de un círculo de radio " radio " es " superficie
 
     FUNC esperar PARAM tiempo
         demora = 0.6
@@ -19,12 +16,4 @@ SPRITE bot PARAM mapa
 
     FUNC pi
     RET 3.141592
-
-    FUNC abs PARAM x
-        x = 1
-        v = 3
-        IF x < 0 THEN
-            v = x * -1
-        END
-    RET v
 END
