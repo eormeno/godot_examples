@@ -1,8 +1,5 @@
 PERSONAJE bot PARAM mapa
     HAZ esperar 0.6
-    CONSOLA "primera vez"
-    HAZ esperar 0.9
-    CONSOLA "segunda vez"
 
     FUNC esperar PARAM tiempo
         demora = 0.6
@@ -11,6 +8,5 @@ PERSONAJE bot PARAM mapa
             CONSOLA "t: " t
             t = t + DELTA
         FIN
-    RET NULO
-    CONSOLA "fin"
+    RET t
 FIN

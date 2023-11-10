@@ -39,6 +39,10 @@ class MemoryBlock implements JsonSerializable
         if ($icl != 0) {
             echo "$icl getReg($reg)\n";
         }
+        if (!array_key_exists($reg, $this->registers)) {
+            debug_print_backtrace();
+            throw new \Exception("Register $reg does not exist.");
+        }
         return $this->registers[$reg];
     }
 
@@ -57,13 +61,24 @@ class MemoryBlock implements JsonSerializable
         return array_key_exists($id, $this->heap);
     }
 
-    public function push(int $reg, $data): void
+    public function push(int $reg, $data = null): void
     {
+        if ($reg == GameLangSpecificListener::NO_REG) {
+            array_push($this->stack, $data);
+            return;
+        }
         array_push($this->stack, $this->getReg($reg));
     }
 
-    public function pop(int $reg): void
+    public function pop(int $reg, string $identificator = null): void
     {
+        if (empty($this->stack)) {
+            throw new \Exception("Stack is empty.");
+        }
+        if ($identificator != null) {
+            $this->setHeap($identificator, array_pop($this->stack));
+            return;
+        }
         $this->setReg($reg, array_pop($this->stack));
     }
 
@@ -136,8 +151,7 @@ class GameLangVM
 
     private function popCallStack()
     {
-//        $json = json_encode($this->getBlock(), JSON_PRETTY_PRINT);
-//        echo "popCallStack:\n$json\n";
+        echo json_encode($this->getBlock(), JSON_PRETTY_PRINT) . "\n";
         array_pop($this->call_stack);
     }
 
@@ -175,7 +189,7 @@ class GameLangVM
                     // array_push($stack, $regs[$reg]);
                     break;
                 case Operation::pop:
-                    $this->getBlock()->pop($reg);
+                    $this->getBlock()->pop($reg, $data);
                     // $regs[$reg] = array_pop($stack);
                     break;
                 case Operation::add:

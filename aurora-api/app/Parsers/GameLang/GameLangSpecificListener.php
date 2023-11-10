@@ -8,8 +8,8 @@ class GameLangSpecificListener extends GameLangBaseListener
      * Represents an unknown intermediate code line.
      */
     private const UNKOWN_IC_LINE = -1;
-    private const NO_ICL = -1;
-    private const NO_REG = -1;
+    public const NO_ICL = -1;
+    public const NO_REG = -1;
 
     private $code = [];
 
@@ -112,28 +112,29 @@ class GameLangSpecificListener extends GameLangBaseListener
     }
 
     /**
-     * Pushes the value of the register to the top of the stack machine.
+     * Pushes the content of the register or the specified value to the top of the stack machine.
      */
-    private function insPsh(int $line, int $reg): void
+    private function insPsh(int $line, int $reg, $value = null): void
     {
         $this->code[] = [
             $line,
             Operation::psh,
             $reg,
-            null
+            $value
         ];
     }
 
     /**
-     * Pops the value of the top of the stack machine and stores it in the register.
+     * Pops the value of the top of the stack machine and stores it in the register, or in the
+     * memory with the given identificator.
      */
-    private function insPop(int $line, int $reg): void
+    private function insPop(int $line, int $reg, string $identificator = null): void
     {
         $this->code[] = [
             $line,
             Operation::pop,
             $reg,
-            null
+            $identificator
         ];
     }
 
@@ -266,8 +267,8 @@ class GameLangSpecificListener extends GameLangBaseListener
     {
         $line = $context->getStart()->getLine();
         $identificator = $context->ID()->getText();
-        $this->insPop($line, 0);
-        $this->insMem($line, 0, $identificator);
+        $this->insPop($line, self::NO_REG, $identificator);
+        //$this->insMem($line, 0, $identificator);
     }
 
     public function enterExpression(Context\ExpressionContext $context): void
@@ -275,8 +276,8 @@ class GameLangSpecificListener extends GameLangBaseListener
         $line = $context->getStart()->getLine();
         if ($context->num()) {
             $value = floatval($context->num()->getText());
-            $this->insReg($line, 0, $value);
-            $this->insPsh($line, 0);
+            //$this->insReg($line, 0, $value);
+            $this->insPsh($line, self::NO_REG, $value);
         } elseif ($context->ID()) {
             $identificator = $context->ID()->getText();
             $this->insGet($line, 0, $identificator);
@@ -285,8 +286,8 @@ class GameLangSpecificListener extends GameLangBaseListener
             $string = $context->STRING()->getText();
             // remove the quotes
             $string = substr($string, 1, -1);
-            $this->insReg($line, 0, $string);
-            $this->insPsh($line, 0);
+            //$this->insReg($line, 0, $string);
+            $this->insPsh($line, 0, $string);
         } elseif ($context->DELTA()) {
             $this->insDelta($line, 0);
             $this->insPsh($line, 0);
