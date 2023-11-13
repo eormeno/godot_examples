@@ -1,19 +1,16 @@
 grammar GameLang;
 
 program
-        : character+ NEWLINE? EOF;
+        : character+ EOF;
 
 character
-        : SPRITE ID (parameters)? NEWLINE (statement | functionDef)* END;
+        : SPRITE ID (parameters)? (statement | functionDef)* END;
 
 parameters
         : 'PARAM' (ID (',' ID)*)?;
 
 timeUnit
         : ('SEG' | 'MIL' | 'MIN');
-
-emptyNewLine
-        : NEWLINE;
 
 statement
 		: whileStatement
@@ -22,8 +19,7 @@ statement
 		| lineFunctionCall
 		| afterTimer
 		| everyTimer
-		| consoleStatement
-        | emptyNewLine;
+		| consoleStatement;
 
 printable
         : STRING
@@ -50,7 +46,7 @@ elseStatement
         : ELSE statement*;
 
 assignment
-        : ID EQUAL expression NEWLINE;
+        : ID EQUAL expression;
 
 afterTimer
         : 'LUEGO' ('DE')? expression timeUnit statement* END;
@@ -132,6 +128,5 @@ LST:        '<';
 LTE:        '<=';
 GRT:        '>';
 GTE:        '>=';
-NEWLINE:    '\r'? '\n';
-WS:         [ \t]+ -> skip;
+WS:         [ \t\r\n]+ -> skip;
 COMMENT:    '//' ~[\r\n]* -> skip;

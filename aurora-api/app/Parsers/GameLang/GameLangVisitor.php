@@ -50,15 +50,6 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitTimeUnit(Context\TimeUnitContext $context);
 
 	/**
-	 * Visit a parse tree produced by {@see GameLangParser::emptyNewLine()}.
-	 *
-	 * @param Context\EmptyNewLineContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitEmptyNewLine(Context\EmptyNewLineContext $context);
-
-	/**
 	 * Visit a parse tree produced by {@see GameLangParser::statement()}.
 	 *
 	 * @param Context\StatementContext $context The parse tree.

@@ -53,16 +53,6 @@ interface GameLangListener extends ParseTreeListener {
 	 */
 	public function exitTimeUnit(Context\TimeUnitContext $context): void;
 	/**
-	 * Enter a parse tree produced by {@see GameLangParser::emptyNewLine()}.
-	 * @param $context The parse tree.
-	 */
-	public function enterEmptyNewLine(Context\EmptyNewLineContext $context): void;
-	/**
-	 * Exit a parse tree produced by {@see GameLangParser::emptyNewLine()}.
-	 * @param $context The parse tree.
-	 */
-	public function exitEmptyNewLine(Context\EmptyNewLineContext $context): void;
-	/**
 	 * Enter a parse tree produced by {@see GameLangParser::statement()}.
 	 * @param $context The parse tree.
 	 */
