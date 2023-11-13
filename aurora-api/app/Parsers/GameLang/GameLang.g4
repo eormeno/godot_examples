@@ -67,8 +67,7 @@ num
         : (MINUS) ? NUMBER;
 
 expression
-		:	STRING
-		|	ID
+		:	ID
 		|	NULL
         |   DELTA
         |   functionCall
@@ -94,8 +93,14 @@ logicExpression
 		|   ID GRT expression
 		|   ID GTE expression;
 
+ID
+        : LOWER (LOWER | DIGIT)* UNDERSCORE;
+
 // Lexer rules
-ID:         [a-z_][a-z0-9_]*;
+// ID:         [a-z_][a-z0-9_]*;
+UNDERSCORE: '_';
+LOWER:      [a-z];
+DIGIT:      [0-9];
 NUMBER:     ('0' .. '9') + ('.' ('0' .. '9') +)? ;
 STRING:     '"' ~'"'* '"';
 DELTA:      'DELTA';

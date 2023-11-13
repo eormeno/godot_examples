@@ -282,12 +282,6 @@ class GameLangSpecificListener extends GameLangBaseListener
             $identificator = $context->ID()->getText();
             $this->insGet($line, 0, $identificator);
             $this->insPsh($line, 0);
-        } elseif ($context->STRING()) {
-            $string = $context->STRING()->getText();
-            // remove the quotes
-            $string = substr($string, 1, -1);
-            //$this->insReg($line, 0, $string);
-            $this->insPsh($line, 0, $string);
         } elseif ($context->DELTA()) {
             $this->insDelta($line, 0);
             $this->insPsh($line, 0);
