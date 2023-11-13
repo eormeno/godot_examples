@@ -74,6 +74,19 @@ class GameLangBaseListener implements GameLangListener
 	 *
 	 * The default implementation does nothing.
 	 */
+	public function enterEmptyNewLine(Context\EmptyNewLineContext $context): void {}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function exitEmptyNewLine(Context\EmptyNewLineContext $context): void {}
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
 	public function enterStatement(Context\StatementContext $context): void {}
 
 	/**

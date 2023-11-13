@@ -3,9 +3,10 @@ OBJETO bot PARAM mapa
     radio = 100
     superficie = radio * radio * pi()
 
-    a = radio + 0
+    a = superficie
 
-    ESCRIBE "la superficie de un círculo de radio " Radio " es " a
+    ESCRIBE "la superficie de un círculo de radio " radio " es " a
+    HAZ esperar
 
     FUNC esperar PARAM tiempo
         demora = 0.6

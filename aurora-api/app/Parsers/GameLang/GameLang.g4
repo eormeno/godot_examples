@@ -1,16 +1,19 @@
 grammar GameLang;
 
 program
-        : character+ EOF;
+        : character+ NEWLINE? EOF;
 
 character
-        : SPRITE ID (parameters)? (statement | functionDef)* END;
+        : SPRITE ID (parameters)? NEWLINE (statement | functionDef)* END;
 
 parameters
         : 'PARAM' (ID (',' ID)*)?;
 
 timeUnit
         : ('SEG' | 'MIL' | 'MIN');
+
+emptyNewLine
+        : NEWLINE;
 
 statement
 		: whileStatement
@@ -19,7 +22,8 @@ statement
 		| lineFunctionCall
 		| afterTimer
 		| everyTimer
-		| consoleStatement;
+		| consoleStatement
+        | emptyNewLine;
 
 printable
         : STRING
@@ -46,7 +50,7 @@ elseStatement
         : ELSE statement*;
 
 assignment
-        : ID EQUAL (expression | logicExpression);
+        : ID EQUAL expression NEWLINE;
 
 afterTimer
         : 'LUEGO' ('DE')? expression timeUnit statement* END;
@@ -93,14 +97,8 @@ logicExpression
 		|   ID GRT expression
 		|   ID GTE expression;
 
-ID
-        : LOWER (LOWER | DIGIT)* UNDERSCORE;
-
 // Lexer rules
-// ID:         [a-z_][a-z0-9_]*;
-UNDERSCORE: '_';
-LOWER:      [a-z];
-DIGIT:      [0-9];
+ID:         [a-z_][a-z0-9_]*;
 NUMBER:     ('0' .. '9') + ('.' ('0' .. '9') +)? ;
 STRING:     '"' ~'"'* '"';
 DELTA:      'DELTA';
@@ -134,5 +132,6 @@ LST:        '<';
 LTE:        '<=';
 GRT:        '>';
 GTE:        '>=';
-WS:         [ \t\r\n]+ -> skip;
+NEWLINE:    '\r'? '\n';
+WS:         [ \t]+ -> skip;
 COMMENT:    '//' ~[\r\n]* -> skip;
