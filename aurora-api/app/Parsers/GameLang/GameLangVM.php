@@ -2,6 +2,7 @@
 
 namespace App\Parsers\GameLang;
 use JsonSerializable;
+use App\Parsers\GameLang\Constants;
 
 class MemoryBlock implements JsonSerializable
 {
@@ -64,7 +65,7 @@ class MemoryBlock implements JsonSerializable
 
     public function push(int $reg, $data = null): void
     {
-        if ($reg == GameLangSpecificListener::NO_REG) {
+        if ($reg == Constants::NO_REG) {
             array_push(self::$stack, $data);
             return;
         }
@@ -107,31 +108,35 @@ class GameLangVM
     function createHtmlTableFromCodeArray()
     {
         if (empty($this->code)) {
-            return ''; // Return an empty string if the input array is empty
+            return '';
         }
-        // Add CSS styles to the table
         $tableStyle = 'border-collapse: collapse; width: 40%;';
         $cellStyle = 'font-family: monospace; font-size:1.1em; border: 1px solid #999; padding: 6px; text-align: left;';
 
         $html = '<table style="' . $tableStyle . '">';
         $html .= '<tr>';
         $html .= '<th style="' . $cellStyle . '">#</th>';
-        $html .= '<th style="' . $cellStyle . '">line</th>';
-        $html .= '<th style="' . $cellStyle . '">mnemonic</th>';
-        $html .= '<th style="' . $cellStyle . '">register</th>';
-        $html .= '<th style="' . $cellStyle . '">data</th>';
+        $html .= '<th style="' . $cellStyle . '">Source</th>';
+        $html .= '<th style="' . $cellStyle . '">Mnemonic</th>';
+        $html .= '<th style="' . $cellStyle . '">Register</th>';
+        $html .= '<th style="' . $cellStyle . '">Data/Ident</th>';
+        $html .= '<th style="' . $cellStyle . '">Aux</th>';
+        $html .= '<th style="' . $cellStyle . '">Label</th>';
         $html .= '</tr>';
 
         $i = 0;
 
-        // Iterate over the data and create table rows
         foreach ($this->code as $row) {
+            $register = $row[2] < 0 ? '' : $row[2];
+
             $html .= '<tr>';
             $html .= '<td style="' . $cellStyle . '">' . $i . '</td>';
             $html .= '<td style="' . $cellStyle . '">' . $row[0] . '</td>';
             $html .= '<td style="' . $cellStyle . '">' . strtoupper(($row[1]->jsonSerialize() ?? '')) . '</td>';
-            $html .= '<td style="' . $cellStyle . '">' . ($row[2] ?? '') . '</td>';
+            $html .= '<td style="' . $cellStyle . '">' . $register . '</td>';
             $html .= '<td style="' . $cellStyle . '">' . ($row[3] ?? '') . '</td>';
+            $html .= '<td style="' . $cellStyle . '">' . ($row[4] ?? '') . '</td>';
+            $html .= '<td style="' . $cellStyle . '">' . ($row[5] ?? '') . '</td>';
             $html .= '</tr>';
             $i++;
         }
@@ -175,93 +180,97 @@ class GameLangVM
         $this->pushCallStack();
         $i = 0;
         while ($i < count($code)) {
-            [$lineNumber, $op, $reg, $data] = $code[$i];
+            [$lineNumber, $op, $reg, $data, $aux, $label] = $code[$i];
             switch ($op) {
-                case Operation::reg:
+                case Operation::REG:
                     $this->getBlock()->setReg($reg, $data);
                     break;
-                case Operation::psh:
+                case Operation::PSH:
                     $this->getBlock()->push($reg, $data);
                     break;
-                case Operation::pop:
+                case Operation::POP:
                     $this->getBlock()->pop($reg, $data);
                     break;
-                case Operation::add:
+                case Operation::ADD:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left + $right);
                     break;
-                case Operation::sub:
+                case Operation::SUB:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left - $right);
                     break;
-                case Operation::mul:
+                case Operation::MUL:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left * $right);
                     break;
-                case Operation::div:
+                case Operation::DIV:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left / $right);
                     break;
-                case Operation::mem:
+                case Operation::MEM:
+                    if ($reg == Constants::NO_REG) {
+                        $this->getBlock()->setHeap($data, $aux);
+                        break;
+                    }
                     $result = $this->getBlock()->getReg($reg);
                     $this->getBlock()->setHeap($data, $result);
                     break;
-                case Operation::get:
+                case Operation::GET:
                     if (!$this->getBlock()->has($data)) {
                         throw new \Exception("Undefined variable '$data' at line $lineNumber.");
                     }
                     $value = $this->getBlock()->getHeap($data);
                     $this->getBlock()->setReg($reg, $value);
                     break;
-                case Operation::eql:
+                case Operation::EQL:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left == $right);
                     break;
-                case Operation::neq:
+                case Operation::NEQ:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left != $right);
                     break;
-                case Operation::grt:
+                case Operation::GRT:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left > $right);
                     break;
-                case Operation::lst:
+                case Operation::LST:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left < $right);
                     break;
-                case Operation::gte:
+                case Operation::GTE:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left >= $right);
                     break;
-                case Operation::lte:
+                case Operation::LTE:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left <= $right);
                     break;
-                case Operation::lor:
+                case Operation::LOR:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left || $right);
                     break;
-                case Operation::and:
+                case Operation::AND:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     $this->getBlock()->setReg($reg, $left && $right);
                     break;
-                case Operation::not:
+                case Operation::NOT:
                     $left = $this->getBlock()->getReg(1);
                     $this->getBlock()->setReg($reg, !$left);
                     break;
-                case Operation::cat:
+                case Operation::CAT:
                     $left = $this->getBlock()->getReg(1);
                     $right = $this->getBlock()->getReg(2);
                     if (is_bool($left)) {
@@ -272,36 +281,36 @@ class GameLangVM
                     }
                     $this->getBlock()->setReg($reg, $left . $right);
                     break;
-                case Operation::out:
+                case Operation::OUT:
                     $str = $this->getBlock()->getReg($reg);
                     echo $str . "\n";
                     break;
-                case Operation::ifi:
+                case Operation::IFI:
                     $condition = $this->getBlock()->getReg(0);
                     if (!$condition) {
                         $i = $data - 1; // -1 because the loop will increment it
                     }
                     break;
-                case Operation::jmp:
+                case Operation::JMP:
                     $jump_to = $data;
                     if ($reg != -1)  {
                         $jump_to = $this->getBlock()->getReg($reg);
                     }
                     $i = $jump_to - 1; // -1 because the loop will increment it
                     break;
-                case Operation::pshcs:
+                case Operation::PSHCS:
                     $this->pushCallStack();
                     break;
-                case Operation::popcs:
+                case Operation::POPCS:
                     $this->popCallStack();
                     break;
-                case Operation::lcall:
+                case Operation::LCALL:
                     $i = $data - 1; // -1 because the loop will increment it
                     break;
-                case Operation::delta:
+                case Operation::DELTA:
                     $this->getBlock()->setReg($reg, 0.2);
                     break;
-                case Operation::end:
+                case Operation::END:
                     $this->popCallStack();
                     return;
             }

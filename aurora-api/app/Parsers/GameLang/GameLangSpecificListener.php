@@ -1,15 +1,11 @@
 <?php
 namespace App\Parsers\GameLang;
 
+use App\Parsers\GameLang\Constants;
+use App\Parsers\GameLang\Operation;
+
 class GameLangSpecificListener extends GameLangBaseListener
 {
-
-    /**
-     * Represents an unknown intermediate code line.
-     */
-    private const UNKOWN_IC_LINE = -1;
-    public const NO_ICL = -1;
-    public const NO_REG = -1;
 
     private $code = [];
 
@@ -64,92 +60,126 @@ class GameLangSpecificListener extends GameLangBaseListener
     /**
      * Stores the given data in the specified register number (0..3)
      */
-    private function insReg(int $line, int $reg, $data): int
+    private function insReg(int $line, int $reg, $data, string $label = null): int
     {
         $this->code[] = [
             $line,
-            Operation::reg,
+            Operation::REG,
             $reg,
-            $data
+            $data,
+            null,
+            $label
         ];
         return $this->lastIntermediateCodeLine();
     }
 
     /**
-     * Stores the value of the register in the memory with the given identificator.
+     * If the $reg is specified, stores the value of the register in the memory with the given
+     * identificator. If the $reg is not specified, stores the given value in the memory with
+     * the given identificator.
      */
-    private function insMem(int $line, int $reg, string $identificator): void
+    private function insMem(int $line, int $reg, string $identificator, $aux = null, string $label = null): int
     {
         $this->code[] = [
             $line,
-            Operation::mem,
+            Operation::MEM,
             $reg,
-            $identificator
+            $identificator,
+            $aux,
+            $label
         ];
+        return $this->lastIntermediateCodeLine();
     }
 
     /**
      * Gets the value of the memory with the given identificator and stores it in the register.
      */
-    private function insGet(int $line, int $reg, string $identificator): void
+    private function insGet(int $line, int $reg, string $identificator, string $label = null): int
     {
         $this->code[] = [
             $line,
-            Operation::get,
+            Operation::GET,
             $reg,
-            $identificator
+            $identificator,
+            null,
+            $label
         ];
-    }
-
-    private function insDelta(int $line, int $reg): void
-    {
-        $this->code[] = [
-            $line,
-            Operation::delta,
-            $reg,
-            null
-        ];
+        return $this->lastIntermediateCodeLine();
     }
 
     /**
-     * Pushes the content of the register or the specified value to the top of the stack machine.
+     * Set the register with a delta value. Which is the difference between the current time and
+     * the previous time.
      */
-    private function insPsh(int $line, int $reg, $value = null): void
+    private function insDelta(int $line, int $reg, string $label = null): int
     {
         $this->code[] = [
             $line,
-            Operation::psh,
+            Operation::DELTA,
             $reg,
-            $value
+            null,
+            null,
+            $label
         ];
+        return $this->lastIntermediateCodeLine();
     }
 
     /**
-     * Pops the value of the top of the stack machine and stores it in the register, or in the
-     * memory with the given identificator.
+     * If the $reg is specified, pushes the content of the register or the specified value to the
+     * top of the stack machine. If the $reg is not specified, pushes the specified value to the
+     * top of the stack machine.
      */
-    private function insPop(int $line, int $reg, string $identificator = null): void
+    private function insPsh(int $line, int $reg, $value = null, string $label = null): int
     {
         $this->code[] = [
             $line,
-            Operation::pop,
+            Operation::PSH,
             $reg,
-            $identificator
+            $value,
+            null,
+            $label
         ];
+        return $this->lastIntermediateCodeLine();
     }
 
-    private function insOp(int $line, Operation $op, int $reg): void
+    /**
+     * Pops the value of the top of the stack machine and stores it in the register, if it is
+     * specified, or in the memory with the given identificator, if the register is not specified.
+     */
+    private function insPop(int $line, int $reg, string $identificator = null, string $label = null): int
+    {
+        $this->code[] = [
+            $line,
+            Operation::POP,
+            $reg,
+            $identificator,
+            null,
+            $label
+        ];
+        return $this->lastIntermediateCodeLine();
+    }
+
+    /**
+     * Allows create a MI (Micro Instruction) with the given operation. The operation is executed
+     * with the values in the stack machine, and the result is stored in the register, if it is
+     * specified, or in the memory with the given identificator, if the register is not specified.
+     */
+    private function insOp(int $line, Operation $op, int $reg, string $identificator = null, string $label = null): int
     {
         $this->code[] = [
             $line,
             $op,
             $reg,
-            null
+            $identificator,
+            null,
+            $label
         ];
+        return $this->lastIntermediateCodeLine();
     }
 
     /**
-     * Inserts a jump to the given intermediate code line. If the given intermediate code line
+     * Creates a MI that makes the VM jump to the given intermediate code line.
+     * If the given intermediate code line
      * is unknown, it inserts a jump to an unknown intermediate code line.
      * A reg value of -1 means that the jump is defined in the data field of the intermediate
      * code line. If the reg value is not -1, it means that the jump is defined in the specified
@@ -158,41 +188,60 @@ class GameLangSpecificListener extends GameLangBaseListener
      * @param int $line
      * @param int $reg
      * @param int $jump_to
+     * @param string $label
+     * @return int
      */
-    private function insJMP(int $line, int $reg, int $jump_to): int
+    private function insJMP(int $line, int $reg, int $jump_to, string $label = null): int
     {
         $this->code[] = [
             $line,
-            Operation::jmp,
+            Operation::JMP,
             $reg,
-            $jump_to
+            $jump_to,
+            null,
+            $label
         ];
         return $this->lastIntermediateCodeLine();
     }
 
-    private function insIIF(int $line, int $jump_to): int
+    /**
+     * Creates a MI that makes the VM jump to the given intermediate code line if the value of the
+     * register 0 is false.
+     */
+    private function insIIF(int $line, int $jump_to, string $label = null): int
     {
         $this->code[] = [
             $line,
-            Operation::ifi,
+            Operation::IFI,
             -1,
-            $jump_to
+            $jump_to,
+            null,
+            $label
         ];
         return $this->lastIntermediateCodeLine();
     }
 
+    /**
+     * Allows updating the data field of the intermediate code line.
+     */
     private function updDat(int $ic_line, $data): void
     {
         $this->code[$ic_line][3] = $data;
     }
 
-    private function insLCALL(int $line, string $name): int
+    /**
+     * Creates a MI that makes the VM call the function with the given name. This MI must work like
+     * a jump to the intermediate code line where the function definition starts.
+     */
+    private function insLCALL(int $line, string $name, string $label = null): int
     {
         $this->code[] = [
             $line,
-            Operation::lcall,
+            Operation::LCALL,
             -1,
-            $name
+            $name,
+            null,
+            $label
         ];
         return $this->lastIntermediateCodeLine();
     }
@@ -200,36 +249,49 @@ class GameLangSpecificListener extends GameLangBaseListener
     /**
      * Creates and stacks a new call stack frame, and makes it the current call stack frame.
      */
-    private function insPSHCS(int $line): void
+    private function insPSHCS(int $line, string $label = null): int
     {
         $this->code[] = [
             $line,
-            Operation::pshcs,
+            Operation::PSHCS,
             -1,
-            null
+            null,
+            null,
+            $label
         ];
+        return $this->lastIntermediateCodeLine();
     }
 
     /**
      * Removes and unstack the current call stack frame.
      */
-    private function insPOPCS(int $line): void {
-        $this->code[] = [
-            $line,
-            Operation::popcs,
-            -1,
-            null
-        ];
-    }
-
-    private function insEND(int $ic_line): void
+    private function insPOPCS(int $line, string $label = null): int
     {
         $this->code[] = [
-            $ic_line,
-            Operation::end,
+            $line,
+            Operation::POPCS,
             -1,
-            null
+            null,
+            null,
+            $label
         ];
+        return $this->lastIntermediateCodeLine();
+    }
+
+    /**
+     * Creates a MI that makes the VM end its execution.
+     */
+    private function insEND(int $line, string $label = null): int
+    {
+        $this->code[] = [
+            $line,
+            Operation::END,
+            -1,
+            null,
+            null,
+            $label
+        ];
+        return $this->lastIntermediateCodeLine();
     }
 
     /**
@@ -267,7 +329,7 @@ class GameLangSpecificListener extends GameLangBaseListener
     {
         $line = $context->getStart()->getLine();
         $identificator = $context->ID()->getText();
-        $this->insPop($line, self::NO_REG, $identificator);
+        $this->insPop($line, Constants::NO_REG, $identificator);
         //$this->insMem($line, 0, $identificator);
     }
 
@@ -277,7 +339,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         if ($context->num()) {
             $value = floatval($context->num()->getText());
             //$this->insReg($line, 0, $value);
-            $this->insPsh($line, self::NO_REG, $value);
+            $this->insPsh($line, Constants::NO_REG, $value);
         } elseif ($context->ID()) {
             $identificator = $context->ID()->getText();
             $this->insGet($line, 0, $identificator);
@@ -315,16 +377,16 @@ class GameLangSpecificListener extends GameLangBaseListener
 
         switch ($op) {
             case '+':
-                $this->insOp($line, Operation::add, 3);
+                $this->insOp($line, Operation::ADD, 3);
                 break;
             case '-':
-                $this->insOp($line, Operation::sub, 3);
+                $this->insOp($line, Operation::SUB, 3);
                 break;
             case '*':
-                $this->insOp($line, Operation::mul, 3);
+                $this->insOp($line, Operation::MUL, 3);
                 break;
             case '/':
-                $this->insOp($line, Operation::div, 3);
+                $this->insOp($line, Operation::DIV, 3);
                 break;
         }
         $this->insPsh($line, 3);
@@ -382,31 +444,31 @@ class GameLangSpecificListener extends GameLangBaseListener
 
         switch ($op) {
             case 'O':
-                $this->insOp($line, Operation::lor, 3);
+                $this->insOp($line, Operation::LOR, 3);
                 break;
             case 'Y':
-                $this->insOp($line, Operation::and , 3);
+                $this->insOp($line, Operation::AND , 3);
                 break;
             case '>':
-                $this->insOp($line, Operation::grt, 3);
+                $this->insOp($line, Operation::GRT, 3);
                 break;
             case '<':
-                $this->insOp($line, Operation::lst, 3);
+                $this->insOp($line, Operation::LST, 3);
                 break;
             case '>=':
-                $this->insOp($line, Operation::gte, 3);
+                $this->insOp($line, Operation::GTE, 3);
                 break;
             case '<=':
-                $this->insOp($line, Operation::lte, 3);
+                $this->insOp($line, Operation::LTE, 3);
                 break;
             case '==':
-                $this->insOp($line, Operation::eql, 3);
+                $this->insOp($line, Operation::EQL, 3);
                 break;
             case '!=':
-                $this->insOp($line, Operation::neq, 3);
+                $this->insOp($line, Operation::NEQ, 3);
                 break;
             case 'NO':
-                $this->insOp($line, Operation::not, 3);
+                $this->insOp($line, Operation::NOT, 3);
                 break;
         }
         $this->insPsh($line, 3);
@@ -430,7 +492,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         // But, by the moment, both are UNKNOWN, so we need to register the iif operation for its
         // latter updating, when we know the end of the current if statement or the beginning of
         // its else statement (if it has one).
-        $ic_line = $this->insIIF($line, self::UNKOWN_IC_LINE);
+        $ic_line = $this->insIIF($line, Constants::UNKOWN_IC_LINE);
         $this->setStatementData($context->getParent(), "iif", $ic_line);
     }
 
@@ -438,7 +500,7 @@ class GameLangSpecificListener extends GameLangBaseListener
     {
         // This is the end of the then statements block. Here we need to jump to the end of the if
         // statement, just in case the current if statement has an else statement.
-        $ic_line = $this->insJMP($context->getStart()->getLine(), self::NO_REG, self::UNKOWN_IC_LINE);
+        $ic_line = $this->insJMP($context->getStart()->getLine(), Constants::NO_REG, Constants::UNKOWN_IC_LINE);
         $this->setStatementData($context->getParent(), "then", $ic_line);
     }
 
@@ -463,7 +525,7 @@ class GameLangSpecificListener extends GameLangBaseListener
     {
         // I need to register the while statement, so I can update the jumps when I know its end.
         $this->registerStatement($context);
-        $this->setStatementData($context, "begin", $this->lastIntermediateCodeLine()+1);
+        $this->setStatementData($context, "begin", $this->lastIntermediateCodeLine() + 1);
     }
 
     public function enterDoStatement(Context\DoStatementContext $context): void
@@ -476,7 +538,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         // If reg[0] is false, we need to jump to the end of the while statement.
         // But, by the moment, it is UNKNOWN, so we need to register the iif operation for its
         // latter updating, when we know the end of the current while statement.
-        $ic_line = $this->insIIF($line, self::UNKOWN_IC_LINE);
+        $ic_line = $this->insIIF($line, Constants::UNKOWN_IC_LINE);
         $this->setStatementData($context->getParent(), "iif", $ic_line);
     }
 
@@ -487,7 +549,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         // while statement.
         $ic_iif = $this->getStatementData($context->getParent(), "iif");
         $ic_begin = $this->getStatementData($context->getParent(), "begin");
-        $this->insJMP($line, self::NO_REG, $ic_begin);
+        $this->insJMP($line, Constants::NO_REG, $ic_begin);
         $this->updDat($ic_iif, $this->lastIntermediateCodeLine() + 1);
     }
 
@@ -517,9 +579,9 @@ class GameLangSpecificListener extends GameLangBaseListener
                 $this->insReg($line, 2, "\t");
             }
             // this is like to do: reg[1] = reg[1] . reg[2]
-            $this->insOp($line, Operation::cat, 1);
+            $this->insOp($line, Operation::CAT, 1);
         }
-        $this->insOp($line, Operation::out, 1);
+        $this->insOp($line, Operation::OUT, 1);
     }
 
     public function enterFunctionDef(Context\FunctionDefContext $context): void
@@ -530,7 +592,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         // I register the function definition, so I can update the jump when I know its end.
         $this->registerStatement($context);
         // I insert a jump to the end to make sure that the function definition is not executed
-        $ic_line = $this->insJMP($line, self::NO_REG, self::UNKOWN_IC_LINE);
+        $ic_line = $this->insJMP($line, Constants::NO_REG, Constants::UNKOWN_IC_LINE);
         $this->setStatementData($context, "jump_to_end", $ic_line);
         $this->registerFunctionStartICL($functionName, $ic_line + 1);
     }
@@ -540,7 +602,7 @@ class GameLangSpecificListener extends GameLangBaseListener
         $line = $context->getStop()->getLine();
         $this->insPOPCS($line);
         $this->insGet($line, 0, "return");
-        $this->insJMP($line, 0, self::NO_ICL);
+        $this->insJMP($line, 0, Constants::NO_ICL);
         // I update the jump to the end of the function definition
         $ic_line = $this->getStatementData($context, "jump_to_end");
         $this->updDat($ic_line, $this->lastIntermediateCodeLine() + 1);
@@ -561,8 +623,8 @@ class GameLangSpecificListener extends GameLangBaseListener
 
         $calledFunctionName = $context->ID()->getText();
         // creates an internal variable to store the return next ICL of the function call
-        $this->insReg($line, 0, $this->lastIntermediateCodeLine() + 5);
-        $this->insMem($line, 0, "return");
+        // $this->insReg($line, 0, $this->lastIntermediateCodeLine() + 5);
+        $this->insMem($line, Constants::NO_REG, "return", $this->lastIntermediateCodeLine() + 4);
         $this->insPSHCS($line);
 
         $to_change_ic_line = $this->insLCALL($line, $calledFunctionName);

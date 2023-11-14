@@ -4,36 +4,37 @@ namespace App\Parsers\GameLang;
 
 enum Operation implements \JsonSerializable
 {
-    case reg; // register
-    case psh; // push
-    case pop; // pop
-    case add; // math add operation
-    case sub; // math substract operation
-    case mul; // math muliplication operation
-    case div; // math div operation
-    case lor; // logical or
-    case and; // logical and
-    case grt; // greater than
-    case not; // not
-    case lst; // less than
-    case gte; // greater than or equal
-    case lte; // less than or equal
-    case eql; // equal
-    case neq; // not equal
-    case mem; // store in memory
-    case get; // get from memory
-    case out; // output
-    case ifi; // if instruction
-    case cat; // concatenate
-    case jmp; // jump
-    case delta; // delta
-    case pshcs; // push call stack
-    case popcs; // pop call stack
-    case lcall; // line call
-    case call; // call
-    case end; // end
+    case REG; // register
+    case PSH; // push
+    case POP; // pop
+    case ADD; // math add operation
+    case SUB; // math substract operation
+    case MUL; // math muliplication operation
+    case DIV; // math div operation
+    case LOR; // logical or
+    case AND; // logical and
+    case GRT; // greater than
+    case NOT; // not
+    case LST; // less than
+    case GTE; // greater than or equal
+    case LTE; // less than or equal
+    case EQL; // equal
+    case NEQ; // not equal
+    case MEM; // store in memory
+    case GET; // get from memory
+    case OUT; // output
+    case IFI; // if instruction
+    case CAT; // concatenate
+    case JMP; // jump
+    case DELTA; // delta
+    case PSHCS; // push call stack
+    case POPCS; // pop call stack
+    case LCALL; // line call
+    case CALL; // call
+    case END; // end
 
-    public function jsonSerialize(){
+    public function jsonSerialize()
+    {
         return $this->name;
     }
 }

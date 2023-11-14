@@ -1,13 +1,6 @@
 OBJETO bot PARAM mapa
 
-    radio = 100
-    superficie = radio * radio * pi()
-
-    a = superficie
-    b = abs(-10)
-
-    ESCRIBE "la superficie de un círculo de radio " radio " es " a
-    ESCRIBE "el valor absoluto de -10 es " b
+    HAZ esperar
     HAZ esperar
 
     FUNC esperar PARAM tiempo
@@ -18,16 +11,4 @@ OBJETO bot PARAM mapa
             t = t + DELTA
         END
     RET NULL
-
-    FUNC abs
-        x = -9
-        IF x < 0 THEN
-            y = x * -1
-        ELSE
-            y = x
-        END
-    RET y
-
-    FUNC pi
-    RET 3.141592
 END
