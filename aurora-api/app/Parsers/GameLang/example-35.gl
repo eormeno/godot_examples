@@ -1,14 +1,46 @@
-OBJETO bot PARAM mapa
+SPRITE bot
 
-    HAZ esperar
-    HAZ esperar
+    HAZ esperar 1.3
+
+    radio = 10
+    diametro = radio * 2
+    circunferencia = 2 * pi() * radio
+    r2 = pow(radio, 2)
+    superficie = pi() * r2
+
+    WRITE "r2:" r2 NL
+
+    ESCRIBE "radio: " radio NL "diametro: " diametro NL "circunferencia: " circunferencia NL "superficie: " superficie
+
+    HAZ di "hola"
 
     FUNC esperar PARAM tiempo
-        demora = 0.6
+        WRITE "esperando " tiempo " segundos"
         t = 0.0
-        WHILE t <= demora DO
-            WRITE "t: " t
+        WHILE t <= tiempo DO
             t = t + DELTA
         END
     RET NULL
+
+    FUNC abs PARAM numero
+        v = numero
+        IF v < 0 THEN
+            v = v * -1
+        END
+    RET v
+
+    FUNC pow PARAM base, exponente
+        resultado = 1
+        WHILE exponente > 0 DO
+            resultado = resultado * base
+            exponente = exponente - 1
+        END
+    RET resultado
+
+    FUNC di PARAM texto
+        WRITE "DICE: " texto
+    RET NULL
+
+    FUNC pi
+    RET 3.141592
 END

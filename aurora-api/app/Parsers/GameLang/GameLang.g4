@@ -76,7 +76,8 @@ expression
 		|	expression DIVIDE expression
 		|	expression PLUS expression
 		|	expression MINUS expression
-		|   num;
+		|   num
+        |   STRING;
 
 logicExpression
 		:   TRUE

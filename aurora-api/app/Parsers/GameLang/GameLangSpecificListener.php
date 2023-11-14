@@ -350,6 +350,13 @@ class GameLangSpecificListener extends GameLangBaseListener
         } elseif ($context->NULL()) {
             $this->insReg($line, 0, null);
             $this->insPsh($line, 0);
+        } elseif ($context->STRING()) {
+            $string = $context->STRING()->getText();
+            // remove the quotes
+            $string = substr($string, 1, -1);
+            //$this->insReg($line, 0, $string);
+            //$this->insPsh($line, 0);
+            $this->insPsh($line, Constants::NO_REG, $string);
         }
     }
 
@@ -595,6 +602,17 @@ class GameLangSpecificListener extends GameLangBaseListener
         $ic_line = $this->insJMP($line, Constants::NO_REG, Constants::UNKOWN_IC_LINE);
         $this->setStatementData($context, "jump_to_end", $ic_line);
         $this->registerFunctionStartICL($functionName, $ic_line + 1);
+    }
+
+    public function exitParameters(Context\ParametersContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $parameters = $context->ID();
+        $count = count($parameters);
+        for ($j = $count - 1; $j >= 0; $j--) {
+            $identificator = $parameters[$j]->getText();
+            $this->insPop($line, 0, $identificator);
+        }
     }
 
     public function exitFunctionDef(Context\FunctionDefContext $context): void
