@@ -220,6 +220,8 @@ func run_code(code:Array, i:int, mem:Dictionary):
 	var op : String = cl[1].to_upper()
 	var reg : int = int(cl[2])
 	var data = cl[3]
+	var aux = cl[4]
+	var lbl = cl[5]
 	match op:
 		"REG":
 			mem.regs[reg] = data

@@ -1,0 +1,8 @@
+PERSONAJE bot
+	CONSOLA "Hola mundo"
+	t = 0
+	MIENTRAS t < 2 HAZ
+		t = t + DELTA
+	FIN
+	CONSOLA "ahora si"
+FIN

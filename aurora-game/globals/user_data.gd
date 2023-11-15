@@ -26,7 +26,7 @@ func _process(delta):
 		if not unsaved_changes:
 			return
 		save_user_data()
-		print("saved data")
+#		print("saved data")
 		unsaved_changes = false
 	
 func load_user_data():

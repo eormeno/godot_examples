@@ -10,7 +10,9 @@ use Antlr\Antlr4\Runtime\Tree\ParseTreeWalker;
 use App\Parsers\GameLang\GameLangErrorListener;
 use App\Parsers\GameLang\GameLangSpecificListener;
 
-$input = InputStream::fromPath("example-35.gl");
+$fileName = 'example-4';
+
+$input = InputStream::fromPath("$fileName.gl");
 $lexer = new GameLangLexer($input);
 $tokens = new CommonTokenStream($lexer);
 $parser = new GameLangParser($tokens);
@@ -27,5 +29,5 @@ if (count($errors) > 0) {
 $listener = new GameLangSpecificListener();
 ParseTreeWalker::default()->walk($listener, $tree);
 $vm = new GameLangVM($listener->getCode());
-$vm->saveHtmlFile('example-35.html');
+$vm->saveHtmlFile("$fileName.html");
 $vm->run();
