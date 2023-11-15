@@ -5,6 +5,7 @@ var tree : Tree
 var terminal : Terminal
 var current_dir : TreeItem
 var current_script_id : int
+var executor : Executor
 
 var tool : Dictionary = {}
 
@@ -19,6 +20,7 @@ func _ready():
 		stop	= { can = false, button = %stop_button },
 		save	= { can = false, button = %save_button }
 	}
+	executor = Executor.new(self, terminal)
 
 func _on_command_entered(command : String, callback : Callable):
 	var tokens : PackedStringArray = command.split(" ")
@@ -120,7 +122,8 @@ func cmd_run(arg : PackedStringArray):
 		return ret
 	compiled_code = response.compiled
 #	run_code_old(response.compiled)
-	_start_running(compiled_code)
+#	_start_running(compiled_code)
+	executor.run(compiled_code)
 	ret.status = Terminal.SUCCESS
 	return ret
 
@@ -129,22 +132,6 @@ func find_item(item_name : String):
 		if item.get_text(0) == item_name:
 			return item
 	return null
-
-func evaluate(sub_script:String):
-	var lines : PackedStringArray = sub_script.split("\n")
-	var new_script : String = "var ret\n\t"
-	for l in lines:
-		new_script += "ret = await node." + l + "\n\t"
-		new_script += "print(ret)\n\t"
-	var full_script = "func eval(node):\n\t" + new_script + "\n\treturn ret"
-	print(full_script)
-	var script = GDScript.new()
-	script.set_source_code(full_script)
-	script.reload()
-	var obj = RefCounted.new()
-	obj.set_script(script)
-	var ret = await obj.eval(self)
-	return ret
 
 func _on_tree_item_selected():
 	var item : TreeItem = tree.get_selected()

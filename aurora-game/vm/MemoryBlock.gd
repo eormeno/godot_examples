@@ -3,6 +3,7 @@ static var next_id : int = 0
 
 var id : int :
 	get: return id
+var stack : Array = []
 var heap: Dictionary = {}
 var regs: Array = [4]
 	
@@ -25,3 +26,12 @@ func get_reg(reg: int, icl: int = 0):
 	if not regs.has(reg):
 		push_error("Register %s does not exist." % reg)
 	return regs[reg]
+
+func set_heap(id: String, data) -> void:
+	heap[id] = data
+
+func get_heap(id: String):
+	return heap[id]
+
+func has(id: String) -> bool:
+	return heap.has(id)
