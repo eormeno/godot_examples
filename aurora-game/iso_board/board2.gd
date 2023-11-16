@@ -293,7 +293,7 @@ func run_code(code:Array, i:int, mem:Dictionary):
 		"IFI":
 			var condition = mem.regs[0]
 			if not condition:
-				i = data
+				i = data - 1
 		"JMP":
 			i = data
 	return i

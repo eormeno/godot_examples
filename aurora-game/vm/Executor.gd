@@ -19,7 +19,6 @@ func push_call_stack() -> void:
 	call_stack.append(MemoryBlock.new())
 
 func pop_call_stack() -> void:
-#	print(JSON.stringify(get_block(), " "))
 	call_stack.pop_back()
 
 func get_block() -> MemoryBlock:

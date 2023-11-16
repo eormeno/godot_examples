@@ -3,6 +3,7 @@ PERSONAJE bot
 	t = 0
 	MIENTRAS t < 2 HAZ
 		t = t + DELTA
+        WRITE "t: " t
 	FIN
 	CONSOLA "ahora si"
 FIN

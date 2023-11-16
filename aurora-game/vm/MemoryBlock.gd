@@ -17,7 +17,7 @@ func set_reg(reg: int, data, icl: int = 0) -> void:
 	if icl != 0:
 		print("%s set_reg(%s, %s)" % [icl, reg, data])
 	if data is float:
-		data = round(float(data))
+		data = float(data)
 	regs[reg] = data
 
 func get_reg(reg: int, icl: int = 0):
