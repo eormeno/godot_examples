@@ -31,12 +31,12 @@ func push(reg: int, data = null) -> void:
 	else:
 		stack.append(get_block().get_reg(reg))
 
-func pop(reg: int, identificator: String = "") -> void:
+func pop(reg: int, identificator = null) -> void:
 	if stack.is_empty():
 		push_error("Stack is empty.")
 		return
 	var popped_data = stack.pop_back()
-	if identificator != "":
+	if identificator:
 		get_block().set_heap(identificator, popped_data)
 	else:
 		get_block().set_reg(reg, popped_data)
@@ -58,6 +58,7 @@ func has(id: String) -> bool:
 
 func run(code: Array):
 	compiled_code = code
+	reset()
 	_stop = false
 	
 func pause():
@@ -180,18 +181,18 @@ func run_code(code:Array, i:int):
 		"IFI":
 			var condition = get_reg(0)
 			if not condition:
-				i = data
+				i = data - 1
 		"JMP":
 			var jump_to = data
 			if reg != -1:
 				jump_to = get_reg(reg)
-			i = jump_to
+			i = jump_to - 1
 		"PSHCS":
 			push_call_stack()
 		"POPCS":
 			pop_call_stack()
 		"LCALL":
-			i = data
+			i = data - 1
 		"END":
 			pop_call_stack()
 	return i

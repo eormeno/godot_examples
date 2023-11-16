@@ -21,6 +21,7 @@ func _ready():
 		save	= { can = false, button = %save_button }
 	}
 	executor = Executor.new(self, terminal)
+	add_child(executor)
 
 func _on_command_entered(command : String, callback : Callable):
 	var tokens : PackedStringArray = command.split(" ")
@@ -207,8 +208,8 @@ func run_code(code:Array, i:int, mem:Dictionary):
 	var op : String = cl[1].to_upper()
 	var reg : int = int(cl[2])
 	var data = cl[3]
-	var aux = cl[4]
-	var lbl = cl[5]
+	var _aux = cl[4]
+	var _lbl = cl[5]
 	match op:
 		"REG":
 			mem.regs[reg] = data
