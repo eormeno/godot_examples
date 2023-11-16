@@ -278,6 +278,32 @@ class GameLangSpecificListener extends GameLangBaseListener
         return $this->lastIntermediateCodeLine();
     }
 
+    private function insSys(int $line, string $data, string $label = null): int
+    {
+        $this->code[] = [
+            $line,
+            Operation::SYS,
+            -1,
+            $data,
+            null,
+            $label
+        ];
+        return $this->lastIntermediateCodeLine();
+    }
+
+    private function insAwait(int $line, string $data, string $label = null): int
+    {
+        $this->code[] = [
+            $line,
+            Operation::AWAIT,
+            -1,
+            $data,
+            null,
+            $label
+        ];
+        return $this->lastIntermediateCodeLine();
+    }
+
     /**
      * Creates a MI that makes the VM end its execution.
      */
@@ -626,15 +652,6 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->updDat($ic_line, $this->lastIntermediateCodeLine() + 1);
     }
 
-    public function enterLineFunctionCall(Context\LineFunctionCallContext $context): void
-    {
-        //$this->registerStatement($context);
-        //$line = $context->getStart()->getLine();
-        //$ic_line = $this->insReg($line, 0, self::UNKOWN_IC_LINE);
-        //$this->setStatementData($context, "return_ic_line", $ic_line);
-        //$this->insPsh($line, 0);
-    }
-
     public function exitLineFunctionCall(Context\LineFunctionCallContext $context): void
     {
         $line = $context->getStart()->getLine();
@@ -668,6 +685,13 @@ class GameLangSpecificListener extends GameLangBaseListener
         // register the ICL where the function is called, so I can update the jump when I know
         // the beginning of the function definition.
         $this->registerFunctionCallICL($calledFunctionName, $to_change_ic_line);
+    }
+
+    public function exitMoveStatement(Context\MoveStatementContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $this->insSys($line, "move");
+        $this->insAwait($line, "arrived");
     }
 
     public function exitProgram(Context\ProgramContext $context): void

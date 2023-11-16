@@ -1,0 +1,8 @@
+PERSONAJE bot
+    WRITE "Hola, soy un bot"
+    MOVE TO 2
+    WRITE "Hizo el primer movimiento"
+    MOVER HASTA 3
+    destino = 4
+    MOVER A destino
+FIN

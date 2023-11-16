@@ -72,16 +72,19 @@ class MemoryBlock implements JsonSerializable
         array_push(self::$stack, $this->getReg($reg));
     }
 
-    public function pop(int $reg, string $identificator = null): void
+    public function pop(int $reg, string $identificator = null): mixed
     {
         if (empty(self::$stack)) {
             throw new \Exception("Stack is empty.");
         }
+        $value = array_pop(self::$stack);
         if ($identificator != null) {
-            $this->setHeap($identificator, array_pop(self::$stack));
-            return;
+            $this->setHeap($identificator, $value);
         }
-        $this->setReg($reg, array_pop(self::$stack));
+        if ($reg != Constants::NO_REG) {
+            $this->setReg($reg, $value);
+        }
+        return $value;
     }
 
     public function jsonSerialize()
@@ -309,6 +312,22 @@ class GameLangVM
                     break;
                 case Operation::DELTA:
                     $this->getBlock()->setReg($reg, 0.2);
+                    break;
+                case Operation::SYS:
+                    if ($data == "move") {
+                        $destination = $this->getBlock()->pop(0);
+                        echo "Moving to $destination\n";
+                    }
+                    break;
+                case Operation::AWAIT:
+                    // Simulates the waited random event is produced.
+                    // Calculates two random integers between 0 and 10
+                    $random1 = rand(0, 1000000);
+                    $random2 = rand(0, 1000000);
+                    if ($random1 == $random2) {
+                        $i = $i + 1; // skip the next instruction
+                    }
+                    $i = $i - 1; // repeat the same instruction
                     break;
                 case Operation::END:
                     $this->popCallStack();

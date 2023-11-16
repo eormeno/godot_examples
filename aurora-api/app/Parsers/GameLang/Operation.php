@@ -31,6 +31,8 @@ enum Operation implements \JsonSerializable
     case POPCS; // pop call stack
     case LCALL; // line call
     case CALL; // call
+    case SYS; // system
+    case AWAIT; // await
     case END; // end
 
     public function jsonSerialize()

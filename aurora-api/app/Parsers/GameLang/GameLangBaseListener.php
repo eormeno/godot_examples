@@ -191,32 +191,6 @@ class GameLangBaseListener implements GameLangListener
 	 *
 	 * The default implementation does nothing.
 	 */
-	public function enterAfterTimer(Context\AfterTimerContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitAfterTimer(Context\AfterTimerContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function enterEveryTimer(Context\EveryTimerContext $context): void {}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
-	public function exitEveryTimer(Context\EveryTimerContext $context): void {}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * The default implementation does nothing.
-	 */
 	public function enterFunctionCall(Context\FunctionCallContext $context): void {}
 
 	/**
@@ -290,6 +264,19 @@ class GameLangBaseListener implements GameLangListener
 	 * The default implementation does nothing.
 	 */
 	public function exitLogicExpression(Context\LogicExpressionContext $context): void {}
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function enterMoveStatement(Context\MoveStatementContext $context): void {}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function exitMoveStatement(Context\MoveStatementContext $context): void {}
 
 	/**
 	 * {@inheritdoc}

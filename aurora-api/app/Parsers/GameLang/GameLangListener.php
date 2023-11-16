@@ -143,26 +143,6 @@ interface GameLangListener extends ParseTreeListener {
 	 */
 	public function exitAssignment(Context\AssignmentContext $context): void;
 	/**
-	 * Enter a parse tree produced by {@see GameLangParser::afterTimer()}.
-	 * @param $context The parse tree.
-	 */
-	public function enterAfterTimer(Context\AfterTimerContext $context): void;
-	/**
-	 * Exit a parse tree produced by {@see GameLangParser::afterTimer()}.
-	 * @param $context The parse tree.
-	 */
-	public function exitAfterTimer(Context\AfterTimerContext $context): void;
-	/**
-	 * Enter a parse tree produced by {@see GameLangParser::everyTimer()}.
-	 * @param $context The parse tree.
-	 */
-	public function enterEveryTimer(Context\EveryTimerContext $context): void;
-	/**
-	 * Exit a parse tree produced by {@see GameLangParser::everyTimer()}.
-	 * @param $context The parse tree.
-	 */
-	public function exitEveryTimer(Context\EveryTimerContext $context): void;
-	/**
 	 * Enter a parse tree produced by {@see GameLangParser::functionCall()}.
 	 * @param $context The parse tree.
 	 */
@@ -222,4 +202,14 @@ interface GameLangListener extends ParseTreeListener {
 	 * @param $context The parse tree.
 	 */
 	public function exitLogicExpression(Context\LogicExpressionContext $context): void;
+	/**
+	 * Enter a parse tree produced by {@see GameLangParser::moveStatement()}.
+	 * @param $context The parse tree.
+	 */
+	public function enterMoveStatement(Context\MoveStatementContext $context): void;
+	/**
+	 * Exit a parse tree produced by {@see GameLangParser::moveStatement()}.
+	 * @param $context The parse tree.
+	 */
+	public function exitMoveStatement(Context\MoveStatementContext $context): void;
 }

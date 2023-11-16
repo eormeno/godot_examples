@@ -17,9 +17,8 @@ statement
 		| ifStatement
 		| assignment
 		| lineFunctionCall
-		| afterTimer
-		| everyTimer
-		| consoleStatement;
+		| consoleStatement
+        | moveStatement;
 
 printable
         : STRING
@@ -47,12 +46,6 @@ elseStatement
 
 assignment
         : ID EQUAL expression;
-
-afterTimer
-        : 'LUEGO' ('DE')? expression timeUnit statement* END;
-
-everyTimer
-        : 'CADA' expression timeUnit statement* END;
 
 functionCall
         : ID LPAREN (expression (',' expression)*)? RPAREN;
@@ -94,6 +87,9 @@ logicExpression
 		|   ID GRT expression
 		|   ID GTE expression;
 
+moveStatement
+        : MOVE TO? expression;
+
 // Lexer rules
 ID:         [a-z_][a-z0-9_]*;
 NUMBER:     ('0' .. '9') + ('.' ('0' .. '9') +)? ;
@@ -107,6 +103,9 @@ ELSE:       ('ELSE'|'SINO');
 WHILE:      ('WHILE'|'MIENTRAS');
 CONSOLE:    ('CONSOLE'|'CONSOLA'|'ESCRIBE'|'WRITE');
 SPRITE:     ('SPRITE'|'PERSONAJE'|'OBJETO'|'OBJECT');
+MOVE:       ('MOVE'|'MOVER');
+ROTATE:     ('ROTATE'|'ROTAR');
+TO:         ('TO'|'HASTA'|'A');
 END:        ('END'|'FIN');
 NL:         'NL';
 TB:         'TB';

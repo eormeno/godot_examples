@@ -10,7 +10,7 @@ use Antlr\Antlr4\Runtime\Tree\ParseTreeWalker;
 use App\Parsers\GameLang\GameLangErrorListener;
 use App\Parsers\GameLang\GameLangSpecificListener;
 
-$fileName = 'example-4';
+$fileName = 'example-move-1';
 
 $input = InputStream::fromPath("$fileName.gl");
 $lexer = new GameLangLexer($input);
