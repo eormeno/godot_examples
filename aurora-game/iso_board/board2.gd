@@ -162,8 +162,8 @@ func _on_tree_item_edited():
 	var item : TreeItem =  tree.get_selected()
 	var new_name : String = item.get_text(0)
 	var old_name : String = item.get_metadata(0).name
+	if new_name == old_name : return
 	var id : int = item.get_metadata(0).id
-	print (new_name, old_name, id)
 	var response = await connection.rename_resource(id, new_name)
 	if response.has("errors"):
 		item.set_text(0, old_name)

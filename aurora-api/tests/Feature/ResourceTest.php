@@ -46,7 +46,7 @@ class ResourceTest extends TestCase
             'type' => 'file',
             'extension' => 'script',
         ]);
-        echo(json_encode($resourcesResponse['resource'], JSON_PRETTY_PRINT));
+        // echo(json_encode($resourcesResponse['resource'], JSON_PRETTY_PRINT));
         $resourcesResponse->assertStatus(200)->assertJson(['resource' => true]);
     }
 
@@ -127,6 +127,22 @@ class ResourceTest extends TestCase
         ]);
         // assert the response has the Request-ID header
         $resourcesResponse->assertHeader('Request-ID', 1);
+    }
+
+    public function testDeleteResource() {
+        $loginResponse = $this->getLoginResponse();
+        $headers = [
+            'Authorization' => 'Bearer ' . $loginResponse['token'],
+            'Accept' => 'application/json',
+            'Request-ID' => 1
+        ];
+        $resourcesResponse = $this->withHeaders($headers)->delete('/api/resources/3');
+        // echo (json_encode($resourcesResponse, JSON_PRETTY_PRINT));
+        $resourcesResponse->assertStatus(200)->assertJson([
+            'resource' => [
+                'id' => 3
+            ]
+        ]);
     }
 
     public function getLoginResponse()

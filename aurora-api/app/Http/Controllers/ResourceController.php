@@ -68,7 +68,15 @@ class ResourceController extends Controller
 
         $request_id = request()->header('Request-ID');
         return response()->json([
-            'resource' => $resource
+            'resource' => [
+                'id' => $resource->id,
+                'name' => $resource->name,
+                'type' => $resource->type,
+                'content' => $resource->content,
+                'comment' => $resource->comment,
+                'extension' => $resource->extension,
+                'mime_type' => $resource->mime_type,
+            ]
         ])->withHeaders(['Request-ID' => $request_id,]);
     }
 
@@ -90,8 +98,6 @@ class ResourceController extends Controller
         }
         return $name;
     }
-
-
 
     /**
      * Display the specified resource.
@@ -159,11 +165,15 @@ class ResourceController extends Controller
         return ["compiled" => $listener->getCode()];
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Resource $resource)
     {
-        //
+        $request_id = request()->header('Request-ID');
+        $resource->delete();
+        return response()->json([
+            'resource' => [
+                'id' => $resource->id,
+                'name' => $resource->name,
+            ]
+        ])->withHeaders(['Request-ID' => $request_id,]);
     }
 }

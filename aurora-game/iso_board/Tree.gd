@@ -5,7 +5,8 @@ const SKIPPABLE_ATTRIBUTES : Array[String] = ["id", "type", "name", "content", "
 enum PopupId {
 	RENAME = 1,
 	DELETE = 2,
-	CREATE = 3,
+	CREATE_FILE = 3,
+	CREATE_FOLDER = 4
 }
 
 @export var folder_icon : Texture2D
@@ -22,19 +23,43 @@ func _on_user_resources_response(response):
 	if response.has("errors"):
 		printerr(response.errors)
 		return
-#	print(JSON.stringify(response.folder, '\t'))
 	root = add_elements(response.folder)
 	root.select(0)
 	popup = PopupMenu.new()
+	popup.add_item("Nuevo script", PopupId.CREATE_FILE)
+	popup.add_item("Nueva carpeta", PopupId.CREATE_FOLDER)
+	popup.add_separator()
 	popup.add_item("Renombrar", PopupId.RENAME)
-	popup.add_item("Nuevo", PopupId.CREATE)
+	popup.add_separator()
+	popup.add_item("Eliminar", PopupId.DELETE)
 	popup.connect("id_pressed", _menu_pressed)
 	add_child(popup)
 
-func _menu_pressed(id):
-	if id == PopupId.RENAME:
-		var item : TreeItem = get_selected()
-		item.set_editable(0, true)
+func _menu_pressed(menu_id: PopupId):
+	var item : TreeItem = get_selected()
+	var id : int = item.get_metadata(0).id
+	match menu_id:
+		PopupId.RENAME:
+			item.set_editable(0, true)
+			item.select(0)
+		PopupId.CREATE_FILE:
+			var response = await connection.create_resource(id, "file")
+			var new_resource_file : Dictionary = response.resource
+			var child_item : TreeItem = create_item(item)
+			add_elements(new_resource_file,new_resource_file.name, child_item)
+			child_item.select(0)
+		PopupId.CREATE_FOLDER:
+			var response = await connection.create_resource(id, "folder")
+			var new_resource_file : Dictionary = response.resource
+			var child_item : TreeItem = create_item(item)
+			add_elements(new_resource_file,new_resource_file.name, child_item)
+			child_item.select(0)
+		PopupId.DELETE:
+			var response = await connection.remove_resource(id)
+			if response.has("errors"):
+				printerr(response.errors)
+				return
+			item.get_parent().remove_child(item)
 
 func _input(event):
 	if !has_focus(): return
@@ -49,8 +74,6 @@ func add_elements(item: Dictionary, item_name : String = "/", parent_item : Tree
 	parent_item.set_icon(0, icon)
 	parent_item.set_metadata(0, item)
 	if item.has("comment"):	parent_item.set_tooltip_text(0, item.comment)
-#	parent_item.set_editable(0, true)
-		
 	for item_key_name in item:
 		if SKIPPABLE_ATTRIBUTES.has(item_key_name): continue
 		var child_item : TreeItem = create_item(parent_item)

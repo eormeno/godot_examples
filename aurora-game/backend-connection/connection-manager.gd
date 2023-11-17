@@ -35,3 +35,19 @@ func rename_resource(id : int, new_name : String):
 	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_PATCH, json)
 	var response : Dictionary = await request.completed
 	return response
+	
+func create_resource(parent_id : int, type : String):
+	var route = RESOURCES_URL + "/" + str(parent_id) + "/create"
+	var param : Dictionary = {type = type}
+	if type == "file": param.extension = "script"
+	var json = JSON.stringify(param)
+	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_POST, json)
+	var response : Dictionary = await request.completed
+	return response
+
+func remove_resource(id : int):
+	var route = RESOURCES_URL + "/" + str(id)
+	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_DELETE)
+	var response : Dictionary = await request.completed
+	return response
+	
