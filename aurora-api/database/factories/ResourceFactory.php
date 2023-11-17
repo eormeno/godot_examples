@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ResourceFactory extends Factory
 {
     const EXAMPLE_1 = "
-    PERSONAJE bot PARAMETROS juego
+    PERSONAJE bot
         altura = 100.00
 	    velocidad = 1
         velocidad = velocidad + 1
@@ -36,7 +36,7 @@ class ResourceFactory extends Factory
         CONSOLA \"Llegamos al final. \" altura
     FIN";
     const EXAMPLE_2 = "
-    PERSONAJE bot PARAMETROS juego
+    PERSONAJE bot
         CONSOLA \"Hola mundo\"
     FIN";
     const TEMPLATE_ALT = [

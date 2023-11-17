@@ -35,6 +35,21 @@ class ResourceTest extends TestCase
         $resourcesResponse->assertStatus(200)->assertJson(['resource' => true]);
     }
 
+    public function testCreateResource() {
+        $loginResponse = $this->getLoginResponse();
+        $headers = [
+            'Authorization' => 'Bearer ' . $loginResponse['token'],
+            'Accept' => 'application/json',
+            'Request-ID' => 1
+        ];
+        $resourcesResponse = $this->withHeaders($headers)->post('/api/resources/2/create', [
+            'type' => 'file',
+            'extension' => 'script',
+        ]);
+        echo(json_encode($resourcesResponse['resource'], JSON_PRETTY_PRINT));
+        $resourcesResponse->assertStatus(200)->assertJson(['resource' => true]);
+    }
+
     public function testUpdateOneResource()
     {
         $loginResponse = $this->getLoginResponse();

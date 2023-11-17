@@ -9,6 +9,7 @@ use Antlr\Antlr4\Runtime\InputStream;
 use App\Parsers\GameLang\GameLangLexer;
 use App\Parsers\GameLang\GameLangParser;
 use Antlr\Antlr4\Runtime\CommonTokenStream;
+use App\Http\Requests\ResourceCreateRequest;
 use App\Http\Requests\ResourceRenameRequest;
 use Antlr\Antlr4\Runtime\Tree\ParseTreeWalker;
 use App\Parsers\GameLang\GameLangErrorListener;
@@ -51,10 +52,46 @@ class ResourceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ResourceCreateRequest $request, Resource $resource)
     {
-        //
+        $parent = request()->route('resource');
+        $resource = new Resource();
+        $resource->parent_id = $parent->id;
+        $resource->type = $request->type;
+        $resource->mime_type = "text/plain";
+        $resource->extension = $request->type === 'file' ? $request->extension : null;
+        $resource->content = "";
+        $resource->comment = "";
+        $resource->minimum_player_level = 1;
+        $resource->name = $this->uniqueName($resource);
+        $resource->save();
+
+        $request_id = request()->header('Request-ID');
+        return response()->json([
+            'resource' => $resource
+        ])->withHeaders(['Request-ID' => $request_id,]);
     }
+
+    /**
+     * Create a new name for the resource, unique in the folder.
+     */
+    public function uniqueName(Resource $resource)
+    {
+        $parent = $resource->parent;
+        if ($resource->type === 'folder') {
+            $name = "carpeta";
+        } else {
+            $name = "script";
+        }
+        $i = 1;
+        while ($parent->children()->where('name', '=', $name)->count() > 0) {
+            $name = $name . '-' . $i;
+            $i++;
+        }
+        return $name;
+    }
+
+
 
     /**
      * Display the specified resource.
