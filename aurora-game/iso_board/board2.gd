@@ -3,9 +3,9 @@ extends Node2D
 var player : Area2D
 var tree : Tree
 var terminal : Terminal
-var current_dir : TreeItem
-var current_file: TreeItem
-var current_script_id : int
+var current_selected_dir : TreeItem
+var current_selected_file: TreeItem
+var current_editing_file : TreeItem
 var executor : Executor
 var tool : Dictionary = {}
 
@@ -36,7 +36,7 @@ func _on_command_entered(command : String, callback : Callable):
 
 func cmd_dir(_arg : PackedStringArray):
 	var list : String = ""
-	for item in current_dir.get_children():
+	for item in current_selected_dir.get_children():
 		list += "[" + item.get_metadata(0).type + "]\t" + item.get_text(0) + "\n"
 	return { message = list, status = Terminal.SUCCESS }
 	
@@ -44,7 +44,7 @@ func cmd_cd(arg : PackedStringArray):
 	var path : String = arg[1]
 	var ret = { message = "", status = Terminal.SUCCESS }
 	if path == "..":
-		var parent = current_dir.get_parent()
+		var parent = current_selected_dir.get_parent()
 		if parent:
 			parent.select(0)
 	else:
@@ -64,18 +64,18 @@ func cmd_edit(arg : PackedStringArray):
 	if arg.size() != 2:
 		ret.message = "El comando " + arg[0] + " requiere el nombre del script"
 		return ret
-	var item = find_item(arg[1])
+	var item : TreeItem = find_item(arg[1])
 	if !item:
 		ret.message = "No encontré el script " + arg[1] + " en la carpeta actual"
 		return ret
+	item.select(0)
 	var item_info = item.get_metadata(0)
 	if item_info.type != "file":
 		ret.message = arg[1] + " se una carpeta. No se puede editar"
 		return ret
-		
-	current_script_id = item_info.id
+	current_editing_file = item
 	$StateChart.send_event("loaded_script")
-	var resource = await connection.get_resource(current_script_id)
+	var resource = await connection.get_resource(get_script_id())
 	%code_editor.text = resource.resource.content
 	%tab_container.current_tab = 1
 	ret.status = Terminal.SUCCESS
@@ -87,10 +87,10 @@ func cmd_save(arg : PackedStringArray):
 	if arg.size() != 1:
 		ret.message = "El comando " + arg[0] + " no requiere ningún parámetro"
 		return ret
-	if current_script_id == 0:
+	if get_script_id() == 0:
 		ret.message = "Nada que guardar en este momento"
 		return ret
-	var _resource = await connection.update_resource_content(current_script_id, %code_editor.text)
+	var _resource = await connection.update_resource_content(get_script_id(), %code_editor.text)
 	ret.message = "Los cambios fueron guardados"
 	ret.status = Terminal.SUCCESS
 	return ret
@@ -101,7 +101,7 @@ func cmd_run(arg : PackedStringArray):
 	if arg.size() != 1:
 		ret.message = "El comando " + arg[0] + " no requiere ningún parámetro"
 		return ret
-	var response = await connection.get_compiled_script(current_script_id)
+	var response = await connection.get_compiled_script(get_script_id())
 	if response.has("errors"):
 		var errs = ""
 		for e in response.errors:
@@ -114,7 +114,7 @@ func cmd_run(arg : PackedStringArray):
 	return ret
 
 func find_item(item_name : String):
-	for item in current_dir.get_children():
+	for item in current_selected_dir.get_children():
 		if item.get_text(0) == item_name:
 			return item
 	return null
@@ -146,18 +146,36 @@ func _on_editing_script_state_entered():
 	tool.run.can = true
 	tool.save.can = true
 	_update_ui_states()
+	
+func get_script_id():
+	if !current_editing_file: return 0
+	return current_editing_file.get_metadata(0).id
 
 func _on_tree_item_activated():
 	var item : TreeItem = tree.get_selected()
-	if current_dir == item:	return
-	if current_file == item:
-		current_file.set_editable(0, true)
-		return
-	current_dir = item
+	if current_editing_file == item : return
 	if item.get_metadata(0).type != "folder":
-		current_dir = item.get_parent()
-		current_file = item
+		current_editing_file = item
 		terminal.submit('edit ' + item.get_text(0))
+
+func _on_tree_item_edited():
+	var item : TreeItem =  tree.get_selected()
+	var new_name : String = item.get_text(0)
+	var old_name : String = item.get_metadata(0).name
+	var id : int = item.get_metadata(0).id
+	print (new_name, old_name, id)
+	var response = await connection.rename_resource(id, new_name)
+	if response.has("errors"):
+		item.set_text(0, old_name)
+		terminal.out(response.errors.name[0], Terminal.ERROR)
+	item.set_editable(0, false)
+
+func _on_tree_item_selected():
+	var item : TreeItem = tree.get_selected()
+	current_selected_dir = item
+	if item.get_metadata(0).type != "folder":
+		current_selected_dir = item.get_parent()
+		current_selected_file = item
 	else:
 		terminal.set_input("")
-	terminal.set_prompt(tree.get_full_path(current_dir))
+	terminal.set_prompt(tree.get_full_path(current_selected_dir))

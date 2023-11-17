@@ -28,3 +28,10 @@ func get_compiled_script(id : int):
 	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_GET)
 	var response : Dictionary = await request.completed
 	return response
+	
+func rename_resource(id : int, new_name : String):
+	var route = RESOURCES_URL + "/" + str(id) + "/rename"
+	var json = JSON.stringify({ name = new_name })
+	var request : ApiRequest = enqueue_request(route, HTTPClient.METHOD_PATCH, json)
+	var response : Dictionary = await request.completed
+	return response

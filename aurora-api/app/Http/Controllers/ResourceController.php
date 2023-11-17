@@ -30,6 +30,7 @@ class ResourceController extends Controller
     {
         $folderTree = [];
         $folderTree['id'] = $folder->id;
+        $folderTree['name'] = $folder->name;
         $folderTree['type'] = $folder->type;
         if ($folder->type !== 'folder') {
             $folderTree['content'] = $folder->content;

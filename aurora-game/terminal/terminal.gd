@@ -28,10 +28,10 @@ func set_prompt(directory : String):
 	var dir = directory.lstrip(' ').rstrip(' ')
 	prompt.text = dir + default_prompt
 	
-func set_input(script_name : String):
+func set_input(script_name : String, focus : bool = false):
 	input.text = script_name
 	input.caret_column = script_name.length()
-	input.grab_focus()
+	if focus: input.grab_focus()
 	
 func submit(command : String):
 	input.text = command
