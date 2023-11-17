@@ -11,8 +11,8 @@ func _ready():
 	connection.get_user_resources(_on_user_resources_response)
 	
 func _on_user_resources_response(response):
-	if response.has("error"):
-		printerr(response.error)
+	if response.has("errors"):
+		printerr(response.errors)
 		return
 #	print(JSON.stringify(response.folder, '\t'))
 	root = add_elements(response.folder)
@@ -25,17 +25,13 @@ func add_elements(item: Dictionary, item_name : String = "/", parent_item : Tree
 	parent_item.set_icon(0, icon)
 	parent_item.set_metadata(0, item)
 	if item.has("comment"):	parent_item.set_tooltip_text(0, item.comment)
+#	parent_item.set_editable(0, true)
 		
 	for item_key_name in item:
 		if SKIPPABLE_ATTRIBUTES.has(item_key_name): continue
 		var child_item : TreeItem = create_item(parent_item)
 		add_elements(item[item_key_name], item_key_name, child_item)
 	return parent_item
-
-func load_script(script_name : String):
-	var script_path = "res://iso_board/" + script_name
-	var file = FileAccess.open(script_path, FileAccess.READ)
-	return file.get_as_text()
 	
 func get_full_path(item : TreeItem):
 	var ret = ""

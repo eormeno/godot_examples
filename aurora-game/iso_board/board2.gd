@@ -4,6 +4,7 @@ var player : Area2D
 var tree : Tree
 var terminal : Terminal
 var current_dir : TreeItem
+var current_file: TreeItem
 var current_script_id : int
 var executor : Executor
 var tool : Dictionary = {}
@@ -33,17 +34,6 @@ func _on_command_entered(command : String, callback : Callable):
 		var ret = await self.call("cmd_" + tokens[0], tokens)
 		callback.call(ret.message, ret.status)
 
-#func move_to(target : String):
-#	var success : bool
-#	var ret = { message = "", status = Terminal.SUCCESS }
-#	success = player.set_target(target)
-#	if !success:
-#		ret.message = "Ahora no puedo realizar esa acción"
-#		ret.status = Terminal.WARNING
-#	else:
-#		await player.target_reached
-#	return ret
-	
 func cmd_dir(_arg : PackedStringArray):
 	var list : String = ""
 	for item in current_dir.get_children():
@@ -85,7 +75,6 @@ func cmd_edit(arg : PackedStringArray):
 		
 	current_script_id = item_info.id
 	$StateChart.send_event("loaded_script")
-	
 	var resource = await connection.get_resource(current_script_id)
 	%code_editor.text = resource.resource.content
 	%tab_container.current_tab = 1
@@ -130,16 +119,6 @@ func find_item(item_name : String):
 			return item
 	return null
 
-func _on_tree_item_selected():
-	var item : TreeItem = tree.get_selected()
-	current_dir = item
-	if item.get_metadata(0).type != "folder":
-		current_dir = item.get_parent()
-		terminal.submit('edit ' + item.get_text(0))
-	else:
-		terminal.set_input("")
-	terminal.set_prompt(tree.get_full_path(current_dir))
-
 func _on_save_button_pressed():
 	terminal.submit("save")
 
@@ -167,3 +146,18 @@ func _on_editing_script_state_entered():
 	tool.run.can = true
 	tool.save.can = true
 	_update_ui_states()
+
+func _on_tree_item_activated():
+	var item : TreeItem = tree.get_selected()
+	if current_dir == item:	return
+	if current_file == item:
+		current_file.set_editable(0, true)
+		return
+	current_dir = item
+	if item.get_metadata(0).type != "folder":
+		current_dir = item.get_parent()
+		current_file = item
+		terminal.submit('edit ' + item.get_text(0))
+	else:
+		terminal.set_input("")
+	terminal.set_prompt(tree.get_full_path(current_dir))

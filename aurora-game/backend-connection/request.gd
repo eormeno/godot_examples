@@ -47,4 +47,4 @@ func call_callback(response : Dictionary):
 	self.queue_free()
 
 func emit_timeout():
-	call_callback({ error = "timeout" })
+	call_callback({ errors = ["timeout"] })

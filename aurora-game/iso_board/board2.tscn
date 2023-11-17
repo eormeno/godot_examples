@@ -486,4 +486,4 @@ script = ExtResource("5_isq2r")
 [connection signal="state_entered" from="StateChart/RW Run states/Editing script" to="." method="_on_editing_script_state_entered"]
 [connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer/run_button" to="." method="_on_run_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container/Editor/editor_tool_bar/GridContainer/save_button" to="." method="_on_save_button_pressed"]
-[connection signal="item_selected" from="CanvasLayer/Control/VSplitContainer/PanelContainer/HSplitContainer/PanelContainer2/Tree" to="." method="_on_tree_item_selected"]
+[connection signal="item_activated" from="CanvasLayer/Control/VSplitContainer/PanelContainer/HSplitContainer/PanelContainer2/Tree" to="." method="_on_tree_item_activated"]
