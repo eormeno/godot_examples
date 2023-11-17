@@ -277,6 +277,19 @@ class GameLangBaseListener implements GameLangListener
 	 * The default implementation does nothing.
 	 */
 	public function exitMoveStatement(Context\MoveStatementContext $context): void {}
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function enterPlaceStatement(Context\PlaceStatementContext $context): void {}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * The default implementation does nothing.
+	 */
+	public function exitPlaceStatement(Context\PlaceStatementContext $context): void {}
 
 	/**
 	 * {@inheritdoc}

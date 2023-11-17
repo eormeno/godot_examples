@@ -694,6 +694,13 @@ class GameLangSpecificListener extends GameLangBaseListener
         $this->insAwait($line, "arrived");
     }
 
+    public function exitPlaceStatement(Context\PlaceStatementContext $context): void
+    {
+        $line = $context->getStart()->getLine();
+        $this->insSys($line, "place");
+        $this->insAwait($line, "placed");
+    }
+
     public function exitProgram(Context\ProgramContext $context): void
     {
         $line = $context->getStop()->getLine();

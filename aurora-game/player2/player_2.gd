@@ -2,8 +2,6 @@ extends Area2D
 
 @export var pathNode : PathNode
 
-signal target_reached
-
 var moving : bool = false
 var target : Vector2
 var speed : float = 200
@@ -11,14 +9,18 @@ var debug_label : Label
 var target_path_node : PathNode
 var previous_nodes : Array[PathNode]
 var is_backing : bool
+var _executor : Executor
 
 func _ready():
 	$AnimatedSprite2D.animation = "down"
 	$AnimatedSprite2D.play()
 	debug_label = $Label
 	add_timer()
-	position = pathNode.position
-	pass
+	place(0)
+	
+func set_executor(executor : Executor):
+	_executor = executor
+	add_child(_executor)
 	
 func add_timer():
 	var timer := Timer.new()
@@ -35,16 +37,29 @@ func _on_timer_timeout() -> void:
 func check_destination(target_name : String) -> bool:
 	return pathNode.get_destinations().has(target_name)
 	
-func set_target(target_name : String) -> bool:
-	if target_name == PathNode.BACK_COMMAND:
+func place(number: int) -> bool:
+	var ch = get_parent().find_child(str(number))
+	var ret = ch != null
+	if ret:
+		pathNode = ch
+		position = pathNode.position
+		if _executor: _executor.event("placed")
+	else:
+		if _executor: _executor.error("No existe el lugar %s" % number)
+	return ret
+	
+func move(target_name : String) -> bool:
+	if target_name == "back" or target_name == "atras":
 		var previous = previous_nodes.pop_front()
 		if not previous:
+			_executor.error("No puedo retroceder a %s" % target_name)
 			return false
 		target_path_node = previous
 		is_backing = true
 	else:
 		target_path_node = pathNode.get_destination(target_name)
 		if not target_path_node:
+			_executor.error("No puedo moverme a %s" % target_name)
 			return false
 		is_backing = false
 	target = target_path_node.position
@@ -67,7 +82,7 @@ func _process(delta):
 		pathNode = target_path_node
 		pathNode.enable_destinations()
 		turn_back_node(true)
-		emit_signal("target_reached")
+		_executor.event("arrived")
 
 func turn_back_node(on : bool):
 	if not previous_nodes.is_empty():

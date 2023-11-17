@@ -4,6 +4,8 @@ var stack : Array
 var call_stack : Array[MemoryBlock]
 var compiled_code:Array = []
 var _stop:bool = true
+var _event:String = ""
+var _error:String = ""
 var _i = 0
 var elapsed : float
 var previous : float
@@ -30,7 +32,7 @@ func push(reg: int, data = null) -> void:
 	else:
 		stack.append(get_block().get_reg(reg))
 
-func pop(reg: int, identificator = null) -> void:
+func pop(reg: int, identificator = null):
 	if stack.is_empty():
 		push_error("Stack is empty.")
 		return
@@ -39,6 +41,7 @@ func pop(reg: int, identificator = null) -> void:
 		get_block().set_heap(identificator, popped_data)
 	else:
 		get_block().set_reg(reg, popped_data)
+	return popped_data
 
 func set_reg(reg: int, data, icl: int = 0) -> void:
 	get_block().set_reg(reg, data, icl)
@@ -76,6 +79,12 @@ func reset():
 	_i = 0
 	call_stack.clear()
 	push_call_stack()
+	
+func event(evt:String):
+	_event = evt
+	
+func error(message: String):
+	_error = message
 
 func _process(delta):
 	if _stop: return
@@ -192,6 +201,24 @@ func run_code(code:Array, i:int):
 			pop_call_stack()
 		"LCALL":
 			i = data - 1
+		"SYS":
+			if data == "move":
+				var destination = pop(0)
+				get_parent().call(data, destination)
+			elif  data == "place":
+				var num = pop(0)
+				get_parent().call(data, num)
+		"AWAIT":
+			if _error != "":
+				var res = "En línea %s: %s" % [line, _error]
+				_error = ""
+				_terminal.out(res, Terminal.ERROR)
+				i = code.size() - 1
+				return i
+			if _event == data:
+				_event = ""
+			else:
+				i = i - 1
 		"END":
 			pop_call_stack()
 	return i

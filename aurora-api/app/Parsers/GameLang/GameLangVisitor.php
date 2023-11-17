@@ -131,24 +131,6 @@ interface GameLangVisitor extends ParseTreeVisitor
 	public function visitAssignment(Context\AssignmentContext $context);
 
 	/**
-	 * Visit a parse tree produced by {@see GameLangParser::afterTimer()}.
-	 *
-	 * @param Context\AfterTimerContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitAfterTimer(Context\AfterTimerContext $context);
-
-	/**
-	 * Visit a parse tree produced by {@see GameLangParser::everyTimer()}.
-	 *
-	 * @param Context\EveryTimerContext $context The parse tree.
-	 *
-	 * @return mixed The visitor result.
-	 */
-	public function visitEveryTimer(Context\EveryTimerContext $context);
-
-	/**
 	 * Visit a parse tree produced by {@see GameLangParser::functionCall()}.
 	 *
 	 * @param Context\FunctionCallContext $context The parse tree.
@@ -201,4 +183,22 @@ interface GameLangVisitor extends ParseTreeVisitor
 	 * @return mixed The visitor result.
 	 */
 	public function visitLogicExpression(Context\LogicExpressionContext $context);
+
+	/**
+	 * Visit a parse tree produced by {@see GameLangParser::moveStatement()}.
+	 *
+	 * @param Context\MoveStatementContext $context The parse tree.
+	 *
+	 * @return mixed The visitor result.
+	 */
+	public function visitMoveStatement(Context\MoveStatementContext $context);
+
+	/**
+	 * Visit a parse tree produced by {@see GameLangParser::placeStatement()}.
+	 *
+	 * @param Context\PlaceStatementContext $context The parse tree.
+	 *
+	 * @return mixed The visitor result.
+	 */
+	public function visitPlaceStatement(Context\PlaceStatementContext $context);
 }

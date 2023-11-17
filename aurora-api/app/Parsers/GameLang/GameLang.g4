@@ -18,6 +18,7 @@ statement
 		| assignment
 		| lineFunctionCall
 		| consoleStatement
+        | placeStatement
         | moveStatement;
 
 printable
@@ -90,6 +91,9 @@ logicExpression
 moveStatement
         : MOVE TO? expression;
 
+placeStatement
+        : PLACE AT? expression;
+
 // Lexer rules
 ID:         [a-z_][a-z0-9_]*;
 NUMBER:     ('0' .. '9') + ('.' ('0' .. '9') +)? ;
@@ -105,7 +109,9 @@ CONSOLE:    ('CONSOLE'|'CONSOLA'|'ESCRIBE'|'WRITE');
 SPRITE:     ('SPRITE'|'PERSONAJE'|'OBJETO'|'OBJECT');
 MOVE:       ('MOVE'|'MOVER');
 ROTATE:     ('ROTATE'|'ROTAR');
+PLACE:      ('PLACE'|'UBICAR');
 TO:         ('TO'|'HASTA'|'A');
+AT:         ('AT'|'EN');
 END:        ('END'|'FIN');
 NL:         'NL';
 TB:         'TB';
