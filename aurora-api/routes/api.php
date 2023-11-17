@@ -18,6 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/resources/{resource}', [ResourceController::class, 'update']);
     Route::delete('/resources/{resource}', [ResourceController::class, 'destroy']);
     Route::get('/resources/{resource}/compiled', [ResourceController::class, 'compile']);
+    Route::patch('/resources/{resource}/rename', [ResourceController::class, 'rename']);
 });
 
 Route::post('/register', [AuthController::class, 'register']);

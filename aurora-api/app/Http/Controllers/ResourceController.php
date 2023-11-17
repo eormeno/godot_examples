@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Antlr\Antlr4\Runtime\CommonTokenStream;
-use Antlr\Antlr4\Runtime\InputStream;
-use Antlr\Antlr4\Runtime\Tree\ParseTreeWalker;
-use App\Models\Resource;
 use App\Models\User;
-use App\Parsers\GameLang\GameLangErrorListener;
+use App\Models\Resource;
+use Illuminate\Http\Request;
+use Antlr\Antlr4\Runtime\InputStream;
 use App\Parsers\GameLang\GameLangLexer;
 use App\Parsers\GameLang\GameLangParser;
+use Antlr\Antlr4\Runtime\CommonTokenStream;
+use App\Http\Requests\ResourceRenameRequest;
+use Antlr\Antlr4\Runtime\Tree\ParseTreeWalker;
+use App\Parsers\GameLang\GameLangErrorListener;
 use App\Parsers\GameLang\GameLangSpecificListener;
-use Illuminate\Http\Request;
 
 class ResourceController extends Controller
 {
@@ -88,6 +89,17 @@ class ResourceController extends Controller
         $script = $resource->content;
         $res = $this->compileScript($script);
         return response()->json($res)->withHeaders(['Request-ID' => $request_id]);
+    }
+
+    public function rename(ResourceRenameRequest $request, Resource $resource)
+    {
+        $request_id = request()->header('Request-ID');
+        $resource->update($request->only('name'));
+        return response()->json([
+            'resource' => [
+                'name' => $resource->name
+            ]
+        ])->withHeaders(['Request-ID' => $request_id,]);
     }
 
     private function compileScript(string $script)
