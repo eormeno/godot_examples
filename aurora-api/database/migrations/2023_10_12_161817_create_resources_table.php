@@ -20,7 +20,6 @@ return new class extends Migration
             $table->text('content')->nullable();
             $table->text('comment')->nullable();
             $table->text('compiled')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('resources')->onDelete('cascade');
             $table->integer('minimum_player_level')->default(1);
             $table->timestamps();
