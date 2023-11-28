@@ -3,7 +3,7 @@ class_name BaseConnectionManager extends Control
 signal connected
 signal disconnected
 
-const BASE_URL : String = "http://127.0.0.1:8000/api/"
+const BASE_URL : String = "http://216.238.101.88/api/"
 const PING_URL:String = BASE_URL + "ping"
 
 const PING_FREQUENCY : float = 2
@@ -31,10 +31,10 @@ func _process(delta):
 			if request_node.is_timeout():
 				requests_queue.erase(rid)
 				request_node.emit_timeout()
-				continue
+			continue
 		if !processing_request:
-			$HTTPRequest.request(request_node.url, request_node.headers, request_node.method, request_node.data)
 			processing_request = true
+			$HTTPRequest.request(request_node.url, request_node.headers, request_node.method, request_node.data)
 			request_node.request_sent()
 			break
 
@@ -43,6 +43,7 @@ func _on_request_completed(result : int, _response_code : int, headers : PackedS
 	if result != 0:
 		emit_signal("disconnected")
 		return
+	
 	var req_id = find_in_header("Request-ID", headers)
 	if req_id:
 		var json : Dictionary = JSON.parse_string(body.get_string_from_utf8())
