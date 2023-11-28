@@ -3,25 +3,29 @@ class_name BaseConnectionManager extends Control
 signal connected
 signal disconnected
 
-const BASE_URL : String = "http://216.238.101.88/api/"
-const PING_URL:String = BASE_URL + "ping"
+const LOCAL : String = "127.0.0.1:8000"
+const REMOTE : String = "216.238.101.88"
+
+const BASE_URL : String = "http://" + LOCAL + "/api/"
+const PING_URL : String = BASE_URL + "ping"
 
 const PING_FREQUENCY : float = 2
-const CONNECTION_TIMEOUT : float = 5
+const CONNECTION_TIMEOUT : float = 8
 
 var timeout_counter : float = 0
 var requests_queue : Dictionary = {}
 var processing_request : bool
+var ping_answered : bool
 
 func _ready():
-	$HTTPRequest.timeout = 2
+	$HTTPRequest.timeout = CONNECTION_TIMEOUT
 	$HTTPRequest.request_completed.connect(_on_request_completed)
 	emit_signal("disconnected")
 	ping(_on_ping_response)
 	
 func _process(delta):
 	timeout_counter += delta
-	if timeout_counter > PING_FREQUENCY:
+	if timeout_counter > PING_FREQUENCY and ping_answered:
 		timeout_counter = 0
 		ping(_on_ping_response)
 		return
@@ -34,6 +38,7 @@ func _process(delta):
 			continue
 		if !processing_request:
 			processing_request = true
+			print(request_node.url)
 			$HTTPRequest.request(request_node.url, request_node.headers, request_node.method, request_node.data)
 			request_node.request_sent()
 			break
@@ -64,8 +69,10 @@ func find_in_header(key: String, packed : PackedStringArray):
 	return null
 
 func ping(callback : Callable):
+	ping_answered = false
 	enqueue_request(PING_URL, HTTPClient.METHOD_GET,"", callback)
 
 func _on_ping_response(response):
+	ping_answered = true
 	if response.has("pong") and response.pong:
 		emit_signal("connected")

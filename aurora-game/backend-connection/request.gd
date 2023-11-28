@@ -1,5 +1,5 @@
 class_name ApiRequest extends Node
-const RESPONSE_TIMEOUT : float = 4000
+const RESPONSE_TIMEOUT : float = 8000
 static var request_id : int = 0
 
 signal completed(response:Dictionary)
