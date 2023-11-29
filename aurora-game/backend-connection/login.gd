@@ -8,9 +8,13 @@ func _ready():
 	%user.text = persist_user_data.get_data("login.email", "")
 	%password.text = persist_user_data.get_data("login.password", "")
 	%LoginButton.pressed.connect(_on_login_button)
+	%RegisterButton.pressed.connect(_on_register_button)
 	
 func _on_login_button():
 	connection.login(%user.text, %password.text, _on_login_response)
+	
+func _on_register_button():
+	print ("boton")
 	
 func _on_login_response(response):
 	if response.has("token"):
@@ -27,14 +31,9 @@ func _on_login_response(response):
 func _on_connected():
 	%connection_status.text = "connected..."
 	%LoginButton.disabled = false
+	%RegisterButton.disabled = false
 	
 func _on_disconnected():
 	%connection_status.text = "disconnected..."
 	%LoginButton.disabled = true
-
-#func get_resources():
-#	var headers = [
-#		"Content-Type: application/json",
-#		"Authorization: Bearer " + persist_user_data.get_data('token')
-#	]
-#	%HTTPRequest.request(RESOURCES_URL, headers, HTTPClient.METHOD_GET)
+	%RegisterButton.disabled = true

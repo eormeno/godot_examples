@@ -35,10 +35,7 @@ class ResourceFactory extends Factory
 
         CONSOLA \"Llegamos al final. \" altura
     FIN";
-    const EXAMPLE_2 = "
-    PERSONAJE bot
-        CONSOLA \"Hola mundo\"
-    FIN";
+    const EXAMPLE_2 = "PERSONAJE bot\n\tCONSOLA \"Hola mundo\"\nFIN";
     const TEMPLATE_ALT = [
         "type" => "folder",
         "tutorial" => [

@@ -6,21 +6,23 @@ signal disconnected
 const LOCAL : String = "127.0.0.1:8000"
 const REMOTE : String = "216.238.101.88:8000"
 
-const BASE_URL : String = "http://" + REMOTE + "/api/"
+const BASE_URL : String = "http://" + LOCAL + "/api/"
 const PING_URL : String = BASE_URL + "ping"
 
 const PING_FREQUENCY : float = 2
-const CONNECTION_TIMEOUT : float = 8
+const CONNECTION_TIMEOUT : float = 30
 
 var timeout_counter : float = 0
 var requests_queue : Dictionary = {}
 var processing_request : bool
 var ping_answered : bool
+var connected_to_host : bool
 
 func _ready():
 	$HTTPRequest.timeout = CONNECTION_TIMEOUT
 	$HTTPRequest.request_completed.connect(_on_request_completed)
 	emit_signal("disconnected")
+	connected_to_host = false
 	ping(_on_ping_response)
 	
 func _process(delta):
@@ -29,6 +31,7 @@ func _process(delta):
 		timeout_counter = 0
 		ping(_on_ping_response)
 		return
+	
 	for rid in requests_queue.keys():
 		var request_node = requests_queue[rid]
 		if request_node.sent:
@@ -73,5 +76,9 @@ func ping(callback : Callable):
 
 func _on_ping_response(response):
 	ping_answered = true
+#	print (response.url + " " + str(response.delay/1000) + "s")
 	if response.has("pong") and response.pong:
+		connected_to_host = true
 		emit_signal("connected")
+	else:
+		connected_to_host = false

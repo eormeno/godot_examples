@@ -1,0 +1,88 @@
+{
+	"c1:Center": {
+		"p1:Panel": {
+			"v1:VBox": {
+				"h1:HBox": {
+					"connection_status:Label": {}
+				},
+				"h2:HBox": {
+					"user_label:Label": {},
+					"user_edit:LineEdit": {}
+				},
+				"h3:HBox": {
+					"pwd_label:Label": {},
+					"pwd_edit:LineEdit": {}
+				},
+				"h4:HBox": {
+					"message:Label": {}
+				},
+				"h5:HBox": {
+					"login_button:Button": {},
+					"register_button:Button": {}
+				}
+			}
+		}
+	},
+	"attributes" : {
+		"root": {
+			"anchors": "full_rect",
+			"transform" : {
+				"size" : [1280, 720]
+			}
+		},
+		"c1" : {
+			"layout_mode": "position",
+			"transform" : {
+				"position" : [500, 224],
+				"size" : [390, 248]
+			}
+		},
+		"p1" : {
+			"layout": {
+				"min_size": [500, 0]
+			}
+		},
+		"connection_status" : {
+			"text": "Disconnected",
+			"horizontal_alignment": "right",
+			"vertical_alignment": "center"
+		},
+		"user_label" : {
+			"text": "Username:",
+			"horizontal_alignment": "right",
+			"vertical_alignment": "center"
+		},
+		"user_edit" : {
+			"placeholder_text": "Enter your username",
+			"horizontal_alignment": "left",
+			"vertical_alignment": "center"
+		},
+		"pwd_label" : {
+			"text": "Password:",
+			"horizontal_alignment": "right",
+			"vertical_alignment": "center"
+		},
+		"pwd_edit" : {
+			"placeholder_text": "Enter your password",
+			"horizontal_alignment": "left",
+			"vertical_alignment": "center"
+		},
+		"message" : {
+			"horizontal_alignment": "center",
+			"vertical_alignment": "center",
+			"theme_override": {
+				"colors": {
+					"font": [255, 0, 0, 255]
+				}
+			}
+		},
+		"login_button" : {
+			"text": "Login",
+			"disabled": true
+		},
+		"register_button" : {
+			"text": "Register",
+			"disabled": true
+		}
+	}
+}

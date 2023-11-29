@@ -1,5 +1,5 @@
 class_name ApiRequest extends Node
-const RESPONSE_TIMEOUT : float = 8000
+const RESPONSE_TIMEOUT : float = 30000
 static var request_id : int = 0
 
 signal completed(response:Dictionary)
@@ -41,6 +41,8 @@ func is_timeout() -> bool:
 	return (Time.get_ticks_msec() - time) > RESPONSE_TIMEOUT
 	
 func call_callback(response : Dictionary):
+	response.url = url
+	response.delay = Time.get_ticks_msec() - time
 	if callback:
 		callback.call(response)
 	emit_signal("completed", response)

@@ -98,3 +98,11 @@ layout_mode = 2
 size_flags_horizontal = 6
 disabled = true
 text = "Ingresar"
+
+[node name="RegisterButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+disabled = true
+text = "Registrarse"
