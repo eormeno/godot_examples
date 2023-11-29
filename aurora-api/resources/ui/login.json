@@ -1,0 +1,111 @@
+{
+    "c1:Center": {
+        "p1:Panel": {
+            "v1:VBox": {
+                "connection_status_container:HBox": {
+                    "connection_status:Label": {
+                        "attributes": {
+                            "text": "Disconnected",
+                            "horizontal_alignment": "right",
+                            "vertical_alignment": "center"
+                        }
+                    }
+                },
+                "user_container:HBox": {
+                    "user_label:Label": {
+                        "attributes": {
+                            "text": "Username:",
+                            "horizontal_alignment": "right",
+                            "vertical_alignment": "center"
+                        }
+                    },
+                    "user_edit:LineEdit": {
+                        "attributes": {
+                            "placeholder_text": "Enter your username",
+                            "horizontal_alignment": "left",
+                            "vertical_alignment": "center"
+                        }
+                    }
+                },
+                "pass_container:HBox": {
+                    "pwd_label:Label": {
+                        "attributes": {
+                            "text": "Password:",
+                            "horizontal_alignment": "right",
+                            "vertical_alignment": "center"
+                        }
+                    },
+                    "pwd_edit:LineEdit": {
+                        "attributes": {
+                            "placeholder_text": "Enter your password",
+                            "horizontal_alignment": "left",
+                            "vertical_alignment": "center"
+                        }
+                    }
+                },
+                "message_container:HBox": {
+                    "message:Label": {
+                        "attributes": {
+                            "horizontal_alignment": "center",
+                            "vertical_alignment": "center",
+                            "theme_override": {
+                                "colors": {
+                                    "font": [
+                                        255,
+                                        0,
+                                        0,
+                                        255
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "buttons_container:HBox": {
+                    "login_button:Button": {
+                        "attributes": {
+                            "text": "Login",
+                            "disabled": true
+                        }
+                    },
+                    "register_button:Button": {
+                        "attributes": {
+                            "text": "Register",
+                            "disabled": true
+                        }
+                    }
+                }
+            },
+            "attributes": {
+                "layout": {
+                    "min_size": [
+                        500,
+                        0
+                    ]
+                }
+            }
+        },
+        "attributes": {
+            "layout_mode": "position",
+            "transform": {
+                "position": [
+                    500,
+                    224
+                ],
+                "size": [
+                    390,
+                    248
+                ]
+            }
+        }
+    },
+    "attributes": {
+        "anchors": "full_rect",
+        "transform": {
+            "size": [
+                1280,
+                720
+            ]
+        }
+    }
+}

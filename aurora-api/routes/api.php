@@ -11,7 +11,6 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
-
     Route::get('/resources', [ResourceController::class, 'index']);
     Route::post('/resources/{resource}/create', [ResourceController::class, 'store']);
     Route::get('/resources/{resource}', [ResourceController::class, 'show']);
@@ -23,6 +22,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::get('/ping', [BackendController::class, 'ping']);
 Route::get('/server-time', [BackendController::class, 'serverTime']);
+
+Route::get('/ui/{name}', function ($name) {
+    return response()->file(resource_path("ui/{$name}.json"));
+});
