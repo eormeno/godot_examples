@@ -13,7 +13,6 @@ func _on_login_button():
 	connection.login(%user.text, %password.text, _on_login_response)
 	
 func _on_login_response(response):
-	print(response)
 	if response.has("token"):
 		persist_user_data.set_data("token", response.token)
 		persist_user_data.set_data("login.email", %user.text)

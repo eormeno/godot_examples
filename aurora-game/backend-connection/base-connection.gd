@@ -4,9 +4,9 @@ signal connected
 signal disconnected
 
 const LOCAL : String = "127.0.0.1:8000"
-const REMOTE : String = "216.238.101.88"
+const REMOTE : String = "216.238.101.88:8000"
 
-const BASE_URL : String = "http://" + LOCAL + "/api/"
+const BASE_URL : String = "http://" + REMOTE + "/api/"
 const PING_URL : String = BASE_URL + "ping"
 
 const PING_FREQUENCY : float = 2
@@ -38,7 +38,6 @@ func _process(delta):
 			continue
 		if !processing_request:
 			processing_request = true
-			print(request_node.url)
 			$HTTPRequest.request(request_node.url, request_node.headers, request_node.method, request_node.data)
 			request_node.request_sent()
 			break
