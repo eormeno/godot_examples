@@ -3,8 +3,8 @@ class_name BaseConnectionManager extends Control
 signal connected
 signal disconnected
 
-const LOCAL : String = "127.0.0.1:8000"
-const REMOTE : String = "216.238.101.88:8000"
+const LOCAL : String = "127.0.0.1"
+const REMOTE : String = "216.238.101.88"
 
 const BASE_URL : String = "http://" + REMOTE + "/api/"
 const PING_URL : String = BASE_URL + "ping"
