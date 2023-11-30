@@ -12,4 +12,3 @@ grow_vertical = 2
 script = ExtResource("1_qhmd2")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
-use_threads = true
