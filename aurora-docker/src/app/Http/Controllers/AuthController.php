@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\ValidationEmail;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -19,6 +21,7 @@ class AuthController extends Controller
         $user->update(['resource_id' => $folder->id]);
         $user->save();
         $token = $user->createToken('token')->plainTextToken;
+        Mail::to($user->email)->send(new ValidationEmail());
         return response()->json([
             'token' => $token,
             'message' => 'Successfully registered, you can now login',
