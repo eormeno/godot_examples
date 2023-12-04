@@ -1,11 +1,11 @@
 #!/bin/bash
 
 start_containers() {
-    sudo docker start $(docker ps -a -q)
+    sudo docker start $(docker ps -a -q) 2>/dev/null
 }
 
 stop_containers() {
-    sudo docker stop $(docker ps -a -q)
+    sudo docker stop $(docker ps -a -q) 2>/dev/null
 }
 
 # Check if Docker is installed
