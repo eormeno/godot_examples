@@ -12,10 +12,13 @@ if ! sudo systemctl is-active --quiet docker; then
 fi
 
 # Stop containers
-sudo docker stop $(docker ps -a -q) 1>/dev/null
+sudo docker stop $(docker ps -a -q) &>/dev/null
 
 # Remove containers
-sudo docker rm $(docker ps -a -q) 1>/dev/null
+sudo docker rm $(docker ps -a -q) &>/dev/null
 
 # Remove images
-sudo docker rmi $(docker images -a -q) 1>/dev/null
+sudo docker rmi $(docker images -a -q) $>/dev/null
+
+# Display message in green
+echo -e "\e[32mAll containers and images have been removed.\e[0m"
