@@ -1,11 +1,11 @@
 #!/bin/bash
 
 start_containers() {
-    docker start $(docker ps -a -q)
+    sudo docker start $(docker ps -a -q)
 }
 
 stop_containers() {
-    docker stop $(docker ps -a -q)
+    sudo docker stop $(docker ps -a -q)
 }
 
 # Check if Docker is installed
@@ -40,4 +40,4 @@ case $1 in
 esac
 
 # Display container status
-docker ps -a
+sudo docker ps -a --format "{{.Names}}\t\t{{.Status}}"
