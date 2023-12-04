@@ -38,3 +38,6 @@ case $1 in
         exit 1
         ;;
 esac
+
+# Display container status
+docker ps -a
