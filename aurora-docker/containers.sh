@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# Start all Docker containers
 start_containers() {
     docker start $(docker ps -a -q)
 }
 
-# Stop all Docker containers
 stop_containers() {
     docker stop $(docker ps -a -q)
 }
@@ -17,9 +15,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Check if Docker daemon is running
-if sudo systemctl is-active --quiet docker; then
-  echo "Docker daemon is running."
-else
+if ! sudo systemctl is-active --quiet docker; then
   echo "Docker daemon is not running."
 fi
 
