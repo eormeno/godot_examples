@@ -39,7 +39,7 @@
                 </div>
                 <div class="mt-16 text-center">
                     <h1 class="text-5xl font-semibold text-gray-900 dark:text-gray-400">Aurora</h1>
-                    <p class="mt-6 text-xl text-gray-500 dark:text-gray-400">Aurora is a free, open-source, and self-hosted forum software.</p>
+                    <p class="mt-6 text-xl text-gray-500 dark:text-gray-400">Aurora is a free game for programming learning.</p>
                 </div>
             </div>
         </div>
