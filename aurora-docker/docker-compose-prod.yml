@@ -7,14 +7,17 @@ services:
   app:
     build:
       context: ./dockerfiles
-      dockerfile: nginx.dockerfile
+      dockerfile: nginx.prod.dockerfile
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./src:/var/www/html:delegated
+      - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+      - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
     depends_on:
       - php
       - redis
