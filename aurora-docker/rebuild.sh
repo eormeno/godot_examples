@@ -1,5 +1,3 @@
-./remove-containers.sh
-./remove-images.sh
 sudo docker compose -f docker-compose-prod.yml up -d --build app
 sudo docker compose run --rm composer update
 sudo docker compose run --rm artisan migrate
