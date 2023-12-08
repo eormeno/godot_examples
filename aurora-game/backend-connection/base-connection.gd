@@ -3,10 +3,10 @@ class_name BaseConnectionManager extends Control
 signal connected
 signal disconnected
 
-const LOCAL : String = "127.0.0.1"
-const REMOTE : String = "damogame.com"
+const LOCAL : String = "http://localhost"
+const REMOTE : String = "https://damogame.com"
 
-const BASE_URL : String = "https://" + REMOTE + "/api/"
+const BASE_URL : String = REMOTE + "/api/"
 const PING_URL : String = BASE_URL + "ping"
 
 const PING_FREQUENCY : float = 2
@@ -46,18 +46,19 @@ func _process(delta):
 			break
 
 func _on_request_completed(result : int, _response_code : int, headers : PackedStringArray, body : PackedByteArray):
-	processing_request = false
 	if result != 0:
 		emit_signal("disconnected")
+		processing_request = false
 		return
-	
-	var req_id = find_in_header("Request-ID", headers)
+		
+	var req_id = find_in_header("request-id", headers)
 	if req_id:
 		var json : Dictionary = JSON.parse_string(body.get_string_from_utf8())
 		if requests_queue.has(req_id):
 			var request_node = requests_queue[req_id]
 			requests_queue.erase(req_id)
 			request_node.call_callback(json)
+	processing_request = false
 
 func enqueue_request(url: String, method: HTTPClient.Method, data : String = "", callback : Callable = Callable()):
 	var request_node : ApiRequest = ApiRequest.new(url, method, data, callback)
@@ -66,6 +67,7 @@ func enqueue_request(url: String, method: HTTPClient.Method, data : String = "",
 
 func find_in_header(key: String, packed : PackedStringArray):
 	for h in packed:
+		h = h.to_lower()
 		if h.begins_with(key):
 			return h.split(":")[1].strip_edges()
 	return null
@@ -76,7 +78,6 @@ func ping(callback : Callable):
 
 func _on_ping_response(response):
 	ping_answered = true
-#	print (response.url + " " + str(response.delay/1000) + "s")
 	if response.has("pong") and response.pong:
 		connected_to_host = true
 		emit_signal("connected")
