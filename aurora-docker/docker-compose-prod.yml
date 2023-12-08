@@ -12,8 +12,7 @@ services:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     ports:
-      - "${SSL_PORT}:443"
-      - "${HTTP_PORT}:80"
+      - "443:443"
     volumes:
       - ./src:/var/www/html:delegated
       - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
