@@ -19,7 +19,6 @@ var ping_answered : bool
 var connected_to_host : bool
 
 func _ready():
-	print ("si entra")
 	$HTTPRequest.timeout = CONNECTION_TIMEOUT
 	$HTTPRequest.request_completed.connect(_on_request_completed)
 	emit_signal("disconnected")
@@ -53,7 +52,6 @@ func _on_request_completed(result : int, _response_code : int, headers : PackedS
 		return
 		
 	var req_id = find_in_header("request-id", headers)
-	print ("pasa")
 	if req_id:
 		var json : Dictionary = JSON.parse_string(body.get_string_from_utf8())
 		if requests_queue.has(req_id):
