@@ -14,9 +14,9 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# Check if Docker daemon is running
-if ! sudo systemctl is-active --quiet docker; then
-  echo "Docker daemon is not running."
+# Check if Docker daemon is running without using systemctl
+if ! sudo docker info &> /dev/null; then
+    echo "Docker daemon is not running."
 fi
 
 # Parse command line arguments
