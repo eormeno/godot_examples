@@ -19,6 +19,7 @@ var ping_answered : bool
 var connected_to_host : bool
 
 func _ready():
+	print ("si entra")
 	$HTTPRequest.timeout = CONNECTION_TIMEOUT
 	$HTTPRequest.request_completed.connect(_on_request_completed)
 	emit_signal("disconnected")
