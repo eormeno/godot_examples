@@ -12,11 +12,11 @@ var show : bool
 var light : PointLight2D
 var tween : Tween
 const color_info = {
-	LightColors.RED : {"name" : "red", "color": Color.RED},
-	LightColors.BLUE : {"name" : "blue", "color": Color.BLUE},
-	LightColors.GREEN : {"name" : "green", "color": Color.GREEN},
-	LightColors.YELLOW : {"name" : "yellow", "color": Color.YELLOW},
-	LightColors.WHITE : {"name" : "white", "color": Color.WHITE},
+	LightColors.RED : {"name" : "rojo", "color": Color.RED},
+	LightColors.BLUE : {"name" : "azul", "color": Color.BLUE},
+	LightColors.GREEN : {"name" : "verde", "color": Color.GREEN},
+	LightColors.YELLOW : {"name" : "amarillo", "color": Color.YELLOW},
+	LightColors.WHITE : {"name" : "blanco", "color": Color.WHITE},
 }
 
 func _ready():

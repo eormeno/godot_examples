@@ -8,6 +8,7 @@ var current_selected_file: TreeItem
 var current_editing_file : TreeItem
 var executor : Executor
 var tool : Dictionary = {}
+var editing : bool = false
 
 func _ready():
 	player = find_child("player_2")
@@ -22,6 +23,7 @@ func _ready():
 	}
 	executor = Executor.new(self, terminal)
 	player.set_executor(executor)
+	executor.connect("status", _on_executor_state)
 
 func _on_command_entered(command : String, callback : Callable):
 	var tokens : PackedStringArray = command.split(" ")
@@ -74,11 +76,11 @@ func cmd_edit(arg : PackedStringArray):
 		ret.message = arg[1] + " se una carpeta. No se puede editar"
 		return ret
 	current_editing_file = item
-	$StateChart.send_event("loaded_script")
 	var resource = await connection.get_resource(get_script_id())
 	%code_editor.text = resource.resource.content
 	%tab_container.current_tab = 1
 	ret.status = Terminal.SUCCESS
+	$StateChart.send_event("loaded_script")
 	return ret
 	
 func cmd_save(arg : PackedStringArray):
@@ -96,7 +98,11 @@ func cmd_save(arg : PackedStringArray):
 	return ret
 	
 func cmd_run(arg : PackedStringArray):
-	if !can("run"): return cannot_response("Primero debes abrir un archivo de script")
+	if !editing: return cannot_response("Primero debes abrir un archivo de script")
+	if !can("run"): return cannot_response()
+
+	update_ui_state_compiling()
+
 	var ret = { message = "", status = Terminal.ERROR }
 	if arg.size() != 1:
 		ret.message = "El comando " + arg[0] + " no requiere ningún parámetro"
@@ -111,6 +117,7 @@ func cmd_run(arg : PackedStringArray):
 	%tab_container.current_tab = 0
 	executor.run(response.compiled)
 	ret.status = Terminal.SUCCESS
+	update_ui_state_running()
 	return ret
 
 func find_item(item_name : String):
@@ -124,11 +131,15 @@ func _on_save_button_pressed():
 
 func _on_run_button_pressed():
 	terminal.submit("run")
+	
+func _on_executor_state(state):
+	match state:
+		Executor.FINISHED: update_ui_state_ready_for_run()
 
 func _update_ui_states():
 	for t in tool.keys():
 		tool[t].button.disabled = !tool[t].can
-		
+
 func can(tool_name:String):
 	return tool[tool_name].can
 	
@@ -136,16 +147,12 @@ func cannot_response(message : String = "No se puede ejecutar"):
 	return { message = message, status = Terminal.ERROR }
 
 func _on_without_script_state_entered():
-	tool.run.can = false
-	tool.stop.can = false
-	tool.pause.can = false
-	tool.save.can = false
-	_update_ui_states()
+	editing = false
+	update_ui_state_no_script()
 
 func _on_editing_script_state_entered():
-	tool.run.can = true
-	tool.save.can = true
-	_update_ui_states()
+	editing = true
+	update_ui_state_ready_for_run()
 	
 func get_script_id():
 	if !current_editing_file: return 0
@@ -179,3 +186,31 @@ func _on_tree_item_selected():
 	else:
 		terminal.set_input("")
 	terminal.set_prompt(tree.get_full_path(current_selected_dir))
+
+func update_ui_state_compiling():
+	tool.run.can = false
+	tool.stop.can = false
+	tool.save.can = false
+	tool.pause.can = false
+	_update_ui_states()
+	
+func update_ui_state_running():
+	tool.stop.can = true
+	tool.pause.can = true
+	tool.save.can = false
+	_update_ui_states()
+
+func update_ui_state_no_script():
+	tool.run.can = false
+	tool.stop.can = false
+	tool.pause.can = false
+	tool.save.can = false
+	_update_ui_states()	
+	
+func update_ui_state_ready_for_run():
+	tool.run.can = true
+	tool.save.can = true
+	tool.pause.can = false
+	tool.stop.can = false
+	_update_ui_states()
+

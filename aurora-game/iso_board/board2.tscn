@@ -96,18 +96,21 @@ columns = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
+focus_mode = 0
 theme_type_variation = &"RunScriptButton"
 
 [node name="pause_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
+focus_mode = 0
 theme_type_variation = &"PauseScriptButton"
 
 [node name="stop_button" type="Button" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
+focus_mode = 0
 theme_type_variation = &"StopScriptButton"
 
 [node name="CameraContainer" type="PanelContainer" parent="CanvasLayer/Control/VSplitContainer/VBoxContainer"]

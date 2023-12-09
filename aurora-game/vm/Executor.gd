@@ -1,5 +1,9 @@
 class_name Executor extends Node
 
+enum {RUNNING, PAUSED, FINISHED}
+
+signal status(st)
+
 var stack : Array
 var call_stack : Array[MemoryBlock]
 var compiled_code:Array = []
@@ -91,7 +95,9 @@ func _process(delta):
 	elapsed += delta
 	_i = run_code(compiled_code, _i)
 	_i += 1
-	if _i >= compiled_code.size(): _stop = true
+	if _i >= compiled_code.size():
+		_stop = true
+		emit_signal("status", FINISHED)
 
 func run_code(code:Array, i:int):
 	if i >= code.size(): return
