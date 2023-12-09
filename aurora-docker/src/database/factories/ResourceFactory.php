@@ -54,7 +54,7 @@ class ResourceFactory extends Factory
                 "mime_type" => "text/plain",
                 "content" => self::EXAMPLE_1,
                 "comment" => "Muestra varios ejemplos de uso de la consola y de las estructuras de control",
-                "minimum_player_level" => 2,
+                "minimum_player_level" => 1,
             ],
         ]
     ];
