@@ -1,3 +1,11 @@
+#!/bin/bash
+
+# Check the .env file exists in the src directory
+if [[ ! -f src/.env ]]; then
+    echo "The .env file does not exist in the src directory."
+    exit 1
+fi
+
 # Parse command line arguments
 if [[ $# -eq 0 ]]; then
     echo "Usage: $0 [local|production]"

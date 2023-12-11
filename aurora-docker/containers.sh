@@ -1,23 +1,33 @@
 #!/bin/bash
 
+# Check if docker is installed
+function check_docker() {
+    if ! [ -x "$(command -v docker)" ]; then
+        echo "Docker is not installed. Pleas install it."
+        exit 1
+    fi
+}
+
+# Check if docker daemon is running
+function check_docker_daemon() {
+    if ! sudo docker info &>/dev/null; then
+        echo "Docker daemon is not running."
+        exit 1
+    fi
+}
+
 start_containers() {
-    sudo docker start $(docker ps -a -q) 2>/dev/null
+    echo "Starting containers..."
+    sudo docker start $(docker ps -a -q) &>/dev/null
 }
 
 stop_containers() {
-    sudo docker stop $(docker ps -a -q) 2>/dev/null
+    echo "Stopping containers..."
+    sudo docker stop $(docker ps -a -q) &>/dev/null
 }
 
-# Check if Docker is installed
-if ! command -v docker &> /dev/null; then
-    echo "Docker is not installed. Please install Docker and try again."
-    exit 1
-fi
-
-# Check if Docker daemon is running without using systemctl
-if ! sudo docker info &> /dev/null; then
-    echo "Docker daemon is not running."
-fi
+check_docker
+check_docker_daemon
 
 # Parse command line arguments
 if [[ $# -eq 0 ]]; then
