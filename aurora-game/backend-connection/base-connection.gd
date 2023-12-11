@@ -27,7 +27,6 @@ func get_base_url():
 	var remote = persist_user_data.get_data("local", false)
 	var base = REMOTE
 	if !remote: base = LOCAL
-	print(base)
 	return base + BASE_API
 	
 func get_ping_url():

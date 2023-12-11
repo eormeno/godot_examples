@@ -45,6 +45,9 @@ func _process(delta):
 			timeout_running = false
 			timeout_counter = 0
 			_on_command_execution_result("timeout", true)
+	
+	if !input.has_focus():
+		return
 		
 	if commands_history.is_empty():
 		return
