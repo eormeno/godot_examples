@@ -6,7 +6,7 @@ signal disconnected
 const LOCAL : String = "127.0.0.1"
 const REMOTE : String = "damogame.com"
 
-const BASE_URL : String = "http://" + REMOTE + "/api/"
+const BASE_URL : String = "https://" + REMOTE + "/api/"
 const PING_URL : String = BASE_URL + "ping"
 
 const PING_FREQUENCY : float = 2
