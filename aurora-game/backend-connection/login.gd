@@ -8,8 +8,11 @@ func _ready():
 	%user.text = persist_user_data.get_data("login.email", "")
 	%password.text = persist_user_data.get_data("login.password", "")
 	%LoginButton.pressed.connect(_on_login_button)
+	%LocalConnection.set_pressed_no_signal(persist_user_data.get_data("local", false))
+	_update_local_connection_name()
 	
 func _on_login_button():
+	%message.text = ""
 	connection.login(%user.text, %password.text, _on_login_response)
 	
 func _on_login_response(response):
@@ -25,9 +28,22 @@ func _on_login_response(response):
 		%user.select_all()
 
 func _on_connected():
-	%connection_status.text = "connected..."
+	%connection_status.text = "Conectado"
 	%LoginButton.disabled = false
 	
 func _on_disconnected():
-	%connection_status.text = "disconnected..."
+	%connection_status.text = "Desconectado"
 	%LoginButton.disabled = true
+
+func _on_local_connection_pressed():
+	var local : bool = _update_local_connection_name()
+	persist_user_data.set_data("local", !local)
+	%connection_status.text = ""
+	
+func _update_local_connection_name():
+	var local : bool = !%LocalConnection.is_pressed()
+	if local:
+		%LocalConnection.text = "Local"
+	else:
+		%LocalConnection.text = "Remote"
+	return local

@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://dprsoitu2inq8"]
+[gd_scene load_steps=8 format=3 uid="uid://dprsoitu2inq8"]
 
 [ext_resource type="Script" path="res://backend-connection/login.gd" id="1_uqua1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5buuc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6qtsq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l6mdc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ba1ce"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5xnp0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dlnlh"]
 
 [node name="login" type="Control"]
 layout_mode = 3
@@ -105,3 +117,18 @@ layout_mode = 2
 size_flags_horizontal = 6
 disabled = true
 text = "Ingresar"
+
+[node name="LocalConnection" type="CheckButton" parent="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 6
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5buuc")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_6qtsq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_l6mdc")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ba1ce")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_5xnp0")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_dlnlh")
+text = "Local"
+
+[connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/HBoxContainer3/LocalConnection" to="." method="_on_local_connection_pressed"]

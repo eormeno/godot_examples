@@ -5,9 +5,7 @@ signal disconnected
 
 const LOCAL : String = "http://localhost"
 const REMOTE : String = "https://damogame.com"
-
-const BASE_URL : String = REMOTE + "/api/"
-const PING_URL : String = BASE_URL + "ping"
+const BASE_API : String = "/api/"
 
 const PING_FREQUENCY : float = 2
 const CONNECTION_TIMEOUT : float = 30
@@ -24,6 +22,16 @@ func _ready():
 	emit_signal("disconnected")
 	connected_to_host = false
 	ping(_on_ping_response)
+	
+func get_base_url():
+	var remote = persist_user_data.get_data("local", false)
+	var base = REMOTE
+	if !remote: base = LOCAL
+	print(base)
+	return base + BASE_API
+	
+func get_ping_url():
+	return get_base_url() + "ping"
 	
 func _process(delta):
 	timeout_counter += delta
@@ -74,7 +82,7 @@ func find_in_header(key: String, packed : PackedStringArray):
 
 func ping(callback : Callable):
 	ping_answered = false
-	enqueue_request(PING_URL, HTTPClient.METHOD_GET,"", callback)
+	enqueue_request(get_ping_url(), HTTPClient.METHOD_GET,"", callback)
 
 func _on_ping_response(response):
 	ping_answered = true
