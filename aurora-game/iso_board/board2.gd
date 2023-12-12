@@ -113,6 +113,7 @@ func cmd_run(arg : PackedStringArray):
 		for e in response.errors:
 			errs += "Error de sintaxis en línea " + str(e.line) + "\n"
 		ret.message = errs
+		update_ui_state_ready_for_run()
 		return ret
 	%tab_container.current_tab = 0
 	executor.run(response.compiled)
