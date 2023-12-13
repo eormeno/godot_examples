@@ -69,7 +69,10 @@ func run(code: Array):
 	
 func pause():
 	_stop = true
-
+	
+func stop():
+	reset()
+	
 func cont():
 	_stop = false
 	

@@ -180,6 +180,7 @@ layout_mode = 2
 [node name="Tree" type="Tree" parent="CanvasLayer/Control/VSplitContainer/PanelContainer/HSplitContainer/PanelContainer2"]
 texture_filter = 1
 layout_mode = 2
+focus_mode = 0
 script = ExtResource("6_27tlw")
 folder_icon = ExtResource("7_7symv")
 document_icon = ExtResource("8_iffmt")
@@ -489,7 +490,9 @@ script = ExtResource("5_isq2r")
 [connection signal="state_entered" from="StateChart/RW Run states/Without script" to="." method="_on_without_script_state_entered"]
 [connection signal="state_entered" from="StateChart/RW Run states/Editing script" to="." method="_on_editing_script_state_entered"]
 [connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer/run_button" to="." method="_on_run_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/VBoxContainer/PanelContainer/GridContainer/stop_button" to="." method="_on_stop_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VSplitContainer/VBoxContainer/CameraContainer/tab_container/Editor/editor_tool_bar/GridContainer/save_button" to="." method="_on_save_button_pressed"]
+[connection signal="gui_input" from="CanvasLayer/Control/VSplitContainer/PanelContainer/HSplitContainer/PanelContainer2/Tree" to="CanvasLayer/Control/VSplitContainer/PanelContainer/HSplitContainer/PanelContainer2/Tree" method="_on_gui_input"]
 [connection signal="item_activated" from="CanvasLayer/Control/VSplitContainer/PanelContainer/HSplitContainer/PanelContainer2/Tree" to="." method="_on_tree_item_activated"]
 [connection signal="item_edited" from="CanvasLayer/Control/VSplitContainer/PanelContainer/HSplitContainer/PanelContainer2/Tree" to="." method="_on_tree_item_edited"]
 [connection signal="item_selected" from="CanvasLayer/Control/VSplitContainer/PanelContainer/HSplitContainer/PanelContainer2/Tree" to="." method="_on_tree_item_selected"]

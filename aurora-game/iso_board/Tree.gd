@@ -61,11 +61,10 @@ func _menu_pressed(menu_id: PopupId):
 				return
 			item.get_parent().remove_child(item)
 
-func _input(event):
-	if !has_focus(): return
-	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
-		_last_pos = get_global_mouse_position()
-		popup.popup(Rect2(_last_pos.x, _last_pos.y, popup.size.x, popup.size.y))
+#func _input(event):
+#	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
+#		_last_pos = get_global_mouse_position()
+#		popup.popup(Rect2(_last_pos.x, _last_pos.y, popup.size.x, popup.size.y))
 
 func add_elements(item: Dictionary, item_name : String = "/", parent_item : TreeItem = null):
 	var icon : Texture2D = folder_icon if item.type == "folder" else document_icon
@@ -89,3 +88,8 @@ func get_full_path(item : TreeItem):
 		ret = p.get_text(0) + ret
 		p = p.get_parent()
 	return ret
+
+func _on_gui_input(event):
+	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
+		_last_pos = get_global_mouse_position()
+		popup.popup(Rect2(_last_pos.x, _last_pos.y, popup.size.x, popup.size.y))

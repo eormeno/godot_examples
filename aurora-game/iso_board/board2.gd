@@ -215,3 +215,6 @@ func update_ui_state_ready_for_run():
 	tool.stop.can = false
 	_update_ui_states()
 
+func _on_stop_button_pressed():
+	update_ui_state_ready_for_run()
+	executor.stop()
