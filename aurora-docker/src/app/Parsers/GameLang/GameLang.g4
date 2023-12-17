@@ -14,6 +14,7 @@ timeUnit
 
 statement
 		: whileStatement
+        | repeatStatement
 		| ifStatement
 		| assignment
 		| lineFunctionCall
@@ -32,6 +33,9 @@ consoleStatement
 
 whileStatement
         : WHILE logicExpression doStatement END;
+
+repeatStatement
+        : REPEAT ID TIMES statement* END;
 
 doStatement
         : DO statement*;
@@ -105,6 +109,8 @@ IF:         ('IF'|'SI');
 THEN:       ('THEN'|'ENTONCES');
 ELSE:       ('ELSE'|'SINO');
 WHILE:      ('WHILE'|'MIENTRAS');
+REPEAT:     ('REPEAT'|'REPETIR');
+TIMES:      ('TIMES'|'VECES');
 CONSOLE:    ('CONSOLE'|'CONSOLA'|'ESCRIBE'|'WRITE');
 SPRITE:     ('SPRITE'|'PERSONAJE'|'OBJETO'|'OBJECT');
 MOVE:       ('MOVE'|'MOVER');
